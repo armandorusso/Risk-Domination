@@ -1,1 +1,2 @@
 Here's an example thing. 
+testing from command line
