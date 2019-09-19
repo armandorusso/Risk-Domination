@@ -1,2 +1,4 @@
 Here's an example thing. 
 testing from command line
+
+I'm also testing from the command line -> Chris
