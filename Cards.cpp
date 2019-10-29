@@ -118,12 +118,11 @@ std::vector<std::string>* Hand::getCards() {
 	return this->cards;
 }
 
-//TODO use a method that gets the total number of countries
-std::vector<std::string>* Deck::cards = new std::vector<std::string>(10);
-Deck::Deck() {
-	//TODO Use a function that gets the total number of countries
-	this->numTotalCards = new int(10);
+std::vector<std::string>* Deck::cards;
+Deck::Deck(int numCards) {
+	this->numTotalCards = new int(numCards);
 	int numberOfCountries = *numTotalCards;
+	Deck::cards = new std::vector<std::string>(numCards);
 
 	//Populate the cards vector with an equal number of different cardTypes
 	int tempNum = 0;

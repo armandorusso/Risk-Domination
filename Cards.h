@@ -24,7 +24,7 @@ class Deck {
 		int* numTotalCards;
 	public:
 		static std::vector<std::string>* cards;
-		Deck();
+		Deck(int numCards);
 		void draw(Hand hand);
 		static void shuffle();
 		int* getNumTotalCards();

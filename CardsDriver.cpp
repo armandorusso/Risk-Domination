@@ -3,12 +3,11 @@
 
 int main() {
 	//Create Deck object and print the deck
-	Deck deck;
+	Deck deck(20);
 	int num = *deck.getNumTotalCards();
 	int numArt = 0;
 	int numCav = 0;
 	int numInf = 0;
-
 	std::cout << "Number of cards: " + std::to_string(num) + "\n";
 	for (int i = 0; i < Deck::cards->size(); i++) {
 		std::cout << (*Deck::cards)[i];
@@ -21,11 +20,11 @@ int main() {
 			numInf++;
 	}
 	//Print amount of each card type
-	std::cout << "Infantry: " + std::to_string(numInf) + ", Cavalry: " + std::to_string(numCav) + ", Artillery: " + std::to_string(numCav) + "\n";
+	std::cout << "Infantry: " + std::to_string(numInf) + ", Cavalry: " + std::to_string(numCav) + ", Artillery: " + std::to_string(numArt) + "\n";
 
 	//Create Hand object and fill with 10 cards
 	Hand hand;
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < *deck.getNumTotalCards(); i++) {
 		deck.draw(hand);
 	}
 
@@ -65,6 +64,5 @@ int main() {
 		std::cout << (*Deck::cards)[i];
 		std::cout << "\n";
 	}
-
 	return 0;
 }
