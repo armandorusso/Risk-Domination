@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/christopherdiktakis/Library/Mobile Documents/com~apple~CloudDocs/Concordia/Cpp_PlayerDice/Dice.h
+string
+-
+vector
+-
+
+/Users/christopherdiktakis/Library/Mobile Documents/com~apple~CloudDocs/Concordia/Cpp_PlayerDice/Player.cpp
+string
+-
+iostream
+-
+Player.h
+/Users/christopherdiktakis/Library/Mobile Documents/com~apple~CloudDocs/Concordia/Cpp_PlayerDice/Player.h
+
+/Users/christopherdiktakis/Library/Mobile Documents/com~apple~CloudDocs/Concordia/Cpp_PlayerDice/Player.h
+iostream
+-
+vector
+-
+Dice.h
+/Users/christopherdiktakis/Library/Mobile Documents/com~apple~CloudDocs/Concordia/Cpp_PlayerDice/Dice.h
+

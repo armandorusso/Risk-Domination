@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/Cpp_PlayerDice.dir/Dice.cpp.o CMakeFiles/Cpp_PlayerDice.dir/Player.cpp.o  -o Cpp_PlayerDice 
