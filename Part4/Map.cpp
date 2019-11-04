@@ -28,46 +28,13 @@ Country::Country(string name, int countryK, int* neighbourA, int continentK, int
 	}
 
 }
-
-//vector<int> Country::getAttackableNeighbours() {
-//    vector<int> attackableNeighbours;
-//
-//    for(int i = 0; i<getNeighbourNum(); i++) {
-//        if(this->getOwner()
-//    }
-//
-//}
-//
-void Country::printNeighbours() {
-	int numNeighbours = this->getNeighbourNum();
-	int *neighbourArray = this->getNeighbours();
-	cout << "[";
-
-	for (int i = 0; i< numNeighbours; i++) {
-		if (i == numNeighbours - 1) {
-			cout << neighbourArray[i];
-			break;
-		}
-		cout << neighbourArray[i] << " ";
-	}
-
-	cout << "]" << endl;
-}
-
-
 int Country::getNeighbourNum() {
 
 	int x = *neighbourNum;
 	return x;
 }
-
 Country::~Country() {
-	delete name;
-	delete countryKey;
-	delete continentKey;
-	delete owner;
-	delete neighbourNum;
-	delete army;
+	delete name, countryKey, continentKey, owner, neighbourNum, army;
 	delete[] neighbourArray;
 
 }
@@ -133,18 +100,21 @@ void Map::setMatrix() {
 
 	}
 
+
 }
 
 //checks if country1 can attack country2
-bool Map::checkNeighbors(int c1, int c2) {
+bool Map::checkNeighbors(Country country1, Country country2) {
 
-	if (matrix[c1][c2] == 1) {
+	int key1 = country1.getCountryKey();
+	int key2 = country2.getCountryKey();
+
+	if (matrix[key1][key2] == 1) {
 		return true; //should be returning true here
 	}
 	else return false;
 
 }
-
 //method to print matrix
 void Map::printMatrix() {
 
@@ -244,7 +214,7 @@ Continent::Continent(int key, string name, int num) {
 	Continent::name = new string(name);
 	countryNum = new int(num);
 	continentKey = new int(key);
-	owner = new int();
+	owner = new string();
 	conquered = new bool();
 
 }
@@ -257,5 +227,3 @@ Continent::~Continent() {
 	delete continentKey;
 
 }
-
-

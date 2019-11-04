@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <vector>
 using namespace std;
 
 //class definition for Country
@@ -34,13 +33,6 @@ public:
 	int getArmy() { return *army; };
 	void addArmy(int x) { (*army) += x; };
 	void subtractArmy(int x) { *army -= x; };
-
-
-
-
-	vector<int> getAttackableNeighbours();
-	bool isAttackable();
-	void printNeighbours();
 };
 
 //class definition of Continent object
@@ -49,7 +41,7 @@ private:
 	//data members
 	string * name;
 	bool* conquered;
-	int* owner;
+	string* owner;
 	int* continentKey;
 	int* countryNum; //total amount of countries the continent has
 
@@ -62,8 +54,8 @@ public:
 	void setContinentName(string n) { *name = n; };
 	bool getConquered() { return *conquered; };
 	void setConquered(bool conq) { *conquered = conq; };
-	int getOwner() { return *owner; };
-	void setOwner(int own) { *owner = own; };
+	string getOwner() { return *owner; };
+	void setOwner(string own) { *owner = own; };
 	void setCountryNum(int count) { *countryNum = count; };
 	int getCountryNum() { return *countryNum; };
 	int getContinentKey() { return *continentKey; };
@@ -99,7 +91,7 @@ public:
 
 	void removeNeighbors(Country* country1, Country* country2) { std::cout << "this method remove neighbors"; };
 
-	bool checkNeighbors(int c1, int c2);
+	bool checkNeighbors(Country country1, Country country2);
 
 	void printMatrix();
 
@@ -113,9 +105,6 @@ public:
 	void setContinentCount(int count) { *continentCount = count; };
 
 	Country* getCountryArray() { return array2; };
+
+	Continent* getContinentArray() { return array1; };
 };
-
-
-
-
-

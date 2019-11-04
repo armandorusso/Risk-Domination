@@ -7,10 +7,9 @@ int main() {
 	Deck deck(21);
 
 	//Create Map and Player objects
-	Player *player1 = new Player("Bojan");
 
-	Continent* cont1 = new Continent();
-	Continent* cont2 = new Continent();
+	Continent* cont1 = new Continent(1, "cont1", 3);
+	Continent* cont2 = new Continent(2, "cont2", 2);
 	Continent* continentArray[2] = { cont1, cont2 };
 
 	int varr0[3] = { 1,3,4 };
@@ -36,12 +35,13 @@ int main() {
 
 	//Setting the adjacency matrix
 	map2->setMatrix();
+	Player *player1 = new Player("Bojan", *map2);
 
-	player1->addCountry(vc0);
-	player1->addCountry(vc1);
-	player1->addCountry(vc2);
-	player1->addCountry(vc3);
-	player1->addCountry(vc4);
+	player1->addCountry(vc0->getCountryKey());
+	player1->addCountry(vc1->getCountryKey());
+	player1->addCountry(vc2->getCountryKey());
+	player1->addCountry(vc3->getCountryKey());
+	player1->addCountry(vc4->getCountryKey());
 
 	//Call reinforce with 5 countries
 	std::cout << ("Calling reinforce with 5 countries-----------------\n");

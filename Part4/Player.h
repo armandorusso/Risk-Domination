@@ -1,68 +1,41 @@
-//
-// Created by Christopher Diktakis on 2019-10-26.
-//
 #pragma once
-
 #include <iostream>
 #include <vector>
 #include "Dice.h"
-#include "Map.h"
 #include "Cards.h"
+#include"Map.h"
+#ifndef INC_345PROJECT_PLAYER_H
+#define INC_345PROJECT_PLAYER_H
 
 class Player {
+
 private:
 	std::string* name;
 	Dice* dice;
-	bool* isTurn;
-	Hand *handOfCards;
-	vector<Country *> countries;
+	Hand* handOfCards;
+	vector<int> *countriesKey;
+	int* numberOfCountries;
+	Map map;
 
 public:
-	Player(std::string name);
-	Player();
+	Player(std::string name, Map &map);
 	~Player();
 
-	void showDiceFrequency();
-	void showDiceValuePercentage();
 	void reinforce();
 	void attack();
 	void fortify();
 	void RollDice();
-	void displayRoll();
-	void loseArmy();
 	void setNumDice(int numDice);
-	void decideNumDice();
-	void setIsTurn(bool value);
-	int getHighestRoll() const;
-	bool getIsTurn() const;
-	bool canAttack();
-	bool isDefending();
-	int getNumCountries() const;
-	vector<Country *> getCountries() const;
-	void addCountry(Country *country);
-	Country *hasCountry(Country *country);
-	bool hasCountry(Country *country) const;
-	void attackCountry(Country &country);
+	void addCountry(int key);
+	void removeCountry(int key);
+	string getName() const;
+	vector<int> getCountries() { return *countriesKey; };
+	int getNumOfCountries() { return *numberOfCountries; };
+	void setNumOfCountries(int num) { *numberOfCountries = num; };
+	Dice* getDice() const;
+	Hand* getHand() const;
+	bool checkIfOwnCont();
 
-	vector<int> getCountryKeys() const;
-
-	void displayCountries();
-	void displayAttackableCountries();
-
-	vector<int> getAttackableCountries(Map *map);
-
-
-
-	Dice *getDice() const;
-	std::string getName() const;
-	Hand *getHand() const;
-	int playerDriver();
 };
 
-bool compareRolls(Player *player1, Player *player2);
-void displayRoll(Player *player1, Player *player2);
-
-
-
-
-
+#endif //INC_345PROJECT_PLAYER_H
