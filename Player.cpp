@@ -42,7 +42,7 @@ Player::Player(std::string name) {
 	this->dice = new Dice();
 	this->isTurn = new bool(false);
 	this->countries;
-	//    this->handOfCards = new Hand();
+	this->handOfCards = new Hand();
 }
 
 //Destructor for Player Class.
@@ -50,9 +50,11 @@ Player::~Player() {
 	delete this->dice;
 	delete this->name;
 	delete this->isTurn;
+	delete this->handOfCards;
 	this->isTurn = nullptr;
 	this->dice = nullptr;
 	this->name = nullptr;
+	this->handOfCards = nullptr;
 
 	for (int i = 0; i< countries.size(); i++) {
 		delete countries[i];
