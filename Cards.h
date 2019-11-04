@@ -14,7 +14,7 @@ private:
 	int* numArmies;
 public:
 	Hand();
-	void exchange();
+	bool exchange();
 	int* getNumArmies();
 	std::vector<std::string>* getCards();
 };

@@ -10,7 +10,7 @@ Hand::Hand() {
 }
 
 //Exchange cards for armies
-void Hand::exchange() {
+bool Hand::exchange() {
 	int infCounter = 0;
 	int artCounter = 0;
 	int cavCounter = 0;
@@ -48,6 +48,7 @@ void Hand::exchange() {
 	//Remove exchanged cards from hand and add in deck
 	if (exchangeType.empty()) {
 		std::cout << "\nYou cannot exchange cards.\n";
+		return false;
 	}
 	else if (exchangeType != "all") {
 		int counter = 0;
@@ -108,6 +109,7 @@ void Hand::exchange() {
 			++i;
 		}
 	}
+	return true;
 }
 
 int* Hand::getNumArmies() {
