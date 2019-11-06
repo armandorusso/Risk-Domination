@@ -39,11 +39,11 @@ int main() {
 	map2->setMatrix();
 	Player *player1 = new Player("Bojan", *map2);
 
-	player1->addCountry(vc0->getCountryKey());
-	player1->addCountry(vc1->getCountryKey());
-	player1->addCountry(vc2->getCountryKey());
-	player1->addCountry(vc3->getCountryKey());
-	player1->addCountry(vc4->getCountryKey());
+	player1->addCountry(vc0);
+	player1->addCountry(vc1);
+	player1->addCountry(vc2);
+	player1->addCountry(vc3);
+	player1->addCountry(vc4);
 
 	//Call reinforce with 5 countries
 	std::cout << ("Calling reinforce with 5 countries-----------------\n");

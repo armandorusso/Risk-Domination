@@ -1,68 +1,67 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
-
-
-//Incorrect file
 
 //class definition for Country
 class Country {
 private:
-	//data members
-	string * name;
-	int* countryKey;
-	string* owner;
-	int* neighbourNum;
-	int* neighbourArray;
-	int* continentKey;
-	int* army;
+    //data members
+    string* name;
+    int* countryKey;
+    string* owner;
+    int* neighbourNum;
+    int* neighbourArray;
+    int* continentKey;
+    int* army;
 public:
-	//definitions of constructors,destructor and functions
-	Country();
-	Country(string name, int countryK, int* neighbourA, int continentKey, int neighbourN);
-	~Country();
-	string getName() { return *name; };
-	int getCountryKey() { return *countryKey; };
-	int* getNeighbours() { return neighbourArray; };
-	int  getNeighbourNum();
-	string getOwner() { return *owner; };
-	int getContinentKey() { return *continentKey; };
-	void setContinentKey(int key) { *continentKey = key; };
-	void setCountryKey(int key) { *countryKey = key; };
-	void setOwner(string name) { *owner = name; };
-	void setName(string n) { *name = n; };
-	void setNeighbourNum(int x) { *neighbourNum = x; };
-	int getArmy() { return *army; };
-	void addArmy(int x) { (*army) += x; };
-	void subtractArmy(int x) { *army -= x; };
+    //definitions of constructors,destructor and functions
+    Country();
+    Country(string name, int countryK, int* neighbourA, int continentKey, int neighbourN);
+    Country(string name, int countryK, vector<int> neighbourA, int continentKey, int neighbourN);
+    ~Country();
+    string getName() { return *name; };
+    int getCountryKey() { return *countryKey; };
+    int* getNeighbours() { return neighbourArray; };
+    int  getNeighbourNum();
+    string getOwner() { return *owner; };
+    int getContinentKey() { return *continentKey; };
+    void setContinentKey(int key) { *continentKey = key; };
+    void setCountryKey(int key) { *countryKey = key; };
+    void setOwner(string name) { *owner = name; };
+    void setName(string n) { *name = n; };
+    void setNeighbourNum(int x) { *neighbourNum = x; };
+    int getArmy() { return *army; };
+    void addArmy(int x) { (*army) += x; };
+    void subtractArmy(int x) { *army -= x; };
 };
 
 //class definition of Continent object
 class Continent {
 private:
-	//data members
-	string * name;
-	bool* conquered;
-	string* owner;
-	int* continentKey;
-	int* countryNum; //total amount of countries the continent has
+    //data members
+    string* name;
+    bool* conquered;
+    string* owner;
+    int* continentKey;
+    int* countryNum; //total amount of countries the continent has
 
-					 //constructors and member functions
+    //constructors and member functions
 public:
-	Continent();
-	Continent(int key, string name, int num);
-	~Continent();
-	string getContinentName() { return *name; };
-	void setContinentName(string n) { *name = n; };
-	bool getConquered() { return *conquered; };
-	void setConquered(bool conq) { *conquered = conq; };
-	string getOwner() { return *owner; };
-	void setOwner(string own) { *owner = own; };
-	void setCountryNum(int count) { *countryNum = count; };
-	int getCountryNum() { return *countryNum; };
-	int getContinentKey() { return *continentKey; };
-	void setContinetKey(int key) { *continentKey = key; };
+    Continent();
+    Continent(int key, string name, int num);
+    ~Continent();
+    string getContinentName() { return *name; };
+    void setContinentName(string n) { *name = n; };
+    bool getConquered() { return *conquered; };
+    void setConquered(bool conq) { *conquered = conq; };
+    string getOwner() { return *owner; };
+    void setOwner(string own) { *owner = own; };
+    void setCountryNum(int count) { *countryNum = count; };
+    int getCountryNum() { return *countryNum; };
+    int getContinentKey() { return *continentKey; };
+    void setContinetKey(int key) { *continentKey = key; };
 };
 
 
@@ -70,44 +69,53 @@ public:
 class Map {
 
 private:
-	//data memebers
-	int* countryCount;
-	int* continentCount;
-	int** matrix;
-	Continent* array1;
-	Country* array2;   //array of all countries in map(key of country==index)
-					   //private method
-	void check(int i, int* arr);
+    //data memebers
+    int* countryCount;
+    int* continentCount;
+    int** matrix;
+    Continent* array1;
+    Country* array2;   //array of all countries in map(key of country==index)
+    //private method
+    void check(int i, int* arr);
 
 public:
 
-	//constructors and memeber functions
-	Map();
+    //constructors and memeber functions
+    Map();
+    Map(vector<Country*> count, vector<Continent*> cont);
+    Map(Continent* array1, int size1, Country* array2, int size2);
 
-	Map(Continent* array1, int size1, Country* array2, int size2);
+    ~Map();
 
-	~Map();
+    bool checkMap();
 
-	bool checkMap();
+    void setMatrix();
 
-	void setMatrix();
+    void removeNeighbors(Country* country1, Country* country2) { std::cout << "this method remove neighbors"; };
 
-	void removeNeighbors(Country* country1, Country* country2) { std::cout << "this method remove neighbors"; };
+    bool checkNeighbors(Country country1, Country country2);
 
-	bool checkNeighbors(Country country1, Country country2);
+    bool checkNeighbors(int c1, int c2);
 
-	void printMatrix();
+    void printMatrix();
 
-	//mutators
-	int getCountryCount() { return *countryCount; };
+    //mutators
+    int getCountryCount() { return *countryCount; };
 
-	void setCountryCount(int count) { *countryCount = count; };
+    void setCountryCount(int count) { *countryCount = count; };
 
-	int getContinentCount() { return *continentCount; };
+    int getContinentCount() { return *continentCount; };
 
-	void setContinentCount(int count) { *continentCount = count; };
+    void setContinentCount(int count) { *continentCount = count; };
 
-	Country* getCountryArray() { return array2; };
+    Country* getCountryArray() { return array2; };
 
-	Continent* getContinentArray() { return array1; };
+    Continent* getContinentArray() { return array1; };
 };
+
+
+
+
+
+
+
