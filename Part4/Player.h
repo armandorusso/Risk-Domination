@@ -7,6 +7,9 @@
 #ifndef INC_345PROJECT_PLAYER_H
 #define INC_345PROJECT_PLAYER_H
 
+
+//Incorrect file
+
 class Player {
 
 private:

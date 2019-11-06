@@ -4,6 +4,10 @@
 #include <vector>
 #include "Player.h"
 
+
+
+//Incorrect file
+
 //https://github.com/armandorusso/Risk-Domination.git
 
 //1-Parameter Player constructor which defines the name of the player...
@@ -14,8 +18,6 @@ Player::Player(std::string name, Map &map) {
 	countriesKey = new vector<int>();
 	numberOfCountries = new int(0);
 	this->map = map;
-
-
 }
 
 //Destructor for Player Class.

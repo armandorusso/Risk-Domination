@@ -4,9 +4,6 @@
 #include "Dice.h"
 #include "Cards.h"
 #include"Map.h"
-#ifndef INC_345PROJECT_PLAYER_H
-#define INC_345PROJECT_PLAYER_H
-
 class Player {
 
 private:
@@ -37,5 +34,3 @@ public:
 	int checkIfOwnCont();
 
 };
-
-#endif //INC_345PROJECT_PLAYER_H
