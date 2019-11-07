@@ -377,7 +377,7 @@ void Player::attack() {
             attackableCountries = this->getAttackableCountries(map);
         }
 
-        //printArmiesFromCountries(attackingCountry, defendingCountry);
+        printArmiesFromCountries(attackingCountry, defendingCountry);
 
         //Clearing the currentRoll values in the dice objects, so that
         //more values are not pushed in.
@@ -629,7 +629,7 @@ void Player::displayCountries() {
     }
 }
 
-/*
+
 int printArmiesFromCountries(int c1, int c2) {
 
     Country *attacking = getCountryFromCountryKey(c1);
@@ -647,10 +647,10 @@ int printArmiesFromCountries(int c1, int c2) {
 
     cout << endl;
 }
-*/
 
 
-int attackDriver() {
+void attackDriver() {
+
     int numCountry = 5;
     int numContinent = 2;
 
@@ -682,6 +682,9 @@ int attackDriver() {
     Player *player1 = new Player("Christopher", *map2);
     Player *player2 = new Player("Peter", *map2);
 
+
+    cout << player1->getName() << endl;
+
     players.push_back(player1);
     players.push_back(player2);
 
@@ -696,22 +699,17 @@ int attackDriver() {
 
     vc0->addArmy(5);
     vc1->addArmy(2);
-    vc2->addArmy(2);
-    vc3->addArmy(2);
-    vc4->addArmy(2);
-
-    player1->attack();
+    vc2->addArmy(5);
+    vc3->addArmy(5);
+    vc4->addArmy(5);
 
 
-    return 0;
+    cout << vc4->getArmy() << endl;
 }
 
-
-
-/*
-int main() {
-    attackDriver();
-
-    return 0;
-}
-*/
+//int main() {
+//
+//    reinforceDriver();
+//
+//    return 0;
+//}

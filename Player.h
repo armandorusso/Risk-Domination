@@ -90,7 +90,7 @@ void loseArmy(int k);
 int printArmiesFromCountries(int c1, int c2);
 
 int reinforceDriver();
-int attackDriver();
+void attackDriver();
 int fortifyDemo();
 
 
