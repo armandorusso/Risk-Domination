@@ -87,7 +87,7 @@ void removeCountry(Country *country, Player *player);
 
 void loseArmy(int k);
 
-int printArmiesFromCountries(int c1, int c2);
+void printArmiesFromCountries(int c1, int c2);
 
 int reinforceDriver();
 void attackDriver();

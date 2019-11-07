@@ -630,7 +630,7 @@ void Player::displayCountries() {
 }
 
 
-int printArmiesFromCountries(int c1, int c2) {
+void printArmiesFromCountries(int c1, int c2) {
 
     Country *attacking = getCountryFromCountryKey(c1);
     Country *defending = getCountryFromCountryKey(c2);
@@ -704,12 +704,12 @@ void attackDriver() {
     vc4->addArmy(5);
 
 
-    cout << vc4->getArmy() << endl;
+    player1->attack();
 }
 
-//int main() {
-//
-//    reinforceDriver();
-//
-//    return 0;
-//}
+int main() {
+
+    attackDriver();
+
+    return 0;
+}
