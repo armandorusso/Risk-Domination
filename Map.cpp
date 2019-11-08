@@ -26,7 +26,6 @@ Country::Country(string name, int countryK, int* neighbourA, int continentK, int
     for (int i = 0; i < neighbourN; i++) {
         neighbourArray[i] = neighbourA[i];
     }
-
 }
 
 //vector as parameter

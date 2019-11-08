@@ -39,15 +39,6 @@ Player::Player() {
     countriesKey = new vector<int>();
 }
 
-Player::Player(std::string name) {
-    this->name = new string(name);
-    this->dice = new Dice();
-    this->isTurn = new bool(false);
-    this->countries;
-    this->handOfCards = new Hand();
-    countriesKey = new vector<int>();
-}
-
 Player::Player(std::string name, Map &map) {
     this->name = new string(name);
     this->dice = new Dice();
@@ -57,9 +48,18 @@ Player::Player(std::string name, Map &map) {
     countriesKey = new vector<int>();
     this->map = &map;
     this->handOfCards = new Hand();
-
-
 }
+
+Player::Player(std::string name) {
+    this->name = new string(name);
+    this->dice = new Dice();
+    this->isTurn = new bool(false);
+    this->countries;
+    this->handOfCards = new Hand();
+    countriesKey = new vector<int>();
+}
+
+
 
 //Destructor for Player Class.
 Player::~Player() {
@@ -88,7 +88,6 @@ Player::~Player() {
 //This method takes in a country key representing either an attacking or defending country.
 //If the country is an attacker, it can only roll 1-3 dice, the max being the amount of armies on the country - 1.
 //If the country is a defender, it can only roll 1-2 dice, the max being the amount of armies on the country.
-
 //This method calls the Roll() method of the Player's Dice Object.
 void Player::RollDice(int countryKey) {
     int numDice = 0;
@@ -116,8 +115,6 @@ void Player::RollDice(int countryKey) {
             setNumDice(1);
         }
     }
-
-
 
     this->getDice()->Roll();
 }
@@ -147,6 +144,29 @@ void displayRoll(Player &player1, Player &player2) {
     std::cout << std::endl;
 }
 
+
+
+// =====================
+//  PLAYER DICE METHODS
+// =====================
+
+
+//Returns true if Player1's highest roll is greater than Player 2's roll. False otherwise.
+bool compareRolls(Player *player1, Player *player2) {
+
+    std::cout << "====================" << std::endl;
+    std::cout << "RESULT" << std::endl;
+    std::cout << "====================" << std::endl;
+    if(player1->getHighestRoll() <= player2->getHighestRoll()){
+        std::cout << player1->getName() << " loses an army.\n" << std::endl;
+        return false;
+    }else {
+        std::cout << player2->getName() << " loses an army.\n" << std::endl;
+        return true;
+    }
+}
+
+
 //Shows how many times each value was rolled.
 void Player::showDiceFrequency() {
 
@@ -165,6 +185,8 @@ void Player::showDiceValuePercentage() {
 }
 
 
+
+
 void Player::attackDemo() {
     cout << "Player is attacking..." << endl;
 }
@@ -177,45 +199,51 @@ void Player::reinforceDemo() {
     cout << "Player is reinforcing..." << endl;
 }
 
+
+
+// ==========================================
+//      REINFORCE ATTACK FORTIFY
+// ==========================================
+
 void Player::reinforce() {
-	std::cout << this->getName() << " is reinforcing..." << std::endl;
+    std::cout << this->getName() << " is reinforcing..." << std::endl;
 
-	int armiesToExchange = 0;
+    int armiesToExchange = 0;
 
-	//GET ARMIES FOR COUNTRIES
-	armiesToExchange = this->getNumCountries() / 3;
+    //GET ARMIES FOR COUNTRIES
+    armiesToExchange = this->getNumCountries() / 3;
 
-	//Must get minimum 3 armies
-	if (armiesToExchange < 3) {
-		armiesToExchange = 3;
-	}
+    //Must get minimum 3 armies
+    if (armiesToExchange < 3) {
+        armiesToExchange = 3;
+    }
 
-	//GET ARMIES FROM CONTINENT-CONTROL VALUE
-	armiesToExchange = armiesToExchange + this->checkIfOwnCont();
+    //GET ARMIES FROM CONTINENT-CONTROL VALUE
+    armiesToExchange = armiesToExchange + this->checkIfOwnCont();
 
-	//EXCHANGE CARDS FOR ARMIES
-	while (this->getHand()->exchange()) {
-		armiesToExchange = armiesToExchange + *this->getHand()->getNumArmies();
-	}
+    //EXCHANGE CARDS FOR ARMIES
+    while (this->getHand()->exchange()) {
+        armiesToExchange = armiesToExchange + *this->getHand()->getNumArmies();
+    }
 
-	std::cout << "Armies to exchange: " << armiesToExchange << std::endl;
-	std::cout << std::endl;
+    std::cout << "Armies to exchange: " << armiesToExchange << std::endl;
+    std::cout << std::endl;
 
-	
-	std::cout << "Placing armies in owned countries..." << std::endl;
-	int index = 0;
-	
-	while (armiesToExchange != 0) {
-		if (index == this->getCountriesObjects().size()) {
-			index = 0;
-		}
 
-		this->map->getCountryArray()[this->getCountriesObjects().at(index)->getCountryKey()].addArmy(1);
-		std::cout << "Country " << index << ": " << this->map->getCountryArray()[this->getCountriesObjects().at(index)->getCountryKey()].getArmy() << std::endl;
+    std::cout << "Placing armies in owned countries..." << std::endl;
+    int index = 0;
 
-		armiesToExchange--;
-		index++;
-	}
+    while (armiesToExchange != 0) {
+        if (index == this->getCountriesObjects().size()) {
+            index = 0;
+        }
+
+        this->map->getCountryArray()[this->getCountriesObjects().at(index)->getCountryKey()].addArmy(1);
+        std::cout << "Country " << index << ": " << this->map->getCountryArray()[this->getCountriesObjects().at(index)->getCountryKey()].getArmy() << std::endl;
+
+        armiesToExchange--;
+        index++;
+    }
 }
 
 
@@ -391,6 +419,9 @@ void Player::attack() {
 }
 
 
+
+
+
 //Returns pointer to owner of country with key k.
 Player *getPlayerFromCountryKey(int k) {
     for(int i = 0; i< players.size(); i++) {
@@ -422,20 +453,6 @@ void Player::removeCountry(int key) {
 
 }
 
-//Returns true if Player1's highest roll is greater than Player 2's roll. False otherwise.
-bool compareRolls(Player *player1, Player *player2) {
-
-    std::cout << "====================" << std::endl;
-    std::cout << "RESULT" << std::endl;
-    std::cout << "====================" << std::endl;
-    if(player1->getHighestRoll() <= player2->getHighestRoll()){
-        std::cout << player1->getName() << " loses an army.\n" << std::endl;
-        return false;
-    }else {
-        std::cout << player2->getName() << " loses an army.\n" << std::endl;
-        return true;
-    }
-}
 
 //Decrements army of Country with key k.
 void loseArmy (int k) {
@@ -596,6 +613,10 @@ vector<int> Player::getAttackableCountries(Map *map) {
 //=================
 
 
+// ====================
+//  COUNTRY METHODS
+// ====================
+
 //Assigns a country pointer to a player object and sets its owner to the name of that player object.
 void Player::addCountry(Country *country) {
     country->setOwner(this->getName());
@@ -615,7 +636,6 @@ void removeCountry(Country *country, Player *player) {
     }
 
     countryKeys.erase(countryKeys.begin() + index);
-
 }
 
 //Displays the names of countries the player owns.
@@ -648,6 +668,9 @@ void printArmiesFromCountries(int c1, int c2) {
     cout << endl;
 }
 
+
+
+//DRIVERS
 
 void attackDriver() {
 

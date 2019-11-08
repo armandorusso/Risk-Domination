@@ -18,9 +18,7 @@ private:
     vector<Country *> countries;
     Map *map;
     vector<int> *countriesKey;
-
     int* numberOfCountries;
-
 
 public:
     Player(std::string name, Map *map);
@@ -35,37 +33,28 @@ public:
     Hand* getHand() const;
     int checkIfOwnCont();
 
-
     void showDiceFrequency();
     void showDiceValuePercentage();
     void reinforce();
     void attack();
     void RollDice(int key);
-    void displayRoll();
     void setNumDice(int numDice);
-    void decideNumDice();
+
     void setIsTurn(bool value);
     int getHighestRoll() const;
     bool getIsTurn() const;
-    bool canAttack();
     void removeCountry(int key);
-    bool isDefending();
     int getNumCountries() const;
     vector<Country *> getCountriesObjects() const;
     void addCountry(Country *country);
     void addCountry(int key);
-    Country *hasCountry(Country *country);
     bool hasCountry(Country *country) const;
-    void attackCountry(Country &country);
 
-    void setHand() {
-
-    }
+    void setHand();
 
     vector<int> getCountryKeys() const;
 
     void displayCountries();
-    void displayAttackableCountries();
 
     vector<int> getAttackableCountries(Map *map);
 
@@ -76,13 +65,16 @@ public:
 
     Dice *getDice() const;
     std::string getName() const;
-    int playerDriver();
 };
 
+//Returns true if player1
 bool compareRolls(Player *player1, Player *player2);
 void displayRoll(Player &player1 , Player &player2);
+
 Player *getPlayerFromCountryKey(int k);
 Country *getCountryFromCountryKey(int k);
+
+//Remove country from player object.
 void removeCountry(Country *country, Player *player);
 
 void loseArmy(int k);
