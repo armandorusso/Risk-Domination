@@ -5,6 +5,8 @@
 
 #include "Dice.h"
 
+using namespace std;
+
 
 //Constructor for the Dice class. Takes in the number of dice as a parameter.
 Dice::Dice(int numDice) {
@@ -21,7 +23,17 @@ Dice::Dice(int numDice) {
 }
 
 Dice::Dice(const Dice &dice) {
-	std::cout << "Creating copy..." << std::endl;
+    numDice = new int (*dice.numDice);
+    highestRoll = new int (*dice.highestRoll);
+    totalRolls = new int (*dice.totalRolls);
+    frequencyRolled = new int[6];
+
+    for(int i = 0; i< 6; i++) {
+        frequencyRolled[i] = dice.frequencyRolled[i];
+    }
+
+
+	std::cout << "Dice:: Copy constructor called." << std::endl;
 }
 
 //Constructor for the Dice class. Takes in the number of dice as a parameter.
@@ -37,6 +49,8 @@ Dice::Dice() {
 		(frequencyRolled[i]) = 0;
 	}
 }
+
+
 
 //Destructor for the Dice class. It sets all data members to nullptr.
 Dice::~Dice() {
@@ -199,28 +213,3 @@ vector<int> *Dice::getCurrentRoll() const {
 //END Getters and Setters
 //=================
 
-int diceDriver() {
-
-	int numDice;
-
-	//Choosing the number of dice each player will roll.
-	std::cout << "How many dice do you want to roll? " << std::endl;
-	std::cin >> numDice;
-
-	Dice* dice1 = new Dice(numDice);
-
-	std::cout << "Rolling 10 times... " << std::endl;
-	for (int i = 0; i<10; i++) { //Rolling the dice 10 times
-		dice1->Roll();
-	}
-
-	dice1->printFrequency();
-
-	dice1->displayPercentage();
-
-
-	delete dice1;
-
-
-	return 0;
-}

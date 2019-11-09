@@ -35,5 +35,3 @@ public:
 	void setHighestRoll(int num);
 	int *getHighestRoll() const;
 };
-
-int diceDriver();

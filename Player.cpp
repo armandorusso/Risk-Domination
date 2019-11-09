@@ -926,13 +926,11 @@ void fortifyDriver()
 	delete vc0, vc1, vc2, vc3, vc4, p1, p2, p3, cont1, cont2;
 	delete[] varrayCountry;
 
-
-
 }
 
 //int main(){
 //
-//    fortifyDriver();
+//
 //
 //
 //
