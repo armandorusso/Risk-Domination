@@ -1,6 +1,4 @@
-//
-// Created by Christopher Diktakis on 2019-10-26.
-//
+
 #pragma once
 
 #include <iostream>
@@ -11,71 +9,71 @@
 
 class Player {
 private:
-    std::string* name;
-    Dice* dice;
-    bool* isTurn;
-    Hand *handOfCards;
-    vector<Country *> countries;
-    Map *map;
-    vector<int> *countriesKey;
-    int* numberOfCountries;
+	std::string* name;
+	Dice* dice;
+	bool* isTurn;
+	Hand* handOfCards;
+	vector<Country*>* countries;
+	Map* map;
+	vector<int>* countriesKey;
+	int* numberOfCountries;
 
 public:
-    Player(std::string name, Map *map);
-    Player(std::string name, Map &map);
-    Player(std::string name);
-    Player();
-    ~Player();
+	Player(std::string name, Map* map);
+	Player(std::string name, Map& map);
+	Player(std::string name);
+	Player();
+	~Player();
 
-    vector<int> getCountriesInts() { return *countriesKey; };
-    int getNumOfCountries() { return *numberOfCountries; };
-    void setNumOfCountries(int num) { *numberOfCountries = num; };
-    Hand* getHand() const;
-    int checkIfOwnCont();
+	vector<int> getCountriesInts() { return *countriesKey; };
+	int getNumOfCountries() { return *numberOfCountries; };
+	void setNumOfCountries(int num) { *numberOfCountries = num; };
+	Hand* getHand() const;
+	int checkIfOwnCont();
 
-    void showDiceFrequency();
-    void showDiceValuePercentage();
-    void reinforce();
-    void attack();
-    void RollDice(int key);
-    void setNumDice(int numDice);
+	void showDiceFrequency();
+	void showDiceValuePercentage();
+	void fortify();
+	void reinforce();
+	void attack();
+	void RollDice(int key);
+	void setNumDice(int numDice);
 
-    void setIsTurn(bool value);
-    int getHighestRoll() const;
-    bool getIsTurn() const;
-    void removeCountry(int key);
-    int getNumCountries() const;
-    vector<Country *> getCountriesObjects() const;
-    void addCountry(Country *country);
-    void addCountry(int key);
-    bool hasCountry(Country *country) const;
+	void setIsTurn(bool value);
+	int getHighestRoll() const;
+	bool getIsTurn() const;
+	void removeCountry(int key);
+	int getNumCountries() const;
+	vector<Country*>* getCountriesObjects() const;
+	void addCountry(Country* country);
+	void addCountry(int key);
+	bool hasCountry(Country* country) const;
+	void setHand();
 
-    void setHand();
+	vector<int> getCountryKeys() const;
 
-    vector<int> getCountryKeys() const;
+	void displayCountries();
 
-    void displayCountries();
-
-    vector<int> getAttackableCountries(Map *map);
+	vector<int> getAttackableCountries(Map* map);
 
 
-    void reinforceDemo();
-    void attackDemo();
-    void fortifyDemo();
+	void reinforceDemo();
+	void attackDemo();
+	void fortifyDemo();
 
-    Dice *getDice() const;
-    std::string getName() const;
+	Dice* getDice() const;
+	std::string getName() const;
 };
 
 //Returns true if player1
-bool compareRolls(Player *player1, Player *player2);
-void displayRoll(Player &player1 , Player &player2);
+bool compareRolls(Player* player1, Player* player2);
+void displayRoll(Player& player1, Player& player2);
 
-Player *getPlayerFromCountryKey(int k);
-Country *getCountryFromCountryKey(int k);
+Player* getPlayerFromCountryKey(int k);
+Country* getCountryFromCountryKey(int k);
 
 //Remove country from player object.
-void removeCountry(Country *country, Player *player);
+void removeCountry(Country* country, Player* player);
 
 void loseArmy(int k);
 
@@ -83,10 +81,4 @@ void printArmiesFromCountries(int c1, int c2);
 
 int reinforceDriver();
 void attackDriver();
-int fortifyDemo();
-
-
-
-
-
-
+void fortifyDriver();
