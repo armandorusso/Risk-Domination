@@ -441,13 +441,21 @@ void Player::attack() {
 			continue;
 		}
 
-		//If attacking country has <2 armies on it, display appropriate message, and continue to the next iteration of the loop.
-		cout << attackingCountry;
+
+
+//
+		//==============================
+		//  PROBLEM STATEMENT : GETCOUNTRYKEYS(int)
+		//==============================
 		if (getCountryFromCountryKey(attackingCountry)->getArmy() < 2) {     //vector out of bounce here for country 1
+            cout << "WTF is going on?" << endl;
 			cout << "You can't attack " << defendingCountry << " with " << attackingCountry << endl;
 			cout << "You don't have enough armies on this country." << endl;
 			continue;
 		}
+
+
+
 
 		//Attacking conditions are met.
 		cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
@@ -547,6 +555,18 @@ Player* getPlayerFromCountryKey(int k) {
 void Player::addCountry(int key) {
 	countriesKey->push_back(key);
 	(*numberOfCountries)++;
+}
+
+
+//==============
+// USE THIS ONE
+//==============
+//Assigns a country pointer to a player object and sets its owner to the name of that player object.
+void Player::addCountry(Country* country) {
+    country->setOwner(this->getName());
+    countriesKey->push_back(country->getCountryKey());
+    (*numberOfCountries)++;
+    countries->push_back(country);
 }
 
 void Player::removeCountry(int key) {
@@ -668,9 +688,9 @@ Country* getCountryFromCountryKey(int k) {
 
 		for (int j = 0; j < players[i]->getNumCountries(); j++) {
 
-			if (players[i]->getCountriesObjects()->at(i)->getCountryKey() == k) {
+			if (players[i]->getCountriesObjects()->at(j)->getCountryKey() == k) {
 
-				return players[i]->getCountriesObjects()->at(i);
+				return players[i]->getCountriesObjects()->at(j);
 			}
 		}
 	}
@@ -727,11 +747,7 @@ vector<int> Player::getAttackableCountries(Map* map) {
 //  COUNTRY METHODS
 // ====================
 
-//Assigns a country pointer to a player object and sets its owner to the name of that player object.
-void Player::addCountry(Country* country) {
-	country->setOwner(this->getName());
-	countries->push_back(country);
-}
+
 
 //Removes country from list of countries that player owns.
 void removeCountry(Country* country, Player* player) {
@@ -765,8 +781,6 @@ void printArmiesFromCountries(int c1, int c2) {
 	Country* attacking = getCountryFromCountryKey(c1);
 	Country* defending = getCountryFromCountryKey(c2);
 
-
-
 	cout << "=========================" << endl;
 	cout << "\tArmy Count" << endl;
 	cout << "=========================" << endl;
@@ -792,7 +806,7 @@ void attackDriver() {
 	Continent* continentArray[2] = { cont1, cont2 };
 
 	int varr0[3] = { 1,3,4 };
-	int varr1[3] = { 2,3 };
+	int varr1[2] = { 2,3 };
 	int varr2[2] = { 4,1 };
 	int varr3[2] = { 0,2 };
 	int varr4[2] = { 1,3 };
@@ -815,9 +829,6 @@ void attackDriver() {
 	Player* player1 = new Player("Christopher", *map2);
 	Player* player2 = new Player("Peter", *map2);
 
-
-	cout << player1->getName() << endl;
-
 	players.push_back(player1);
 	players.push_back(player2);
 
@@ -831,7 +842,7 @@ void attackDriver() {
 	player2->addCountry(vc4);
 
 	vc0->addArmy(5);
-	vc1->addArmy(2);
+	vc1->addArmy(5);
 	vc2->addArmy(5);
 	vc3->addArmy(5);
 	vc4->addArmy(5);
@@ -864,7 +875,9 @@ void fortifyDriver()
 	varrayCountry[4] = *vc4;
 	Continent* cont1 = new Continent();
 	Continent* cont2 = new Continent();
-	Continent* continentArray[2] = { cont1, cont2 };
+	Continent* continentArray[2] = { cont1, cont2 }; // Is this Correct?
+	continentArray[0] = cont1;
+	continentArray[1] = cont2;
 
 	//creating map
 	Map map2(*continentArray, 2, varrayCountry, 5);
@@ -875,29 +888,39 @@ void fortifyDriver()
 	Player* p3 = new Player("Eren", map2);
 
 
-	p1->addCountry(0);
-	vc0->setOwner("Jack");
-	p1->addCountry(1);
-	vc1->setOwner("Jack");
-	p1->addCountry(2);
-	vc2->setOwner("Jack");
+	p1->addCountry(vc0);
+    p1->addCountry(vc1);
 
-	p2->addCountry(3);
-	vc3->setOwner("James");
+    p1->addCountry(vc2);
+    p2->addCountry(vc3);
 
 	vc0->addArmy(5);
 	vc1->addArmy(2);
 	vc2->addArmy(2);
 	vc3->addArmy(3);
+	vc4->addArmy(3);
+
+
+    printVector(p1->getCountryKeys());
 
 	p1->fortify();
-
 
 
 	cout << "ends";
 
 	delete vc0, vc1, vc2, vc3, vc4, p1, p2, p3, cont1, cont2;
-	delete[] varrayCountry, continentArray;
+	delete[] varrayCountry;
 
+
+
+}
+
+int main(){
+
+    attackDriver();
+
+
+
+    return 0;
 }
 
