@@ -213,7 +213,7 @@ MainLoop::~MainLoop() {
 }
 
 
-void testPart2Part3() {
+int main() {
 
 	//creating array of countries
 	int varr0[3] = { 1,3,4 };
