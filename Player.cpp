@@ -56,6 +56,19 @@ Player::Player(std::string name, Map& map) {
 	numberOfCountries = new int(0);
 }
 
+Player::Player(std::string name, Map* map) {
+    this->name = new string(name);
+    this->dice = new Dice();
+    this->isTurn = new bool(false);
+    this->countries = new vector<Country*>;
+    this->handOfCards = new Hand();
+    countriesKey = new vector<int>();
+    this->map = map;
+    this->handOfCards = new Hand();
+    numberOfCountries = new int(0);
+}
+
+
 Player::Player(std::string name) {
 	this->name = new string(name);
 	this->dice = new Dice();
@@ -915,12 +928,12 @@ void fortifyDriver()
 
 }
 
-int main(){
-
-    fortifyDriver();
-
-
-
-    return 0;
-}
+//int main(){
+//
+//    fortifyDriver();
+//
+//
+//
+//    return 0;
+//}
 
