@@ -8,33 +8,15 @@ class Strategy {
 };
 
 class AggressivePlayer : public Strategy {
-    void execute() {
-        cout << "Aggressive Player: Execute()" << endl;
-    }
+    void execute();
 };
 
 class HumanPlayer : public Strategy {
-    void execute() {
-        cout << "Human Player: Execute()" << endl;
-    }
+    void execute();
 };
 
 class BenevolentPlayer : public Strategy {
-    void execute() {
-        cout << "Benevolent Player: Execute()" << endl;
-    }
+    void execute();
 };
 
-
-//Notes:
-/*
- * Add Strategy Object to Player class
- * Private:
- *  Strtegy *strategy;
- *
- * Public:
- * int executeStrategy() {
- * return this-.strategy->execute();
- *
- *
- */
+int stratDriver();
