@@ -916,6 +916,8 @@ void fortifyDriver()
 
     printVector(p1->getCountryKeys());
 
+
+
 	p1->fortify();
 
 
