@@ -40,7 +40,6 @@ void Loader::menu() {
 		map1 = opener.getFileData(choice);
 	}
 
-	
 	cout << "Creating the Map..." << endl;
 
 	map1->setMatrix();
@@ -50,7 +49,7 @@ void Loader::menu() {
 		exit(0);
 	}
 
-	map = map1;
+    map = map1;
 	map1 = NULL;
 
 

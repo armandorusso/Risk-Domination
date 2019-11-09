@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "Map.h";
+#include "Map.h"
 #include "Dice.h"
 #include "Player.h"
 #include "Cards.h"

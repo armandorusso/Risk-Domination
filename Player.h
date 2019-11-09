@@ -22,6 +22,8 @@ public:
 	Player(std::string name, Map* map);
 	Player(std::string name, Map& map);
 	Player(std::string name);
+
+
 	Player();
 	~Player();
 
