@@ -83,6 +83,9 @@ Player::Player(std::string name) {
 
 
 //Destructor for Player Class.
+
+
+//DO WE WANT TO DELETE THE MAP IN THIS DESTRUCTOR?
 Player::~Player() {
 	delete this->dice;
 	delete this->name;
@@ -803,6 +806,39 @@ void printArmiesFromCountries(int c1, int c2) {
 	cout << defending->getArmy() << endl;
 
 	cout << endl;
+}
+
+
+
+//Assignment Opeartor
+const Player& Player::operator=(const Player& r) {
+    if(&r != this) {
+
+        delete dice;
+        delete name;
+        delete isTurn;
+        delete [] countriesKey;
+        delete handOfCards;
+        delete map;
+
+        for (int i = 0; i < (*countries).size(); i++) {
+            delete countries->at(i);
+            countries->at(i) = nullptr;
+        }
+
+        dice = new Dice(*r.dice);
+        name = new string(*r.name);
+        isTurn = new bool(*r.isTurn);
+
+        //Need copy constructors for map, handOfCards
+
+        for(int i = 0; i < countriesKey->size(); i++) {
+            countriesKey[i] = r.countriesKey[i];
+        }
+
+    }
+
+    return *this;
 }
 
 

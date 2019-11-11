@@ -65,6 +65,8 @@ public:
 
 	Dice* getDice() const;
 	std::string getName() const;
+
+    const Player& operator=(const Player& r);
 };
 
 //Returns true if player1
@@ -84,3 +86,5 @@ void printArmiesFromCountries(int c1, int c2);
 int reinforceDriver();
 void attackDriver();
 void fortifyDriver();
+
+
