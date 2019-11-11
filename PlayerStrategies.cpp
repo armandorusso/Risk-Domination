@@ -3,10 +3,6 @@
 
 using namespace std;
 
-
-
-
-
 //Concrete strategy that implements an aggressive player.
 //Reinforces strongest country. Always attacks with it until unable.
 void AggressivePlayer::execute() {

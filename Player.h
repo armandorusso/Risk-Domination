@@ -6,6 +6,7 @@
 #include "Dice.h"
 #include "Map.h"
 #include "Cards.h"
+#include "PlayerStrategies.h"
 
 class Player {
 private:
@@ -18,14 +19,25 @@ private:
 	vector<int>* countriesKey;
 	int* numberOfCountries;
 
+	Strategy* strategy;
+
 public:
 	Player(std::string name, Map* map);
 	Player(std::string name, Map& map);
 	Player(std::string name);
+	Player(Strategy *strategy);
 	Player();
 
 
 	~Player();
+
+	void setStrategy(Strategy *newStrat) {
+	    this->strategy = newStrat;
+	}
+
+	void executeStrategy() {
+	    this->strategy->execute();
+	}
 
 	vector<int> getCountriesInts() { return *countriesKey; };
 	int getNumOfCountries() { return *numberOfCountries; };
