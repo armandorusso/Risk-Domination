@@ -213,3 +213,29 @@ vector<int> *Dice::getCurrentRoll() const {
 //END Getters and Setters
 //=================
 
+
+const Dice& Dice::operator=(const Dice& r) {
+    if(&r != this) {
+        delete numDice;
+        delete highestRoll;
+        delete roll;
+        delete totalRolls;
+        delete[] frequencyRolled;
+
+        numDice = new int(*r.numDice);
+        highestRoll = new int(*r.highestRoll);
+        totalRolls = new int(*r.totalRolls);
+        frequencyRolled = new int[6];
+
+        for(int i = 0; i< 6; i++) {
+            frequencyRolled[i] = r.frequencyRolled[i];
+        }
+        roll = new vector<int>(*r.numDice);
+
+        for(int i = 0; i< roll->size(); i++) {
+            roll->push_back(r.roll->at(i));
+        }
+    }
+    return *this;
+
+}

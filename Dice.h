@@ -15,7 +15,6 @@ private:
 	int* highestRoll;
 	vector<int> *roll;
 
-
 public:
 	Dice(int numDice);
 	Dice(const Dice&);
@@ -34,4 +33,6 @@ public:
 	int *getTotalRolls() const;
 	void setHighestRoll(int num);
 	int *getHighestRoll() const;
+
+	const Dice& operator=(const Dice& r);
 };
