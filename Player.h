@@ -22,9 +22,9 @@ public:
 	Player(std::string name, Map* map);
 	Player(std::string name, Map& map);
 	Player(std::string name);
-
-
 	Player();
+
+
 	~Player();
 
 	vector<int> getCountriesInts() { return *countriesKey; };

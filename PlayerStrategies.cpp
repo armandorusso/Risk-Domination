@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 //Reinforces strongest country. Always attacks with it until unable
 void AggressivePlayer::execute() {
     cout << "Aggressive Player: Execute()" << endl;
@@ -38,7 +37,21 @@ int stratDriver() {
  * Private:
  *  Strategy *strategy;
  *
+ *
+ *
  * Public:
+ *
+ * void setStrategy() {
+ *
+ * }
+ *
  * int executeStrategy() {
- * return this-.strategy->execute();
+ * return this->strategy->execute();
+ *
+ * void setStrategy(Strategy *newStrategy) {
+ * this->strategy = newStrategy
+ * }
  */
+
+
+
