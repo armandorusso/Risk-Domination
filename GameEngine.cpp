@@ -171,8 +171,9 @@ void MainLoop::checkIfEnd() {
 
 	for (int i = 0; i < numOfPlayers; i++) {
 		if (((arr->at(i))->getNumOfCountries()) == numOfCountry) {         //wins if the number of country owned==country in continent
-
-			cout << "Game End, Winner is: " << arr->at(i)->getName() << endl;
+			
+			//Notify observer that there is a winner
+			notify(*this->startGame->playerArray, *startGame->gameMap);
 			exit(0);
 		}
 
@@ -192,8 +193,14 @@ void MainLoop::startLoop() {
 		for (int j = 0; j < numOfPlayers; j++) {
 
 			(arr->at(j))->reinforceDemo();
+			//Display statistics after reinforce
+			notify(*this->startGame->playerArray, *startGame->gameMap);
 			(arr->at(j))->attackDemo();
+			//Update player progress after attacking
+			notify(*this->startGame->playerArray, *startGame->gameMap);
 			(arr->at(j))->fortifyDemo();
+			//Display statistics after fortify
+			notify(*this->startGame->playerArray, *startGame->gameMap);
 
 			//testing checkIfEnd method (assuming player 0 wins at iteration 10)
 			if (i == 9 && j == 0) {
@@ -212,54 +219,54 @@ MainLoop::~MainLoop() {
 	startGame = NULL;
 }
 
+/*
+int main() {
 
-//int main() {
-//
-//	//creating array of countries
-//	int varr0[3] = { 1,3,4 };
-//	int varr1[3] = { 1,3,5 };
-//	int varr2[3] = { 2,4,1 };
-//	int varr3[2] = { 0,2 };
-//	int varr4[3] = { 1,3,5 };
-//
-//	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
-//	Country* vc1 = new Country("c1", 1, varr1, 1, 3);
-//	Country* vc2 = new Country("c2", 2, varr2, 1, 3);
-//	Country* vc3 = new Country("c3", 3, varr3, 2, 2);
-//	Country* vc4 = new Country("c4", 4, varr4, 2, 3);
-//
-//	Country* varrayCountry = new Country[5];
-//	varrayCountry[0] = *vc0;
-//	varrayCountry[1] = *vc1;
-//	varrayCountry[2] = *vc2;
-//	varrayCountry[3] = *vc3;
-//	varrayCountry[4] = *vc4;
-//	Continent* cont1 = new Continent();
-//	Continent* cont2 = new Continent();
-//	Continent* continentArray[2] = { cont1, cont2 };
-//
-//	//creating map
-//	Map map2(*continentArray, 2, varrayCountry, 5);
-//	map2.setMatrix();
-//
-//	Player* p1 = new Player("Jack", map2);
-//	Player* p2 = new Player("James", map2);
-//	Player* p3 = new Player("Eren", map2);
-//
-//
-//	//vector of players
-//	vector<Player*> playerArr;
-//
-//	playerArr.push_back(p1);
-//	playerArr.push_back(p2);
-//	playerArr.push_back(p3);
-//
-//	Game game1(map2, playerArr);
-//	MainLoop loop1(game1);
-//	game1.startupPhase();
-//
-//	loop1.startLoop();
-//	cout << "ends";
-//
-//
-//}
+	//creating array of countries
+	int varr0[3] = { 1,3,4 };
+	int varr1[3] = { 1,3,5 };
+	int varr2[3] = { 2,4,1 };
+	int varr3[2] = { 0,2 };
+	int varr4[3] = { 1,3,5 };
+
+	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
+	Country* vc1 = new Country("c1", 1, varr1, 1, 3);
+	Country* vc2 = new Country("c2", 2, varr2, 1, 3);
+	Country* vc3 = new Country("c3", 3, varr3, 2, 2);
+	Country* vc4 = new Country("c4", 4, varr4, 2, 3);
+
+	Country* varrayCountry = new Country[5];
+	varrayCountry[0] = *vc0;
+	varrayCountry[1] = *vc1;
+	varrayCountry[2] = *vc2;
+	varrayCountry[3] = *vc3;
+	varrayCountry[4] = *vc4;
+	Continent* cont1 = new Continent();
+	Continent* cont2 = new Continent();
+	Continent* continentArray[2] = { cont1, cont2 };
+
+	//creating map
+	Map map2(*continentArray, 2, varrayCountry, 5);
+	map2.setMatrix();
+
+	Player* p1 = new Player("Jack", map2);
+	Player* p2 = new Player("James", map2);
+	Player* p3 = new Player("Eren", map2);
+
+
+	//vector of players
+	vector<Player*> playerArr;
+
+	playerArr.push_back(p1);
+	playerArr.push_back(p2);
+	playerArr.push_back(p3);
+
+	Game game1(map2, playerArr);
+	MainLoop loop1(game1);
+	game1.startupPhase();
+
+	loop1.startLoop();
+	cout << "ends";
+
+
+}*/
