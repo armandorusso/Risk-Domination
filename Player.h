@@ -7,8 +7,9 @@
 #include "Map.h"
 #include "Cards.h"
 #include "PlayerStrategies.h"
+#include "GameObservers.h"
 
-class Player {
+class Player : public gameView {
 private:
 	std::string* name;
 	Dice* dice;
@@ -18,8 +19,11 @@ private:
 	Map* map;
 	vector<int>* countriesKey;
 	int* numberOfCountries;
-
 	Strategy* strategy;
+	//added
+	vector<Continent*>* continentOwned;
+	int* numberOfContinent;
+	int* totalArmy;
 
 public:
 	Player(std::string name, Map* map);
@@ -79,6 +83,15 @@ public:
 	std::string getName() const;
 
     const Player& operator=(const Player& r);
+
+	//added
+	int getTotalArmy() { return *totalArmy; };
+	int addArmy(int num) { *totalArmy += num; };
+	int subtractArmy(int num) { *totalArmy -= num; };
+	vector<Continent*> getContinents() { return *continentOwned; };
+	int getNumberContinent() { return continentOwned->size(); };
+	//need to add these method everywhere that player army is modified
+	
 };
 
 //Returns true if player1
@@ -98,5 +111,5 @@ void printArmiesFromCountries(int c1, int c2);
 int reinforceDriver();
 void attackDriver();
 void fortifyDriver();
-
+void observerDriver();
 

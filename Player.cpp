@@ -42,6 +42,9 @@ Player::Player() {
 	countriesKey = new vector<int>();
 	numberOfCountries = new int();
 	map = NULL;
+	continentOwned = new vector<Continent*>;
+	numberOfContinent = new int(0);
+	totalArmy = new int(0);
 }
 
 Player::Player(std::string name, Map& map) {
@@ -54,6 +57,9 @@ Player::Player(std::string name, Map& map) {
 	this->map = &map;
 	this->handOfCards = new Hand();
 	numberOfCountries = new int(0);
+	continentOwned = new vector<Continent*>;
+	numberOfContinent = new int(0);
+	totalArmy = new int(0);
 }
 
 Player::Player(std::string name, Map* map) {
@@ -66,6 +72,9 @@ Player::Player(std::string name, Map* map) {
     this->map = map;
     this->handOfCards = new Hand();
     numberOfCountries = new int(0);
+	continentOwned = new vector<Continent*>;
+	numberOfContinent = new int(0);
+	totalArmy = new int(0);
 }
 
 
@@ -78,6 +87,9 @@ Player::Player(std::string name) {
 	this->handOfCards = new Hand();
 	countriesKey = new vector<int>();
 	map = NULL;
+	continentOwned = new vector<Continent*>;
+	numberOfContinent = new int(0);
+	totalArmy = new int(0);
 }
 
 
@@ -85,7 +97,7 @@ Player::Player(std::string name) {
 //Destructor for Player Class.
 
 
-//DO WE WANT TO DELETE THE MAP IN THIS DESTRUCTOR?
+//DO WE WANT TO DELETE THE MAP IN THIS DESTRUCTOR? ans: No since its a refernce, will be deleted in map destructor
 Player::~Player() {
 	delete this->dice;
 	delete this->name;
@@ -93,12 +105,13 @@ Player::~Player() {
 	this->isTurn = nullptr;
 	this->dice = nullptr;
 	this->name = nullptr;
-
 	delete[] countriesKey;
 	delete handOfCards;
 	handOfCards = nullptr;
-
-	delete map;
+	
+	delete[] continentOwned;
+	delete totalArmy;
+	delete numberOfContinent;
 
 	for (int i = 0; i < (*countries).size(); i++) {
 		delete countries->at(i);
@@ -235,7 +248,9 @@ void Player::reinforceDemo() {
 // ==========================================
 void Player::fortify() {
 
-	std::cout << *name << " is fortifying..." << std::endl;
+	notify(this, "Fortifying");  //notify observer at start of reinforece
+	
+
 
 	std::cout << std::endl;
 
@@ -244,6 +259,7 @@ void Player::fortify() {
 	bool valid;
 	Country* arrayCountry = (*map).getCountryArray();
 
+	//showing countries owned
 	cout << "You have the following countries: " << endl;
 	for (int i = 0; i < *numberOfCountries; i++) {
 		cout << countriesKey->at(i) << endl;
@@ -252,16 +268,16 @@ void Player::fortify() {
 	cout << "Do you want to fortify a Country? " << endl;
 	cin >> ans1;
 
-	if (ans1 == "yes") {
+	if (ans1 == "yes") {      //continue if yes, else stop
 
 
-		cout << "which country you want to reinforce?" << endl;
+		cout << "which country you want to fortify?" << endl;
 
 		do {
 			cin >> ans2;
 
 			valid = false;
-
+			//loops untill input is correct
 			for (int i = 0; i < *numberOfCountries; i++) {
 				if (countriesKey->at(i) == ans2) {
 					valid = true;
@@ -274,6 +290,7 @@ void Player::fortify() {
 
 		} while (!valid);
 
+		//show amount of armies in countries owned
 		cout << "You have " << arrayCountry[ans2].getArmy() << " armies in country " << ans2 << endl;
 		cout << "From which country you want to move army? " << endl;
 
@@ -285,7 +302,8 @@ void Player::fortify() {
 			for (int i = 0; i < *numberOfCountries; i++) {
 
 				int key = countriesKey->at(i);
-				if (key == ans3 && (arrayCountry[key].getOwner() == *(this->name))) {
+				//loop if input not valid
+				if (key == ans3 && key!=ans2 && (arrayCountry[key].getOwner() == *(this->name))) {
 					valid = true;
 				}
 			}
@@ -305,7 +323,7 @@ void Player::fortify() {
 			cin >> ans4;
 
 			valid = false;
-
+			//moving the armies, not valid if input exceeds number of armies
 			if (ans4 < armyvalue) {
 				valid = true;
 				arrayCountry[ans3].subtractArmy(ans4);
@@ -323,10 +341,14 @@ void Player::fortify() {
 		arrayCountry = NULL;
 	}
 
+	notify(this, "Finished Fortifying"); //show change after fortify
 
 }
 void Player::reinforce() {
-	std::cout << this->getName() << " is reinforcing..." << std::endl;
+	
+	notify(this, "Reinforcing");
+	
+	//std::cout << this->getName() << " is reinforcing..." << std::endl;
 
 	int armiesToExchange = 0;
 
@@ -364,11 +386,15 @@ void Player::reinforce() {
 		armiesToExchange--;
 		index++;
 	}
+	notify(this, "Finished Reinforcing");
 }
 
 
 void Player::attack() {
 	this->setIsTurn(true);
+	
+	notify(this, "Attacking"); //notify observer to show initial state
+	
 	formatActionOutput(this->getName() + ": ATTACK PHASE");
 
 	string answer;
@@ -548,7 +574,8 @@ void Player::attack() {
 	} while (answer == "y"); //END ATTACK LOOP
 
 	formatActionOutput(this->getName() + ": ATTACK PHASE COMPLETE");
-
+	
+	notify(this, "Finished Attacking"); //notify observer to show change after attack.
 }
 
 
@@ -878,8 +905,16 @@ void attackDriver() {
 	Player* player1 = new Player("Christopher", *map2);
 	Player* player2 = new Player("Peter", *map2);
 
+
+
 	players.push_back(player1);
 	players.push_back(player2);
+
+	//testing observer
+	vector<gameView*>* vectPlayer = new vector<gameView*>;
+	vectPlayer->push_back(player1);
+	vectPlayer->push_back(player2);
+	gameObserver* obs = new gameObserver(*vectPlayer);
 
 	//Setting the adjacency matrix
 	map2->setMatrix();
@@ -895,7 +930,7 @@ void attackDriver() {
 	vc2->addArmy(5);
 	vc3->addArmy(5);
 	vc4->addArmy(5);
-
+	
 	player1->attack();
 }
 
@@ -908,7 +943,7 @@ void fortifyDriver()
 	int varr1[3] = { 0,2,3 };
 	int varr2[3] = { 2,4,1 };
 	int varr3[2] = { 0,2 };
-	int varr4[3] = { 1,3,5 };
+	int varr4[3] = { 1,3 };
 
 	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
 	Country* vc1 = new Country("c1", 1, varr1, 1, 3);
@@ -924,18 +959,23 @@ void fortifyDriver()
 	varrayCountry[4] = *vc4;
 	Continent* cont1 = new Continent();
 	Continent* cont2 = new Continent();
-	Continent* continentArray[2] = { cont1, cont2 }; // Is this Correct?
+	Continent* continentArray[2]; // Is this Correct?
 	continentArray[0] = cont1;
 	continentArray[1] = cont2;
 
 	//creating map
-	Map map2(*continentArray, 2, varrayCountry, 5);
-	map2.setMatrix();
+	Map *map2 = new Map(*continentArray, 2, varrayCountry, 5);
+	(*map2).setMatrix();
 
-	Player* p1 = new Player("Jack", map2);
-	Player* p2 = new Player("James", map2);
-	Player* p3 = new Player("Eren", map2);
+	Player* p1 = new Player("Jack", *map2);
+	Player* p2 = new Player("James", *map2);
+	Player* p3 = new Player("Eren", *map2);
 
+	vector<gameView*>* vectPlayer = new vector<gameView*>;
+	vectPlayer->push_back(p1);
+	vectPlayer->push_back(p2);
+	vectPlayer->push_back(p3);
+	gameObserver* obs = new gameObserver(*vectPlayer);
 
 	p1->addCountry(vc0);
     p1->addCountry(vc1);
@@ -950,24 +990,29 @@ void fortifyDriver()
 	vc4->addArmy(3);
 
 
-    printVector(p1->getCountryKeys());
-
-
 
 	p1->fortify();
 
+	
+}
 
-	cout << "ends";
+void observerDriver() {
 
-	delete vc0, vc1, vc2, vc3, vc4, p1, p2, p3, cont1, cont2;
-	delete[] varrayCountry;
+    char ans;
+	reinforceDriver();
+	cout << "continue?(y for yes)" << endl;
+	cin >> ans;
+	if (ans == 'y')
+	fortifyDriver();
+	cout << "continue?(y for yes)" << endl;
+	cin >> ans;
+	if (ans == 'y')
+	attackDriver();
 
 }
 
 int main(){
 
-    attackDriver();
-    
-    return 0;
+	return 0;
 }
 

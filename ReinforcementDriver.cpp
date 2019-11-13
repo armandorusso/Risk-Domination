@@ -47,6 +47,11 @@ int reinforceDriver() {
 	player1->addCountry(vc3);
 	player1->addCountry(vc4);
 
+	//testing observer
+	vector<gameView*>* vectPlayer = new vector<gameView*>;
+	vectPlayer->push_back(player1);
+	gameObserver* obs = new gameObserver(*vectPlayer);
+
 	//Call reinforce with 5 countries
 	std::cout << ("Calling reinforce with 5 countries-----------------\n");
 	player1->reinforce();
