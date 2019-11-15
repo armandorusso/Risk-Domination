@@ -14,6 +14,11 @@ private:
 	int* numArmies;
 public:
 	Hand();
+	~Hand();
+	//Copy Constructor
+	Hand(const Hand &h2);
+	//Assignment operator
+	Hand& operator=(const Hand &h2);
 	bool exchange();
 	int* getNumArmies();
 	std::vector<std::string>* getCards();
@@ -25,7 +30,12 @@ class Deck {
 	public:
 		static std::vector<std::string>* cards;
 		Deck(int numCards);
-		void draw(Hand hand);
+		~Deck();
+		//Copy Constructor
+		Deck(const Deck &d2);
+		//Assignment operator
+		Deck& operator=(const Deck& d2);
+		void draw(Hand* hand);
 		static void shuffle();
 		int* getNumTotalCards();
 };

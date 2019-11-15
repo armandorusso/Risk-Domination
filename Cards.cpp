@@ -9,6 +9,29 @@ Hand::Hand() {
 	this->numArmies = new int(0);
 }
 
+Hand::~Hand() {
+	delete cards;
+	delete numArmies;
+
+	cards = nullptr;
+	numArmies = nullptr;
+}
+
+//Copy Constructor
+Hand::Hand(const Hand &h2) {
+	cards = new std::vector<std::string>(0);
+	numArmies = new int(0);
+	cards = h2.cards;
+	numArmies = h2.numArmies;
+}
+//Assignment operator
+Hand& Hand::operator=(const Hand& h2) {
+	Hand::operator=(h2);
+	cards = h2.cards;
+	numArmies = h2.numArmies;
+	return *this;
+}
+
 //Exchange cards for armies
 bool Hand::exchange() {
 	int infCounter = 0;
@@ -120,10 +143,8 @@ std::vector<std::string>* Hand::getCards() {
 	return this->cards;
 }
 
-//TODO use a method that gets the total number of countries
 std::vector<std::string>* Deck::cards;
 Deck::Deck(int numCards) {
-	//TODO Use a function that gets the total number of countries
 	this->numTotalCards = new int(numCards);
 	int numberOfCountries = *numTotalCards;
 	Deck::cards = new std::vector<std::string>(numCards);
@@ -148,6 +169,24 @@ Deck::Deck(int numCards) {
 	this->shuffle();
 }
 
+Deck::~Deck() {
+	delete numTotalCards;
+
+	numTotalCards = nullptr;
+}
+
+//Copy Constructor
+Deck::Deck(const Deck &d2) {
+	numTotalCards = new int(0);
+	numTotalCards = d2.numTotalCards;
+}
+//Assignment operator
+Deck& Deck::operator=(const Deck& d2) {
+	Deck::operator=(d2);
+	numTotalCards = d2.numTotalCards;
+	return *this;
+}
+
 //Generate a random number and shuffle the cards vector
 void Deck::shuffle() {
 	std::default_random_engine engine;
@@ -157,7 +196,7 @@ void Deck::shuffle() {
 }
 
 //Draw the first non-empty card from the cards vector
-void Deck::draw(Hand hand) {
+void Deck::draw(Hand* hand) {
 	std::string cardDrawn;
 	for (int i = 0; i < Deck::cards->size(); i++) {
 		if (!(*Deck::cards)[i].empty()) {
@@ -167,7 +206,7 @@ void Deck::draw(Hand hand) {
 			break;
 		}
 	}
-	hand.getCards()->push_back(cardDrawn);
+	hand->getCards()->push_back(cardDrawn);
 }
 
 int* Deck::getNumTotalCards() {
