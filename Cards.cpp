@@ -21,14 +21,16 @@ Hand::~Hand() {
 Hand::Hand(const Hand &h2) {
 	cards = new std::vector<std::string>(0);
 	numArmies = new int(0);
-	cards = h2.cards;
-	numArmies = h2.numArmies;
+	*cards = *h2.cards;
+	*numArmies = *h2.numArmies;
 }
 //Assignment operator
 Hand& Hand::operator=(const Hand& h2) {
 	Hand::operator=(h2);
-	cards = h2.cards;
-	numArmies = h2.numArmies;
+	cards = new std::vector<std::string>(0);
+	numArmies = new int(0);
+	*cards = *h2.cards;
+	*numArmies = *h2.numArmies;
 	return *this;
 }
 
@@ -178,12 +180,13 @@ Deck::~Deck() {
 //Copy Constructor
 Deck::Deck(const Deck &d2) {
 	numTotalCards = new int(0);
-	numTotalCards = d2.numTotalCards;
+	*numTotalCards = *d2.numTotalCards;
 }
 //Assignment operator
 Deck& Deck::operator=(const Deck& d2) {
 	Deck::operator=(d2);
-	numTotalCards = d2.numTotalCards;
+	numTotalCards = new int(0);
+	*numTotalCards = *d2.numTotalCards;
 	return *this;
 }
 
