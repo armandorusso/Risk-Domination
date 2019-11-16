@@ -16,7 +16,7 @@ Country::Country() {
 Country::Country(string name, int countryK, int* neighbourA, int continentK, int neighbourN) {
 
     continentKey = new int(continentK);
-    Country::name = &name;
+    this->name = new string(name);
     countryKey = new int(countryK);
     owner = new string();
     neighbourNum = new int(neighbourN);
@@ -40,7 +40,7 @@ Country::Country(string name, int countryK, vector<int> neighbourA, int continen
 
     }
     continentKey = new int(continentK);
-    Country::name = &name;
+    this->name = new string(name);
     countryKey = new int(countryK);
     owner = new string();
     neighbourNum = new int(neighbourN);
