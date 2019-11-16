@@ -26,7 +26,7 @@ public:
 
 };
 //part 3
-class MainLoop {
+class MainLoop : public gameView {
 
 private:
 	Game* startGame;

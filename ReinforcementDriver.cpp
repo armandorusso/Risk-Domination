@@ -58,7 +58,7 @@ int reinforceDriver() {
 
 	//Fill player1 hand with 10 cards
 	for (int i = 0; i < 10; i++) {
-		deck.draw(*player1->getHand());
+		deck.draw(player1->getHand());
 	}
 
 	//Print the hand after drawing 10 cards
@@ -72,14 +72,6 @@ int reinforceDriver() {
 	//Call reinforce with 10 cards
 	std::cout << ("Calling reinforce with 10 cards----------------------\n");
 	player1->reinforce();
-
-	//Print the hand after exchanging cards
-	std::cout << "PLAYER1 HAND-----------";
-	std::cout << "\n";
-	for (int i = 0; i < player1->getHand()->getCards()->size(); i++) {
-		std::cout << (*player1->getHand()->getCards())[i];
-		std::cout << "\n";
-	}
 
 	return 0;
 }

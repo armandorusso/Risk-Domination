@@ -22,6 +22,7 @@ public:
 	virtual void attach(Observer* ob);
 	virtual void dettach(Observer* ob);
 	virtual void notify(Player* player, string currentPhase);
+	virtual void notify(vector<Player*> players, Map map);
 };
 //observer super class
 class Observer {
@@ -31,6 +32,7 @@ public:
     ~Observer();
     virtual void Update(Player* player , string phase) = 0;  
 	//update has player and phase as parameter to know which player is making the notify call and where
+	virtual void Update(vector<Player*> players, Map map) = 0;
 };
 
 //derived class of observer
@@ -52,7 +54,25 @@ public:
 	gameObserver(vector<gameView*> players);     //Vector of player that the observer observes.
 	~gameObserver();
 	void Update(Player* player,string phase);    //overriden update method
+	void Update(vector<Player*> players, Map map);    //overriden update method
 	void display();
+
+
+};
+
+//derived class of observer
+class statsObserver : public Observer {
+
+private:
+	//player information that get displayed
+	vector<gameView*> *subjects;
+
+public:
+	statsObserver();
+	statsObserver(vector<gameView*> players);     //Vector of player that the observer observes.
+	~statsObserver();
+	void Update(vector<Player*> players, Map map);    //overriden update method
+	void display(vector<Player*> players, Map map);
 
 
 };
