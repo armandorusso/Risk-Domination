@@ -898,7 +898,9 @@ void attackDriver() {
 
 	Continent* cont1 = new Continent();
 	Continent* cont2 = new Continent();
-	Continent* continentArray[2] = { cont1, cont2 };
+	Continent* continentArray = new Continent[2];
+	continentArray[0] = *cont1;
+	continentArray[1] = *cont2;
 
 	int varr0[3] = { 1,3,4 };
 	int varr1[2] = { 2,3 };
@@ -919,7 +921,7 @@ void attackDriver() {
 	varrayCountry[3] = *vc3;
 	varrayCountry[4] = *vc4;
 
-	Map* map2 = new Map(*continentArray, 2, varrayCountry, 5);
+	Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
 
 	Player* player1 = new Player("Christopher", *map2);
 	Player* player2 = new Player("Peter", *map2);
@@ -978,12 +980,12 @@ void fortifyDriver()
 	varrayCountry[4] = *vc4;
 	Continent* cont1 = new Continent();
 	Continent* cont2 = new Continent();
-	Continent* continentArray[2]; // Is this Correct?
-	continentArray[0] = cont1;
-	continentArray[1] = cont2;
+	Continent* continentArray = new Continent[2];
+	continentArray[0] = *cont1;
+	continentArray[1] = *cont2;
 
 	//creating map
-	Map *map2 = new Map(*continentArray, 2, varrayCountry, 5);
+	Map *map2 = new Map(continentArray, 2, varrayCountry, 5);
 	(*map2).setMatrix();
 
 	Player* p1 = new Player("Jack", *map2);
@@ -1015,6 +1017,7 @@ void fortifyDriver()
 	
 }
 
+//testing observer
 void observerDriver() {
 
     char ans;
@@ -1030,10 +1033,10 @@ void observerDriver() {
 
 }
 
-/*int main(){
+int main(){
 
-
+	observerDriver();
 
 	return 0;
 }
-*/
+
