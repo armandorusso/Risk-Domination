@@ -1,3 +1,4 @@
+#pragma once
 #include<vector>
 #include<string>
 #include"Player.h"
@@ -60,11 +61,8 @@ void gameObserver::Update(Player* player, string phase) {
 	*this->phase = phase;
 	*armyOwned = player->getTotalArmy();
 	countriesOwned = player->getCountriesObjects();
-
-	continentOwned = &player->getContinents();
-
+	continentOwned = &(player->getContinents());
 	this->player = player;
-//	game->getPlayerArray()->at(currentplayer);
 	
 	//displays updated information
 	display();
