@@ -21,7 +21,6 @@ private:
 	vector<int>* countriesKey;
 	int* numberOfCountries;
 	Strategy* strategy;
-	//added
 	vector<Continent*>* continentOwned;
 	int* numberOfContinent;
 	int* totalArmy;
@@ -31,11 +30,11 @@ private:
 public:
 	Player(std::string name, Map* map);
 	Player(std::string name, Map& map);
+	Player(string name, Map& map, Strategy* strategy);
 	Player(std::string name);
-	Player(Strategy *strategy);
-	//copy constructor
+	//Player(Strategy *strategy);
 	Player(const Player&);
-	Player(const Player&, Strategy *newStrat);
+	//Player(const Player&, Strategy *newStrat);
 	Player();
 	~Player();
 
@@ -55,6 +54,9 @@ public:
         this->strategy->executeFortify(this);
     }
 
+	void attackUsingStrategy();
+	void reinforceUsingStrategy();
+	void fortifyUsingStrategy();
 
 	vector<int> getCountriesInts() { return *countriesKey; };
 	int getNumOfCountries() { return *numberOfCountries; };
@@ -69,11 +71,6 @@ public:
 	void attack();
 	void RollDice(int key);
 	void setNumDice(int numDice);
-
-	Map* const getMap() {
-	    return map;
-	}
-
 	void setIsTurn(bool value);
 	int getHighestRoll() const;
 	bool getIsTurn() const;
@@ -84,11 +81,8 @@ public:
 	void addCountry(int key);
 	bool hasCountry(Country* country) const;
 	void setHand();
-
 	vector<int> getCountryKeys() const;
-
 	void displayCountries();
-
 	vector<int> getAttackableCountries(Map* map);
 
 
@@ -98,17 +92,15 @@ public:
 
 	Dice* getDice() const;
 	std::string getName() const;
-
     const Player& operator=(const Player& r);
-
-	//added
 	int getTotalArmy() { return *totalArmy; };
 	int addArmy(int num) { *totalArmy += num; };
 	int subtractArmy(int num) { *totalArmy -= num; };
 	vector<Continent*> getContinents() { return *continentOwned; };
 	int getNumberContinent() { return continentOwned->size(); };
-	//need to add these method everywhere that player army is modified
-	
+	Map* const getMap() { return map; };
+
+
 };
 
 //Returns true if player1
@@ -129,4 +121,4 @@ int reinforceDriver();
 void attackDriver();
 void fortifyDriver();
 void observerDriver();
-
+void testStrategy();

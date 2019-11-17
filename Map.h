@@ -18,8 +18,8 @@ private:
 public:
     //definitions of constructors,destructor and functions
     Country();
-	Country(const Country& copy);
-	const Country& operator=(const Country& assign);
+	//Country(const Country& copy);
+	//const Country& operator=(const Country& assign);
     Country(string name, int countryK, int* neighbourA, int continentKey, int neighbourN);
     Country(string name, int countryK, vector<int> neighbourA, int continentKey, int neighbourN);
     ~Country();
@@ -86,8 +86,8 @@ public:
 
     //constructors and memeber functions
     Map();
-	Map(const Map& copy);
-	const Map& operator=(const Map& assign);
+	//Map(const Map& copy);
+	//const Map& operator=(const Map& assign);
     Map(vector<Country*> count, vector<Continent*> cont);
     Map(Continent* array1, int size1, Country* array2, int size2);
     ~Map();
