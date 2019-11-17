@@ -1119,15 +1119,18 @@ void testStrategy() {
 
 	p1->addCountry(vc2);
 	p2->addCountry(vc3);
-
+	p2->addCountry(vc4);
+    
 	vc0->addArmy(5);
 	vc1->addArmy(2);
 	vc2->addArmy(2);
 	vc3->addArmy(3);
-	vc4->addArmy(3);
+	vc4->addArmy(5);
 
-	p1->fortifyUsingStrategy();
-
+	p1->fortifyUsingStrategy();//agressive fortify
+	int x;
+	cin >>x;
+	p2->fortifyUsingStrategy();//benevolant fortify
 }
 
 int main(){
