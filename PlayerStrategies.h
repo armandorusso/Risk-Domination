@@ -4,6 +4,7 @@
 using namespace std;
 
 class Strategy {
+
 public:
     virtual void execute() = 0;
 };

@@ -30,7 +30,7 @@ class Observer {
 public:
 	Observer();
     ~Observer();
-    virtual void Update(Player* player , string phase) = 0;  
+    virtual void Update(Player* player , string phase) = 0;
 	//update has player and phase as parameter to know which player is making the notify call and where
 	virtual void Update(vector<Player*> *players, Map *map) = 0;
 };

@@ -68,6 +68,7 @@ void gameObserver::Update(Player* player, string phase) {
 	display();
 
 }
+
 void gameObserver::Update(vector<Player*> *players, Map *map) {
 	
 }

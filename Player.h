@@ -33,6 +33,7 @@ public:
 	Player(Strategy *strategy);
 	//copy constructor
 	Player(const Player&);
+	Player(const Player&, Strategy *newStrat);
 	Player();
 	~Player();
 
