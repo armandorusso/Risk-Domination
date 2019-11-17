@@ -173,7 +173,7 @@ void MainLoop::checkIfEnd() {
 		if (((arr->at(i))->getNumOfCountries()) == numOfCountry) {         //wins if the number of country owned==country in continent
 
 			//Notify observer that there is a winner
-			notify(*this->startGame->playerArray, *startGame->gameMap);
+			notify(startGame->playerArray, startGame->gameMap);
 			exit(0);
 		}
 
@@ -194,13 +194,13 @@ void MainLoop::startLoop() {
 
 			(arr->at(j))->reinforceDemo();
 			//Display statistics after reinforce
-			notify(*this->startGame->playerArray, *startGame->gameMap);
+			notify(startGame->playerArray, startGame->gameMap);
 			(arr->at(j))->attackDemo();
 			//Update player progress after attacking
-			notify(*this->startGame->playerArray, *startGame->gameMap);
+			notify(startGame->playerArray, startGame->gameMap);
 			(arr->at(j))->fortifyDemo();
 			//Display statistics after fortify
-			notify(*this->startGame->playerArray, *startGame->gameMap);
+			notify(startGame->playerArray, startGame->gameMap);
 
 			//testing checkIfEnd method (assuming player 0 wins at iteration 10)
 			if (i == 9 && j == 0) {
@@ -218,6 +218,7 @@ void MainLoop::startLoop() {
 MainLoop::~MainLoop() {
 	startGame = NULL;
 }
+
 /*
 int main() {
 
@@ -260,15 +261,19 @@ int main() {
 
 	playerArr.push_back(p1);
 	playerArr.push_back(p2);
-    playerArr.push_back(p3);
+	playerArr.push_back(p3);
 
 	Game game1(map2, playerArr);
 	MainLoop loop1(game1);
+
+	vector<gameView*>* vectPlayer = new vector<gameView*>;
+	vectPlayer->push_back(&loop1);
+	statsObserver* obs = new statsObserver(*vectPlayer);
+
 	game1.startupPhase();
 
 	loop1.startLoop();
 	cout << "ends";
-
 
 }
 */

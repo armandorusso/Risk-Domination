@@ -97,17 +97,37 @@ Player::Player(const Player &r) {
     this->isTurn = new bool(r.getIsTurn());
 
     this->countries = new vector<Country*>();
-    map = NULL;
+
+    if(r.countries->size()!= 0) {
+        for(int i = 0; i<r.countries->size(); i++) {
+            this->countries->push_back(r.countries->at(i));
+        }
+    }
+
+    this->map = NULL;
 
     this->numberOfCountries = new int(*r.numberOfCountries);
     this->handOfCards = new Hand(*r.getHand());
     this->totalArmy = new int(*r.totalArmy);
-    numberOfContinent = new int(*r.numberOfContinent);
+    this->numberOfContinent = new int(*r.numberOfContinent);
 
 
+    this->countriesKey = new vector<int>();
 
-    countriesKey = new vector<int>();
+    if(r.countriesKey->size() != 0) {
+        for(int i = 0; i< r.countriesKey->size(); i++) {
+            countriesKey->push_back(r.countriesKey->at(i));
+        }
+    }
+
     continentOwned = new vector<Continent*>;
+
+    if(r.continentOwned->size() != 0) {
+        for(int i = 0; i< r.continentOwned->size(); i++) {
+            continentOwned->push_back(r.continentOwned->at(i));
+        }
+    }
+
 
 }
 
@@ -859,7 +879,6 @@ void printArmiesFromCountries(int c1, int c2) {
 //Assignment Operator
 const Player& Player::operator=(const Player& r) {
     if(&r != this) {
-
         delete dice;
         delete name;
         delete isTurn;
@@ -887,10 +906,7 @@ const Player& Player::operator=(const Player& r) {
     return *this;
 }
 
-
-
 //DRIVERS
-
 void attackDriver() {
 
 	int numCountry = 5;
@@ -1034,8 +1050,9 @@ void observerDriver() {
 }
 
 int main(){
+//	observerDriver();
 
-	observerDriver();
+//attackDriver();
 
 	return 0;
 }

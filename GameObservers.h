@@ -22,7 +22,7 @@ public:
 	virtual void attach(Observer* ob);
 	virtual void dettach(Observer* ob);
 	virtual void notify(Player* player, string currentPhase);
-	virtual void notify(vector<Player*> players, Map map);
+	virtual void notify(vector<Player*> *players, Map *map);
 };
 //observer super class
 class Observer {
@@ -30,9 +30,9 @@ class Observer {
 public:
 	Observer();
     ~Observer();
-    virtual void Update(Player* player , string phase) = 0;  
+    virtual void Update(Player* player , string phase) = 0;
 	//update has player and phase as parameter to know which player is making the notify call and where
-	virtual void Update(vector<Player*> players, Map map) = 0;
+	virtual void Update(vector<Player*> *players, Map *map) = 0;
 };
 
 //derived class of observer
@@ -54,7 +54,7 @@ public:
 	gameObserver(vector<gameView*> players);     //Vector of player that the observer observes.
 	~gameObserver();
 	void Update(Player* player,string phase);    //overriden update method
-	void Update(vector<Player*> players, Map map);    //overriden update method
+	void Update(vector<Player*>* players, Map *map);    //overriden update method
 	void display();
 
 
@@ -71,8 +71,13 @@ public:
 	statsObserver();
 	statsObserver(vector<gameView*> players);     //Vector of player that the observer observes.
 	~statsObserver();
-	void Update(vector<Player*> players, Map map);    //overriden update method
-	void display(vector<Player*> players, Map map);
+	//Copy Constructor
+	statsObserver(const statsObserver &s2);
+	//Assignment operator
+	statsObserver& operator=(const statsObserver &s2);
+	void Update(vector<Player*> *players, Map *map);    //overriden update method
+	void Update(Player* player, string phase);
+	void display(vector<Player*>* players, Map *map);
 
 
 };

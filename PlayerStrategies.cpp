@@ -16,13 +16,12 @@ void HumanPlayer::execute() {
 }
 
 //Concrete strategy that implements an benevolent player.
-//Reinforces weakest countries. Never atacks. Fortifies in order to move armies to weaker countries.
+//Reinforces weakest countries. Never attacks. Fortifies in order to move armies to weaker countries.
 void BenevolentPlayer::execute() {
     cout << "Benevolent Player: Execute()" << endl;
 }
 
 int stratDriver() {
-
     return 0;
 }
 
@@ -52,6 +51,3 @@ int stratDriver() {
  * this->strategy = newStrategy
  * }
  */
-
-
-

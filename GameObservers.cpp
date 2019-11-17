@@ -68,7 +68,8 @@ void gameObserver::Update(Player* player, string phase) {
 	display();
 
 }
-void gameObserver::Update(vector<Player*> players, Map map) {
+
+void gameObserver::Update(vector<Player*> *players, Map *map) {
 	
 }
 
@@ -148,49 +149,54 @@ statsObserver::statsObserver(vector<gameView*> players) {
 
 //destructor
 statsObserver::~statsObserver() {
-
 	for (int i = 0; i < subjects->size(); i++) {
 		subjects->at(i)->dettach(this);
 	}
 }
 
-void statsObserver::Update(vector<Player*> players, Map map) {
+//Copy Constructor
+statsObserver::statsObserver(const statsObserver &s2) {
+	subjects = new std::vector<gameView*>(0);
+	*subjects = *s2.subjects;
+}
+//Assignment operator
+statsObserver& statsObserver::operator=(const statsObserver& s2) {
+	statsObserver::operator=(s2);
+	subjects = new std::vector<gameView*>(0);
+	*subjects = *s2.subjects;
+	return *this;
+}
+
+void statsObserver::Update(vector<Player*> *players, Map *map) {
 	display(players, map);
 }
 
-void statsObserver::display(vector<Player*> players, Map map) {
+void statsObserver::Update(Player* player, string phase) {}
+
+void statsObserver::display(vector<Player*> *players, Map *map) {
 	//Display player progression
 
 	//vector containing player progression
-	vector<float> playerProgress;
-	for (int i = 0; i < players.size(); i++) {
-		playerProgress.push_back(players.at(i)->getNumCountries());
-	}
 
-	//Check if player has no countries and remove them from the vector
-	for (int i = 0; i < players.size(); i++) {
-		if (players.at(i)->getNumCountries() == 0) {
-			players.erase(players.begin() + i);
-			playerProgress.erase(playerProgress.begin() + i);
+	bool playerWon = false;
+	vector<float> playerProgress;
+	for (int i = 0; i < players->size(); i++) {
+		playerProgress.push_back(float(players->at(i)->getNumOfCountries()) / float(map->getCountryCount()));
+
+		//If player owns all countries (100% progress), display congratulations message
+		if (playerProgress.at(i) == 1) {
+			std::cout << std::endl << "Congratulations " << players->at(i)->getName() << ", you win!" << std::endl;
+			playerWon = true;
 		}
 	}
 
-	//Check if only one player is left
-	bool playerWon = false;
-	if (players.size() == 0) {
-		playerWon = true;
-	}
+	std::cout << std::endl << "----- World Domination View -----" << std::endl;
+	for (int i = 0; i < players->size(); i++) {
+		//Check if player owns at least one country and display their progression
+		if (players->at(i)->getNumOfCountries() != 0) {
+			int barWidth = 50;
 
-	//if a player won, display winning message. Otherwise display all player progress
-	if (playerWon) {
-		Player winningPlayer = *players.at(0);
-		std::cout << "Congratulations " << winningPlayer.getName() << " you win!" << std::endl;
-	}
-	else {
-		for (int i = 0; i < players.size(); i++) {
-			int barWidth = 70;
-
-			std::cout << "[";
+			std::cout << players->at(i)->getName() << ": \t[";
 			int pos = barWidth * playerProgress.at(i);
 			for (int i = 0; i < barWidth; ++i) {
 				if (i < pos) std::cout << "=";
@@ -200,8 +206,8 @@ void statsObserver::display(vector<Player*> players, Map map) {
 			std::cout << "] " << int(playerProgress.at(i) * 100.0) << " %\n";
 			std::cout.flush();
 		}
-		std::cout << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 //constructor
@@ -235,10 +241,9 @@ void gameView::notify(Player* player, string phase) {
 
 }
 
-void gameView::notify(vector<Player*> players, Map map) {
+void gameView::notify(vector<Player*> *players, Map *map) {
 
 	list<Observer*>::iterator i = obs->begin();
 	for (; i != obs->end(); ++i)
 		(*i)->Update(players, map);
-
 }
