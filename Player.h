@@ -99,7 +99,7 @@ public:
 	vector<Continent*> getContinents() { return *continentOwned; };
 	int getNumberContinent() { return continentOwned->size(); };
 	Map* const getMap() { return map; };
-	
+
 
 };
 

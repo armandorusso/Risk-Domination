@@ -6,7 +6,6 @@
 #include "Cards.h"
 
 //error at line 445
-
 using namespace std;
 
 static vector<Player*> players; // Vector containing the players.
@@ -82,6 +81,7 @@ Player::Player(string name, Map& map, Strategy* strategy) {
 
 }
 
+
 Player::Player(std::string name, Map* map) {
     this->name = new string(name);
     this->dice = new Dice();
@@ -97,6 +97,7 @@ Player::Player(std::string name, Map* map) {
 	totalArmy = new int(0);
 	strategy = NULL;
 }
+
 
 
 Player::Player(std::string name) {
@@ -168,7 +169,7 @@ Player::~Player() {
 	delete[] countriesKey;
 	delete handOfCards;
 	handOfCards = nullptr;
-	
+
 	delete[] continentOwned;
 	delete totalArmy;
 	delete numberOfContinent;
@@ -329,7 +330,7 @@ void Player::reinforceUsingStrategy() {
 void Player::fortify() {
 
 	notify(this, "Fortifying");  //notify observer at start of reinforece
-	
+
 
 
 	std::cout << std::endl;
@@ -425,9 +426,9 @@ void Player::fortify() {
 
 }
 void Player::reinforce() {
-	
+
 	notify(this, "Reinforcing");
-	
+
 	//std::cout << this->getName() << " is reinforcing..." << std::endl;
 
 	int armiesToExchange = 0;
@@ -471,10 +472,8 @@ void Player::reinforce() {
 
 
 void Player::attack() {
-	this->setIsTurn(true);
-	
 	notify(this, "Attacking"); //notify observer to show initial state
-	
+
 	formatActionOutput(this->getName() + ": ATTACK PHASE");
 
 	string answer;
@@ -552,7 +551,6 @@ void Player::attack() {
 				cout << "You don't own it!" << endl;
 				continue;
 			}
-
 		} while (!found);
 
 
@@ -563,21 +561,11 @@ void Player::attack() {
 			continue;
 		}
 
-
-
-//
-		//==============================
-		//  PROBLEM STATEMENT : GETCOUNTRYKEYS(int)
-		//==============================
 		if (getCountryFromCountryKey(attackingCountry)->getArmy() < 2) {     //vector out of bounce here for country 1
-            cout << "WTF is going on?" << endl;
 			cout << "You can't attack " << defendingCountry << " with " << attackingCountry << endl;
 			cout << "You don't have enough armies on this country." << endl;
 			continue;
 		}
-
-
-
 
 		//Attacking conditions are met.
 		cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
@@ -654,7 +642,7 @@ void Player::attack() {
 	} while (answer == "y"); //END ATTACK LOOP
 
 	formatActionOutput(this->getName() + ": ATTACK PHASE COMPLETE");
-	
+
 	notify(this, "Finished Attacking"); //notify observer to show change after attack.
 }
 
@@ -702,7 +690,6 @@ void Player::removeCountry(int key) {
 		}
 
 	}
-
 }
 
 
@@ -1005,7 +992,7 @@ void attackDriver() {
 	vc2->addArmy(5);
 	vc3->addArmy(5);
 	vc4->addArmy(5);
-	
+
 	player1->attack();
 }
 
@@ -1116,7 +1103,7 @@ void testStrategy() {
 
 	AggressivePlayer* str = new AggressivePlayer();
 	BenevolentPlayer* str2 = new BenevolentPlayer();
-	
+
 	Player* p1 = new Player("Jack", *map2, str);
 	Player* p2 = new Player("James", *map2, str2);
 	Player* p3 = new Player("Eren", *map2, str);
@@ -1143,16 +1130,12 @@ void testStrategy() {
 
 }
 
-
-
-
 int main(){
 
-   // attackDriver();
+  // attackDriver();
 	//fortifyDriver();
 	//observerDriver();
 	testStrategy();
 
 	return 0;
 }
-

@@ -79,14 +79,14 @@ dummyCountry::dummyCountry() {
 	countryNam = new string();
 	countryNum = new int();
 	continentNum = new int();
-	
+
 }
 
 dummyCountry::dummyCountry(string name, int countryN, int continentN) {
 	countryNam = new string(name);
 	countryNum = new int(countryN);
 	continentNum = new int(continentN);
-	
+
 
 }
 
@@ -96,13 +96,13 @@ dummyCountry::dummyCountry(const dummyCountry& cont) {
 	countryNum = new int(cont.getCountryNum());
 	countryNam = new string(cont.getCountryName());
 	continentNum = new int(cont.getContinentNum());
-	
+
 }
 
 dummyCountry::~dummyCountry() {
 	delete countryNam, countryNum, continentNum;
 	countryNam, countryNum, continentNum = NULL;
-	
+
 }
 
 dummyContinent::dummyContinent() {
@@ -173,14 +173,14 @@ Map* FetchMap::getFileData(string fileName) {
 				try {
 
 					Continent* continent = new Continent(i, *obj.continentName, *obj.armyValue);
-					continentArr.push_back(continent); 
+					continentArr.push_back(continent);
 
 				}
 
 				catch (exception e) {
 					cout << e.what();
 				}
-				
+
 			}
 
 		}
@@ -195,50 +195,50 @@ Map* FetchMap::getFileData(string fileName) {
 
 				*obj2.countryNum = stoi(word);
 				*obj2.countryNum -= 1;
-				
+
 
 				if (*obj2.countryNum < 0 || obj2.countryName == NULL || *obj2.continentNum < 0 || *obj2.x < 0 || *obj2.y < 0) {
 					cout << "This is not the correct file format. Stopped at \"countries\". Please try another file";
 					readMap.close();
 					return NULL;
 				}
-				//since we can only know the neighbours after reading the countries, 
-				//we will not make a neighbour array. Once we get to "borders", 
+				//since we can only know the neighbours after reading the countries,
+				//we will not make a neighbour array. Once we get to "borders",
 				//we will initiliaze this array using a method
 
 				dummyCountry* country = new dummyCountry(*obj2.countryName, *obj2.countryNum, *obj2.continentNum);
 				allCountries.push_back(country);
 
-				
+
 			}
 
 		}
 
 
 		//reading and initiliazing neighbours
-		
+
 		if (word == "[borders]") {
 			FetchMap obj3;
 			string line;
 			string dummyLine;
 			readMap.get();
-			
+
 
 			while (getline(readMap, line, '\n')) {
-				
-								
+
+
 				string theInts;
 				int countryValue = 1;
 				vector<int> neighbourArr;
 				stringstream stream(line);
-				
+
 				while (!(stream.eof()) && stream >> theInts) {
-					
+
 
 					if (position == 0) {
 						countryValue = stoi(theInts);
 						position++;
-					
+
 
 					}
 
@@ -247,19 +247,19 @@ Map* FetchMap::getFileData(string fileName) {
 						neighbourArr.push_back((oneNeigh - 1));
 
 					}
-				
+
 				}
 
 					Country* country = new Country(allCountries.at((countryValue - 1))->getCountryName(), allCountries.at((countryValue - 1))->getCountryNum(), neighbourArr, allCountries.at((countryValue - 1))->getContinentNum(), neighbourArr.size());
 					countryArr.push_back(country);
 					position = 0;
-				
-					
+
+
 			}
-			
+
 		}
 
-		
+
 	}
 
 	readMap.close();
@@ -273,7 +273,7 @@ Map* FetchMap::getFileData(string fileName) {
 	completeMap->printMatrix();
 	completeMap->checkMap();
 
-	
+
 	return completeMap;
 }
 
