@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
-#include "Player.h"
 
 using namespace std;
+
+class Player;
 
 class Strategy {
 

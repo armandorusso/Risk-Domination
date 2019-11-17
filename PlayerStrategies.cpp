@@ -1,5 +1,6 @@
 #include <iostream>
 #include "PlayerStrategies.h"
+#include "Player.h"
 
 using namespace std;
 

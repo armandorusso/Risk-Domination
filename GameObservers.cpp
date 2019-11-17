@@ -29,11 +29,11 @@ Observer::~Observer() {
  gameObserver::gameObserver(vector<gameView*> players) {
 
 	//all variables are properly initialized after update
-	player = NULL;
+	player = new Player();
 	phase = new string();
 	armyOwned = new int();
-	countriesOwned = NULL;
-	continentOwned = NULL;
+	countriesOwned = new vector<Country *>;
+	continentOwned = new vector<Continent*>;
 	subjects = &players;
 
 	//attaching this observer to all players in the vector
@@ -55,14 +55,14 @@ gameObserver::~gameObserver() {
 	countriesOwned = NULL;
 }
 
-void gameObserver::Update(Player* player, string phase) {
+void gameObserver::Update(Player& player, string phase) {
 
 	//assign player information to data members(updating)
 	*this->phase = phase;
-	*armyOwned = player->getTotalArmy();
-	countriesOwned = player->getCountriesObjects();
-	continentOwned = &(player->getContinents());
-	this->player = player;
+	*armyOwned = player.getTotalArmy();
+	countriesOwned = player.getCountriesObjects();
+	*continentOwned = (player.getContinents());
+	this->player = &player;
 	
 	//displays updated information
 	display();
@@ -70,7 +70,8 @@ void gameObserver::Update(Player* player, string phase) {
 }
 
 void gameObserver::Update(vector<Player*> *players, Map *map) {
-	
+
+    cout << "";
 }
 
 void gameObserver::display() {
@@ -237,7 +238,7 @@ void gameView::notify(Player* player, string phase) {
 
 	list<Observer*>::iterator i = obs->begin();
 	for (; i != obs->end(); ++i)
-		(*i)->Update(player, phase);
+		(*i)->Update(*player, phase);
 
 }
 

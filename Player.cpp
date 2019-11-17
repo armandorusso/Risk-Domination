@@ -1054,10 +1054,9 @@ void observerDriver() {
 
 int main(){
 
+    attackDriver();
 
-    cout << "What's going on?" << endl;
-
-	observerDriver();
+//	observerDriver();
 
 	return 0;
 }
