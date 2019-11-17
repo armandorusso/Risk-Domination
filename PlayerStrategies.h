@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-
+//#include"GameObservers.h"
 using namespace std;
 
 class Player;
@@ -8,6 +8,7 @@ class Player;
 class Strategy {
 
 public:
+
     virtual void executeReinforce(Player* player) = 0;
     virtual void executeFortify(Player* player) = 0;
     virtual void executeAttack(Player* player) = 0;
@@ -15,23 +16,24 @@ public:
 
 };
 
-class AggressivePlayer : Strategy {
+class AggressivePlayer : public Strategy {
 
+public:
     void executeReinforce(Player* player);
     void executeFortify(Player* player);
     void executeAttack(Player* player);
 
 };
 
-class HumanPlayer : Strategy {
-
+class HumanPlayer : public Strategy {
+public:
     void executeReinforce(Player* player);
     void executeFortify(Player* player);
     void executeAttack(Player* player);
 };
 
-class BenevolentPlayer : Strategy {
-
+class BenevolentPlayer : public Strategy {
+public:
     void executeReinforce(Player* player);
     void executeFortify(Player* player);
     void executeAttack(Player* player);

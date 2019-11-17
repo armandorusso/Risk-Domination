@@ -13,7 +13,7 @@ Country::Country() {
     army = new int;
 }
 //copy constructor
-Country::Country(const Country& copy) {
+/*Country::Country(const Country& copy) {
 
 	name = new string(copy.getName());
 	countryKey = new int(copy.getCountryKey());
@@ -26,8 +26,9 @@ Country::Country(const Country& copy) {
 		neighbourArray[i] = (copy.getNeighbours())[i];
 	}
 }
+*/
 //assignment operator overloaded
-const Country& Country::operator=(const Country& assign) {
+/*const Country& Country::operator=(const Country& assign) {
 
 	delete name,countryKey,owner,continentKey,army,neighbourNum;
 	delete[] neighbourArray;
@@ -45,7 +46,7 @@ const Country& Country::operator=(const Country& assign) {
 
 	return *this;
 }
-
+*/
 Country::Country(string name, int countryK, int* neighbourA, int continentK, int neighbourN) {
 
     continentKey = new int(continentK);
@@ -109,7 +110,7 @@ Map::Map() {
 
 }
 //copy constructor
-Map::Map(const Map& copy) {
+/*Map::Map(const Map& copy) {
 
 	countryCount = new int(copy.getCountryCount());
 	continentCount = new int(copy.getContinentCount());
@@ -141,9 +142,9 @@ Map::Map(const Map& copy) {
 	}
 
 }
-
+*/
 //overloaded assignment operator
-const Map& Map::operator=(const Map& copy) {
+/*const Map& Map::operator=(const Map& copy) {
 
 	for (int i = 0; i < *countryCount; i++) {
 
@@ -186,7 +187,7 @@ const Map& Map::operator=(const Map& copy) {
 
 	return *this;
 }
-
+*/
 Map::Map(Continent* arr1, int size1, Country* arr2, int size2) {   //size is the length of the arrays
 
 

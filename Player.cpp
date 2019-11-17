@@ -46,9 +46,6 @@ Player::Player() {
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
 
-    bool willFortify = new bool(false);
-    bool willAttack = new bool(false);
-    bool willReinforce = new bool(false);
 }
 
 Player::Player(std::string name, Map& map) {
@@ -65,9 +62,24 @@ Player::Player(std::string name, Map& map) {
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
 
-    bool willFortify = new bool(false);
-    bool willAttack = new bool(false);
-    bool willReinforce = new bool(false);
+}
+Player::Player(string name, Map& map, Strategy* strategy) {
+
+	this->name = new string(name);
+	this->dice = new Dice();
+	this->isTurn = new bool(false);
+	this->countries = new vector<Country*>;
+	this->handOfCards = new Hand();
+	countriesKey = new vector<int>();
+	this->map = &map;
+	this->handOfCards = new Hand();
+	numberOfCountries = new int(0);
+	continentOwned = new vector<Continent*>;
+	numberOfContinent = new int(0);
+	totalArmy = new int(0);
+
+	this->strategy = strategy;
+
 }
 
 Player::Player(std::string name, Map* map) {
@@ -83,6 +95,7 @@ Player::Player(std::string name, Map* map) {
 	continentOwned = new vector<Continent*>;
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
+	strategy = NULL;
 }
 
 
@@ -166,6 +179,8 @@ Player::~Player() {
 	}
 
 	countries->clear();
+
+	strategy = nullptr;
 }
 
 
@@ -288,10 +303,28 @@ void Player::reinforceDemo() {
 	cout << "Player is reinforcing..." << endl;
 }
 
+//=================================================
+// attack, fortify,reinforce using current strategy
+//=================================================
 
+void Player::attackUsingStrategy() {
+
+	strategy->executeAttack(this);
+
+}
+void Player::fortifyUsingStrategy() {
+
+	strategy->executeFortify(this);
+
+}
+void Player::reinforceUsingStrategy() {
+
+	strategy->executeReinforce(this);
+
+}
 
 // ==========================================
-//      REINFORCE ATTACK FORTIFY
+//      REINFORCE ATTACK FORTIFY( Human )
 // ==========================================
 void Player::fortify() {
 
@@ -1031,8 +1064,6 @@ void fortifyDriver()
 	vc3->addArmy(3);
 	vc4->addArmy(3);
 
-
-
 	p1->fortify();
 }
 
@@ -1052,11 +1083,75 @@ void observerDriver() {
 
 }
 
+void testStrategy() {
+
+	//creating array of countries
+	int varr0[3] = { 1,2,3 };
+	int varr1[3] = { 0,2,3 };
+	int varr2[3] = { 2,4,1 };
+	int varr3[2] = { 0,2 };
+	int varr4[3] = { 1,3 };
+
+	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
+	Country* vc1 = new Country("c1", 1, varr1, 1, 3);
+	Country* vc2 = new Country("c2", 2, varr2, 1, 3);
+	Country* vc3 = new Country("c3", 3, varr3, 2, 2);
+	Country* vc4 = new Country("c4", 4, varr4, 2, 3);
+
+	Country* varrayCountry = new Country[5];
+	varrayCountry[0] = *vc0;
+	varrayCountry[1] = *vc1;
+	varrayCountry[2] = *vc2;
+	varrayCountry[3] = *vc3;
+	varrayCountry[4] = *vc4;
+	Continent* cont1 = new Continent();
+	Continent* cont2 = new Continent();
+	Continent* continentArray = new Continent[2];
+	continentArray[0] = *cont1;
+	continentArray[1] = *cont2;
+
+	//creating map
+	Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
+	(*map2).setMatrix();
+
+	AggressivePlayer* str = new AggressivePlayer();
+	BenevolentPlayer* str2 = new BenevolentPlayer();
+	
+	Player* p1 = new Player("Jack", *map2, str);
+	Player* p2 = new Player("James", *map2, str2);
+	Player* p3 = new Player("Eren", *map2, str);
+
+	vector<gameView*>* vectPlayer = new vector<gameView*>;
+	vectPlayer->push_back(p1);
+	vectPlayer->push_back(p2);
+	vectPlayer->push_back(p3);
+	gameObserver* obs = new gameObserver(*vectPlayer);
+
+	p1->addCountry(vc0);
+	p1->addCountry(vc1);
+
+	p1->addCountry(vc2);
+	p2->addCountry(vc3);
+
+	vc0->addArmy(5);
+	vc1->addArmy(2);
+	vc2->addArmy(2);
+	vc3->addArmy(3);
+	vc4->addArmy(3);
+
+	p1->fortifyUsingStrategy();
+
+}
+
+
+
+
 int main(){
 
-    attackDriver();
-
-//	observerDriver();
+   // attackDriver();
+	//fortifyDriver();
+	//observerDriver();
+	testStrategy();
 
 	return 0;
 }
