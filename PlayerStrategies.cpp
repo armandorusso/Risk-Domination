@@ -3,23 +3,46 @@
 
 using namespace std;
 
-//Concrete strategy that implements an aggressive player.
-//Reinforces strongest country. Always attacks with it until unable.
-void AggressivePlayer::execute() {
-    cout << "Aggressive Player: Execute()" << endl;
+
+void AggressivePlayer::executeAttack(Player *player) {
+
 }
 
-//Concrete strategy that implements an interactive player.
-//Human interacts with it.
-void HumanPlayer::execute() {
-    cout << "Human Player: Execute()" << endl;
+void AggressivePlayer::executeFortify(Player *player) {
+
 }
 
-//Concrete strategy that implements an benevolent player.
-//Reinforces weakest countries. Never attacks. Fortifies in order to move armies to weaker countries.
-void BenevolentPlayer::execute() {
-    cout << "Benevolent Player: Execute()" << endl;
+void AggressivePlayer::executeReinforce(Player *player) {
+
 }
+
+void HumanPlayer::executeAttack(Player *player) {
+
+}
+
+void HumanPlayer::executeFortify(Player *player) {
+
+}
+
+void HumanPlayer::executeReinforce(Player *player) {
+
+}
+
+void BenevolentPlayer::executeAttack(Player *player) {
+
+}
+
+void BenevolentPlayer::executeFortify(Player *player) {
+
+}
+
+void BenevolentPlayer::executeReinforce(Player *player) {
+
+}
+
+
+
+
 
 int stratDriver() {
     return 0;

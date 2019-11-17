@@ -26,6 +26,8 @@ private:
 	int* numberOfContinent;
 	int* totalArmy;
 
+
+
 public:
 	Player(std::string name, Map* map);
 	Player(std::string name, Map& map);
@@ -41,9 +43,18 @@ public:
 	    this->strategy = newStrat;
 	}
 
-	void executeStrategy() {
-	    this->strategy->execute();
+	void executeAttack() {
+	    this->strategy->executeAttack(this);
 	}
+
+    void executeReinforce() {
+        this->strategy->executeReinforce(this);
+    }
+
+    void executeFortify() {
+        this->strategy->executeFortify(this);
+    }
+
 
 	vector<int> getCountriesInts() { return *countriesKey; };
 	int getNumOfCountries() { return *numberOfCountries; };

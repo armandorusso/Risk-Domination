@@ -45,6 +45,10 @@ Player::Player() {
 	continentOwned = new vector<Continent*>;
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
+
+    bool willFortify = new bool(false);
+    bool willAttack = new bool(false);
+    bool willReinforce = new bool(false);
 }
 
 Player::Player(std::string name, Map& map) {
@@ -60,6 +64,10 @@ Player::Player(std::string name, Map& map) {
 	continentOwned = new vector<Continent*>;
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
+
+    bool willFortify = new bool(false);
+    bool willAttack = new bool(false);
+    bool willReinforce = new bool(false);
 }
 
 Player::Player(std::string name, Map* map) {
@@ -874,8 +882,6 @@ void printArmiesFromCountries(int c1, int c2) {
 	cout << endl;
 }
 
-
-
 //Assignment Operator
 const Player& Player::operator=(const Player& r) {
     if(&r != this) {
@@ -908,7 +914,6 @@ const Player& Player::operator=(const Player& r) {
 
 //DRIVERS
 void attackDriver() {
-
 	int numCountry = 5;
 	int numContinent = 2;
 
@@ -1029,8 +1034,6 @@ void fortifyDriver()
 
 
 	p1->fortify();
-
-	
 }
 
 //testing observer
@@ -1050,9 +1053,11 @@ void observerDriver() {
 }
 
 int main(){
-//	observerDriver();
 
-//attackDriver();
+
+    cout << "What's going on?" << endl;
+
+	observerDriver();
 
 	return 0;
 }
