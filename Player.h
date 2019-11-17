@@ -10,6 +10,7 @@
 #include "GameObservers.h"
 
 class Player : public gameView {
+
 private:
 	std::string* name;
 	Dice* dice;
@@ -30,9 +31,9 @@ public:
 	Player(std::string name, Map& map);
 	Player(std::string name);
 	Player(Strategy *strategy);
+	//copy constructor
+	Player(const Player&);
 	Player();
-
-
 	~Player();
 
 	void setStrategy(Strategy *newStrat) {

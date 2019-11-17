@@ -18,21 +18,23 @@ private:
 public:
     //definitions of constructors,destructor and functions
     Country();
+	Country(const Country& copy);
+	const Country& operator=(const Country& assign);
     Country(string name, int countryK, int* neighbourA, int continentKey, int neighbourN);
     Country(string name, int countryK, vector<int> neighbourA, int continentKey, int neighbourN);
     ~Country();
-    string getName() { return *name; };
-    int getCountryKey() { return *countryKey; };
-    int* getNeighbours() { return neighbourArray; };
-    int  getNeighbourNum();
-    string getOwner() { return *owner; };
-    int getContinentKey() { return *continentKey; };
+    string getName() const { return *name; };
+    int getCountryKey() const { return *countryKey; };
+    int* getNeighbours() const { return neighbourArray; };
+    int  getNeighbourNum() const;
+    string getOwner() const { return *owner; };
+    int getContinentKey() const { return *continentKey; };
     void setContinentKey(int key) { *continentKey = key; };
     void setCountryKey(int key) { *countryKey = key; };
     void setOwner(string name) { *owner = name; };
     void setName(string n) { *name = n; };
     void setNeighbourNum(int x) { *neighbourNum = x; };
-    int getArmy() { return *army; };
+    int getArmy() const { return *army; };
     void addArmy(int x) { (*army) += x; };
     void subtractArmy(int x) { *army -= x; };
 };
@@ -50,17 +52,19 @@ private:
     //constructors and member functions
 public:
     Continent();
+	Continent(const Continent& copy);
+	const Continent& operator=(const Continent& assign);
     Continent(int key, string name, int num);
     ~Continent();
-    string getContinentName() { return *name; };
+    string getContinentName() const{ return *name; };
     void setContinentName(string n) { *name = n; };
-    bool getConquered() { return *conquered; };
+    bool getConquered() const { return *conquered; };
     void setConquered(bool conq) { *conquered = conq; };
-    string getOwner() { return *owner; };
+    string getOwner() const { return *owner; };
     void setOwner(string own) { *owner = own; };
     void setCountryNum(int count) { *countryNum = count; };
-    int getCountryNum() { return *countryNum; };
-    int getContinentKey() { return *continentKey; };
+    int getCountryNum() const { return *countryNum; };
+    int getContinentKey() const { return *continentKey; };
     void setContinetKey(int key) { *continentKey = key; };
 };
 
@@ -82,9 +86,10 @@ public:
 
     //constructors and memeber functions
     Map();
+	Map(const Map& copy);
+	const Map& operator=(const Map& assign);
     Map(vector<Country*> count, vector<Continent*> cont);
     Map(Continent* array1, int size1, Country* array2, int size2);
-
     ~Map();
 
     bool checkMap();
@@ -100,17 +105,19 @@ public:
     void printMatrix();
 
     //mutators
-    int getCountryCount() { return *countryCount; };
+    int getCountryCount() const { return *countryCount; };
 
     void setCountryCount(int count) { *countryCount = count; };
 
-    int getContinentCount() { return *continentCount; };
+    int getContinentCount() const { return *continentCount; };
 
     void setContinentCount(int count) { *continentCount = count; };
 
-    Country* getCountryArray() { return array2; };
+    Country* getCountryArray() const { return array2; };
 
-    Continent* getContinentArray() { return array1; };
+    Continent* getContinentArray() const { return array1; };
+
+	int** getMatrix() const { return matrix; };
 };
 
 

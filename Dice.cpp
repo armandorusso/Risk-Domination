@@ -32,8 +32,6 @@ Dice::Dice(const Dice &dice) {
         frequencyRolled[i] = dice.frequencyRolled[i];
     }
 
-
-	std::cout << "Dice:: Copy constructor called." << std::endl;
 }
 
 //Constructor for the Dice class. Takes in the number of dice as a parameter.

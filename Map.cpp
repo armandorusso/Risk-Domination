@@ -4,13 +4,46 @@
 
 Country::Country() {
 
-    name = NULL;
-    countryKey = NULL;
-    owner = NULL;
-    continentKey = NULL;
-    neighbourArray = NULL;
-    neighbourNum = NULL;
-    army = NULL;
+	name = new string;
+    countryKey = new int;
+    owner = new string;
+	continentKey = new int;
+    neighbourArray = new int;
+    neighbourNum = new int;
+    army = new int;
+}
+//copy constructor
+Country::Country(const Country& copy) {
+
+	name = new string(copy.getName());
+	countryKey = new int(copy.getCountryKey());
+	owner = new string(copy.getOwner());
+	continentKey = new int(copy.getContinentKey());
+	army = new int(copy.getArmy());
+	neighbourNum = new int(copy.getNeighbourNum());
+	neighbourArray = new int[*neighbourNum];
+	for (int i = 0; i < *neighbourNum; i++) {
+		neighbourArray[i] = (copy.getNeighbours())[i];
+	}
+}
+//assignment operator overloaded
+const Country& Country::operator=(const Country& assign) {
+
+	delete name,countryKey,owner,continentKey,army,neighbourNum;
+	delete[] neighbourArray;
+
+	name = new string(assign.getName());
+	countryKey = new int(assign.getCountryKey());
+	owner = new string(assign.getOwner());
+	continentKey = new int(assign.getContinentKey());
+	army = new int(assign.getArmy());
+	neighbourNum = new int(assign.getNeighbourNum());
+	neighbourArray = new int[*neighbourNum];
+	for (int i = 0; i < *neighbourNum; i++) {
+		neighbourArray[i] = (assign.getNeighbours())[i];
+	}
+
+	return *this;
 }
 
 Country::Country(string name, int countryK, int* neighbourA, int continentK, int neighbourN) {
@@ -54,7 +87,7 @@ Country::Country(string name, int countryK, vector<int> neighbourA, int continen
 
 
 }
-int Country::getNeighbourNum() {
+int Country::getNeighbourNum() const {
 
     int x = *neighbourNum;
     return x;
@@ -68,13 +101,92 @@ Country::~Country() {
 
 Map::Map() {
 
-    countryCount = NULL;
-    continentCount = NULL;
-    matrix = NULL;
-    array1 = NULL;
-    array2 = NULL;
+	countryCount = new int;
+	continentCount = new int;
+	matrix = new int*;
+    array1 = new Continent;
+    array2 = new Country;
 
 }
+//copy constructor
+Map::Map(const Map& copy) {
+
+	countryCount = new int(copy.getCountryCount());
+	continentCount = new int(copy.getContinentCount());
+	
+	array1 = new Continent[*continentCount];
+
+	for (int i = 0; i < *continentCount; i++) {
+	
+		array1[i] = (copy.getContinentArray())[i];
+
+	}
+
+	array2 = new Country[*countryCount];
+
+	for (int i = 0; i < *countryCount; i++) {
+
+		array2[i] = (copy.getCountryArray())[i];
+	}
+
+	matrix = new int* [*countryCount];
+	for (int i = 0; i < *countryCount; i++)
+		matrix[i] = new int[*countryCount];
+
+	for (int i = 0; i < *countryCount; i++) {
+		for (int j = 0; j < *countryCount; j++) {
+
+			matrix[i][j] = (copy.getMatrix())[i][j];
+		}
+	}
+
+}
+
+//overloaded assignment operator
+const Map& Map::operator=(const Map& copy) {
+
+	for (int i = 0; i < *countryCount; i++) {
+
+		delete matrix[i];
+	}
+	delete[] matrix;
+	delete[] array1;
+	delete[] array2;
+	delete countryCount;
+	delete continentCount;
+
+	countryCount = new int(copy.getCountryCount());
+	continentCount = new int(copy.getContinentCount());
+
+	array1 = new Continent[*continentCount];
+
+	for (int i = 0; i < *continentCount; i++) {
+
+		array1[i] = (copy.getContinentArray())[i];
+
+	}
+
+	array2 = new Country[*countryCount];
+
+	for (int i = 0; i < *countryCount; i++) {
+
+		array2[i] = (copy.getCountryArray())[i];
+	}
+
+	matrix = new int* [*countryCount];
+	for (int i = 0; i < *countryCount; i++)
+		matrix[i] = new int[*countryCount];
+
+	for (int i = 0; i < *countryCount; i++) {
+		for (int j = 0; j < *countryCount; j++) {
+
+			matrix[i][j] = (copy.getMatrix())[i][j];
+		}
+	}
+
+	return *this;
+}
+
 Map::Map(Continent* arr1, int size1, Country* arr2, int size2) {   //size is the length of the arrays
 
 
@@ -292,13 +404,41 @@ Map::~Map() {
 
 Continent::Continent() {
 
-    name = NULL;
-    conquered = NULL;
-    owner = NULL;
-    continentKey = NULL;
-    countryNum = NULL;
+    name = new string;
+    conquered = new bool;
+    owner = new string;
+    continentKey = new int;
+    countryNum = new int;
 
 }
+//copy constructor
+Continent::Continent(const Continent& copy) {
+
+	name = new string(copy.getContinentName());
+	conquered = new bool(copy.getConquered());
+	owner = new string(copy.getOwner());
+	continentKey = new int(copy.getContinentKey());
+	countryNum = new int(copy.getCountryNum());
+
+}
+//overloaded assignment operator
+const Continent& Continent::operator=(const Continent& assign) {
+
+	delete countryNum;
+	delete conquered;
+	delete owner;
+	delete name;
+	delete continentKey;
+
+	name = new string(assign.getContinentName());
+	conquered = new bool(assign.getConquered());
+	owner = new string(assign.getOwner());
+	continentKey = new int(assign.getContinentKey());
+	countryNum = new int(assign.getCountryNum());
+
+	return *this;
+}
+
 
 Continent::Continent(int key, string name, int num) {
 
