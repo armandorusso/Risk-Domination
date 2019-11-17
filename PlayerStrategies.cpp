@@ -224,6 +224,43 @@ void AggressivePlayer::executeFortify(Player *player) {
 
 void AggressivePlayer::executeReinforce(Player *player) {
 
+	player->notify(player, "Reinforcing");
+
+	//std::cout << this->getName() << " is reinforcing..." << std::endl;
+
+	int armiesToExchange = 0;
+
+	//GET ARMIES FOR COUNTRIES
+	armiesToExchange = player->getNumCountries() / 3;
+
+	//Must get minimum 3 armies
+	if (armiesToExchange < 3) {
+		armiesToExchange = 3;
+	}
+
+	//GET ARMIES FROM CONTINENT-CONTROL VALUE
+	armiesToExchange = armiesToExchange + player->checkIfOwnCont();
+
+	//EXCHANGE CARDS FOR ARMIES
+	while (player->getHand()->exchange()) {
+		armiesToExchange = armiesToExchange + *player->getHand()->getNumArmies();
+	}
+
+	//Aggressive Player
+
+	//Get index of country with most armies
+	int strongestCountryIndex = 0;
+	for (int i = 0; i < player->getCountriesObjects()->size(); i++) {
+		if (player->getCountriesObjects()->at(i)->getArmy() > player->getCountriesObjects()->at(strongestCountryIndex)->getArmy()) {
+			strongestCountryIndex = i;
+		}
+	}
+
+	//Distribute all armies to the strongest country
+	player->getCountriesObjects()->at(strongestCountryIndex)->addArmy(armiesToExchange);
+	player->getMap()->getCountryArray()[player->getCountriesObjects()->at(strongestCountryIndex)->getCountryKey()].addArmy(armiesToExchange);
+
+	player->notify(player, "Finished Reinforcing");
 }
 
 void HumanPlayer::executeAttack(Player *player) {
@@ -235,7 +272,90 @@ void HumanPlayer::executeFortify(Player *player) {
 }
 
 void HumanPlayer::executeReinforce(Player *player) {
-    player->reinforce();
+
+	player->notify(player, "Reinforcing");
+
+	//std::cout << this->getName() << " is reinforcing..." << std::endl;
+
+	int armiesToExchange = 0;
+
+	//GET ARMIES FOR COUNTRIES
+	armiesToExchange = player->getNumCountries() / 3;
+
+	//Must get minimum 3 armies
+	if (armiesToExchange < 3) {
+		armiesToExchange = 3;
+	}
+
+	//GET ARMIES FROM CONTINENT-CONTROL VALUE
+	armiesToExchange = armiesToExchange + player->checkIfOwnCont();
+
+	//EXCHANGE CARDS FOR ARMIES
+	while (player->getHand()->exchange()) {
+		armiesToExchange = armiesToExchange + *player->getHand()->getNumArmies();
+	}
+
+	//Human Player
+
+	//Distribute all armies
+	while (armiesToExchange != 0) {
+
+		//Display the number of armies to distribute and a list of owned countries
+		std::cout << std::endl << "You have " << armiesToExchange << " armies left to distribute." << std::endl;
+		std::cout << "Here are the countries you own:" << std::endl;
+
+		for (int i = 0; i < player->getCountriesObjects()->size(); i++) {
+			std::cout << "Country key: " << player->getCountriesObjects()->at(i)->getCountryKey() << ", Armies: " << player->getCountriesObjects()->at(i)->getArmy() << std::endl;
+		}
+
+		//Get the country the player wants to reinforce
+		int chosenKey = 0;
+		std::cout << "Which country do you want to reinforce?" << std::endl;
+		std::cin >> chosenKey;
+
+		//Check if the player owns the chosen country key
+		bool validKey = false;
+		do {
+			for (int i = 0; i < player->getCountriesObjects()->size(); i++) {
+				if (player->getCountriesObjects()->at(i)->getCountryKey() == chosenKey) {
+					validKey = true;
+				}
+			}
+
+			if (!validKey) {
+				std::cout << "Please enter a valid country key." << std::endl;
+				std::cin >> chosenKey;
+			}
+		} while (!validKey);
+
+		//Get the number of armies the player wants to distribute to the chosen country
+		int chosenArmies = 0;
+		std::cout << "You have " << armiesToExchange << " armies left to distribute." << std::endl;
+		std::cout << "How many armies do you want to distribute?" << std::endl;
+		std::cin >> chosenArmies;
+
+		//Validate number of armies input
+		while (chosenArmies > armiesToExchange || chosenArmies < 1) {
+			std::cout << "Please enter a valid number of armies" << std::endl;
+			std::cin >> chosenArmies;
+		}
+
+		//Distribute the armies in the chosen country
+		for (int i = 0; i < player->getCountriesObjects()->size(); i++) {
+			if (player->getCountriesObjects()->at(i)->getCountryKey() == chosenKey) {
+				player->getCountriesObjects()->at(i)->addArmy(chosenArmies);
+				player->getMap()->getCountryArray()[player->getCountriesObjects()->at(i)->getCountryKey()].addArmy(chosenArmies);
+			}
+		}
+
+		//Display how many countries were distributed to which country
+		std::cout << "Distributed " << chosenArmies << " armies to country " << chosenKey << std::endl;
+
+		//Reduce the number of armies left to exchange
+		armiesToExchange = armiesToExchange - chosenArmies;
+	}
+
+	player->notify(player, "Finished Reinforcing");
 }
 
 void BenevolentPlayer::executeAttack(Player *player) {
@@ -325,7 +445,54 @@ void BenevolentPlayer::executeFortify(Player *player) {
 
 void BenevolentPlayer::executeReinforce(Player *player) {
 
-   
+	player->notify(player, "Reinforcing");
+
+	//std::cout << this->getName() << " is reinforcing..." << std::endl;
+
+	int armiesToExchange = 0;
+
+	//GET ARMIES FOR COUNTRIES
+	armiesToExchange = player->getNumCountries() / 3;
+
+	//Must get minimum 3 armies
+	if (armiesToExchange < 3) {
+		armiesToExchange = 3;
+	}
+
+	//GET ARMIES FROM CONTINENT-CONTROL VALUE
+	armiesToExchange = armiesToExchange + player->checkIfOwnCont();
+
+	//EXCHANGE CARDS FOR ARMIES
+	while (player->getHand()->exchange()) {
+		armiesToExchange = armiesToExchange + *player->getHand()->getNumArmies();
+	}
+
+	//Benevolent Player
+
+	//Distribute 1 army at a time to the weakest country
+	int index = 0;
+	while (armiesToExchange != 0) {
+		if (index == player->getCountriesObjects()->size()) {
+			index = 0;
+		}
+
+		//Get the index of the country with the least amount of armies
+		int weakestCountryIndex = 0;
+		for (int i = 0; i < player->getCountriesObjects()->size(); i++) {
+			if (player->getCountriesObjects()->at(i)->getArmy() < player->getCountriesObjects()->at(weakestCountryIndex)->getArmy()) {
+				weakestCountryIndex = i;
+			}
+		}
+
+		//Distribute 1 army to the weakest country
+		player->getCountriesObjects()->at(weakestCountryIndex)->addArmy(1);
+		player->getMap()->getCountryArray()[player->getCountriesObjects()->at(weakestCountryIndex)->getCountryKey()].addArmy(1);
+
+		armiesToExchange--;
+		index++;
+	}
+
+	player->notify(player, "Finished Reinforcing");
 }
 
 

@@ -449,24 +449,66 @@ void Player::reinforce() {
 		armiesToExchange = armiesToExchange + *this->getHand()->getNumArmies();
 	}
 
-	std::cout << "Armies to exchange: " << armiesToExchange << std::endl;
-	std::cout << std::endl;
+	//Human Player
 
-
-	std::cout << "Placing armies in owned countries..." << std::endl;
-	int index = 0;
-
+	//Distribute all armies
 	while (armiesToExchange != 0) {
-		if (index == this->getCountriesObjects()->size()) {
-			index = 0;
+
+		//Display the number of armies to distribute and a list of owned countries
+		std::cout << std::endl << "You have " << armiesToExchange << " armies left to distribute." << std::endl;
+		std::cout << "Here are the countries you own:" << std::endl;
+
+		for (int i = 0; i < this->getCountriesObjects()->size(); i++) {
+			std::cout << "Country key: " << this->getCountriesObjects()->at(i)->getCountryKey() << ", Armies: " << this->getCountriesObjects()->at(i)->getArmy() << std::endl;
 		}
 
-		this->map->getCountryArray()[this->getCountriesObjects()->at(index)->getCountryKey()].addArmy(1);
-		std::cout << "Country " << index << ": " << this->map->getCountryArray()[this->getCountriesObjects()->at(index)->getCountryKey()].getArmy() << std::endl;
+		//Get the country the player wants to reinforce
+		int chosenKey = 0;
+		std::cout << "Which country do you want to reinforce?" << std::endl;
+		std::cin >> chosenKey;
 
-		armiesToExchange--;
-		index++;
+		//Check if the player owns the chosen country key
+		bool validKey = false;
+		do {
+			for (int i = 0; i < this->getCountriesObjects()->size(); i++) {
+				if (this->getCountriesObjects()->at(i)->getCountryKey() == chosenKey) {
+					validKey = true;
+				}
+			}
+
+			if (!validKey) {
+				std::cout << "Please enter a valid country key." << std::endl;
+				std::cin >> chosenKey;
+			}
+		} while (!validKey);
+
+		//Get the number of armies the player wants to distribute to the chosen country
+		int chosenArmies = 0;
+		std::cout << "You have " << armiesToExchange << " armies left to distribute." << std::endl;
+		std::cout << "How many armies do you want to distribute?" << std::endl;
+		std::cin >> chosenArmies;
+
+		//Validate number of armies input
+		while (chosenArmies > armiesToExchange || chosenArmies < 1) {
+			std::cout << "Please enter a valid number of armies" << std::endl;
+			std::cin >> chosenArmies;
+		}
+
+		//Distribute the armies in the chosen country
+		for (int i = 0; i < this->getCountriesObjects()->size(); i++) {
+			if (this->getCountriesObjects()->at(i)->getCountryKey() == chosenKey) {
+				this->getCountriesObjects()->at(i)->addArmy(chosenArmies);
+				this->map->getCountryArray()[this->getCountriesObjects()->at(i)->getCountryKey()].addArmy(chosenArmies);
+			}
+		}
+
+		//Display how many countries were distributed to which country
+		std::cout << "Distributed " << chosenArmies << " armies to country " << chosenKey << std::endl;
+
+		//Reduce the number of armies left to exchange
+		armiesToExchange = armiesToExchange - chosenArmies;
 	}
+
 	notify(this, "Finished Reinforcing");
 }
 
