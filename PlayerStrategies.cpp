@@ -6,7 +6,10 @@
 using namespace std;
 
 
+
 void AggressivePlayer::executeAttack(Player *player) {
+
+    cout << "What's happening" << endl;
     player->notify(player, "Attacking"); //notify observer to show initial state
 
     int attackingCountry; // key for the attacking country
