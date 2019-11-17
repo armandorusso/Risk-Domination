@@ -70,6 +70,10 @@ public:
 	void RollDice(int key);
 	void setNumDice(int numDice);
 
+	Map* const getMap() {
+	    return map;
+	}
+
 	void setIsTurn(bool value);
 	int getHighestRoll() const;
 	bool getIsTurn() const;

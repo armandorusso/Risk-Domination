@@ -6,7 +6,6 @@
 #include "Cards.h"
 
 //error at line 445
-
 using namespace std;
 
 static vector<Player*> players; // Vector containing the players.
@@ -70,6 +69,7 @@ Player::Player(std::string name, Map& map) {
     bool willReinforce = new bool(false);
 }
 
+
 Player::Player(std::string name, Map* map) {
     this->name = new string(name);
     this->dice = new Dice();
@@ -84,6 +84,7 @@ Player::Player(std::string name, Map* map) {
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
 }
+
 
 
 Player::Player(std::string name) {
@@ -438,8 +439,6 @@ void Player::reinforce() {
 
 
 void Player::attack() {
-	this->setIsTurn(true);
-	
 	notify(this, "Attacking"); //notify observer to show initial state
 	
 	formatActionOutput(this->getName() + ": ATTACK PHASE");
@@ -519,7 +518,6 @@ void Player::attack() {
 				cout << "You don't own it!" << endl;
 				continue;
 			}
-
 		} while (!found);
 
 
@@ -530,21 +528,11 @@ void Player::attack() {
 			continue;
 		}
 
-
-
-//
-		//==============================
-		//  PROBLEM STATEMENT : GETCOUNTRYKEYS(int)
-		//==============================
 		if (getCountryFromCountryKey(attackingCountry)->getArmy() < 2) {     //vector out of bounce here for country 1
-            cout << "WTF is going on?" << endl;
 			cout << "You can't attack " << defendingCountry << " with " << attackingCountry << endl;
 			cout << "You don't have enough armies on this country." << endl;
 			continue;
 		}
-
-
-
 
 		//Attacking conditions are met.
 		cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
@@ -669,7 +657,6 @@ void Player::removeCountry(int key) {
 		}
 
 	}
-
 }
 
 
@@ -1054,7 +1041,7 @@ void observerDriver() {
 
 int main(){
 
-    attackDriver();
+    reinforceDriver();
 
 //	observerDriver();
 
