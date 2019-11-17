@@ -498,7 +498,6 @@ void Player::reinforce() {
 		for (int i = 0; i < this->getCountriesObjects()->size(); i++) {
 			if (this->getCountriesObjects()->at(i)->getCountryKey() == chosenKey) {
 				this->getCountriesObjects()->at(i)->addArmy(chosenArmies);
-				this->map->getCountryArray()[this->getCountriesObjects()->at(i)->getCountryKey()].addArmy(chosenArmies);
 			}
 		}
 

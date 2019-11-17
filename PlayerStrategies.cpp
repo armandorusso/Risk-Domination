@@ -258,7 +258,6 @@ void AggressivePlayer::executeReinforce(Player *player) {
 
 	//Distribute all armies to the strongest country
 	player->getCountriesObjects()->at(strongestCountryIndex)->addArmy(armiesToExchange);
-	player->getMap()->getCountryArray()[player->getCountriesObjects()->at(strongestCountryIndex)->getCountryKey()].addArmy(armiesToExchange);
 
 	player->notify(player, "Finished Reinforcing");
 }
@@ -344,7 +343,6 @@ void HumanPlayer::executeReinforce(Player *player) {
 		for (int i = 0; i < player->getCountriesObjects()->size(); i++) {
 			if (player->getCountriesObjects()->at(i)->getCountryKey() == chosenKey) {
 				player->getCountriesObjects()->at(i)->addArmy(chosenArmies);
-				player->getMap()->getCountryArray()[player->getCountriesObjects()->at(i)->getCountryKey()].addArmy(chosenArmies);
 			}
 		}
 
@@ -486,7 +484,6 @@ void BenevolentPlayer::executeReinforce(Player *player) {
 
 		//Distribute 1 army to the weakest country
 		player->getCountriesObjects()->at(weakestCountryIndex)->addArmy(1);
-		player->getMap()->getCountryArray()[player->getCountriesObjects()->at(weakestCountryIndex)->getCountryKey()].addArmy(1);
 
 		armiesToExchange--;
 		index++;
