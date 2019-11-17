@@ -218,6 +218,7 @@ void MainLoop::startLoop() {
 MainLoop::~MainLoop() {
 	startGame = NULL;
 }
+
 /*
 int main() {
 
@@ -260,7 +261,7 @@ int main() {
 
 	playerArr.push_back(p1);
 	playerArr.push_back(p2);
-    playerArr.push_back(p3);
+	playerArr.push_back(p3);
 
 	Game game1(map2, playerArr);
 	MainLoop loop1(game1);
@@ -273,7 +274,6 @@ int main() {
 
 	loop1.startLoop();
 	cout << "ends";
-
 
 }
 */
