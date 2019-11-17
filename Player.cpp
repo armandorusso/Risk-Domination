@@ -92,6 +92,25 @@ Player::Player(std::string name) {
 	totalArmy = new int(0);
 }
 
+Player::Player(const Player &r) {
+    this->dice = new Dice(*r.getDice());
+    this->isTurn = new bool(r.getIsTurn());
+
+    this->countries = new vector<Country*>();
+    map = NULL;
+
+    this->numberOfCountries = new int(*r.numberOfCountries);
+    this->handOfCards = new Hand(*r.getHand());
+    this->totalArmy = new int(*r.totalArmy);
+    numberOfContinent = new int(*r.numberOfContinent);
+
+
+
+    countriesKey = new vector<int>();
+    continentOwned = new vector<Continent*>;
+
+}
+
 
 
 //Destructor for Player Class.
@@ -837,7 +856,7 @@ void printArmiesFromCountries(int c1, int c2) {
 
 
 
-//Assignment Opeartor
+//Assignment Operator
 const Player& Player::operator=(const Player& r) {
     if(&r != this) {
 
