@@ -5,10 +5,15 @@
 
 using namespace std;
 
+
+//====================================
+//AGGRESSIVE PLAYER:
+// An aggressive player reinforces its strongest country,
+// always attacks with it and then always fortifies it.
+//====================================
+
 void AggressivePlayer::executeAttack(Player *player) {
     player->notify(player, "Attacking"); //notify observer to show initial state
-
-
 
     int attackingCountry = -1; // key for the attacking country
     int defendingCountry = -1; // key for the defending country
@@ -16,10 +21,12 @@ void AggressivePlayer::executeAttack(Player *player) {
     int countryKeyMax = -1;
     Country* maxArmyCountry = NULL;
 
+    //Vector of countries that the player does not own which are
+    //neighbours of the attacking country.
     vector<int> attackableAdjacentCountries;
 
-
-
+    //Continue the loop until the country with the most armies has less than 2 armies, or until it can't
+    //attack any more of its neighbours.
     do {
         Country* arrayCountry = player->getMap()->getCountryArray();
         vector<int> attackableCountries = player->getAttackableCountries(player->getMap());
@@ -34,7 +41,7 @@ void AggressivePlayer::executeAttack(Player *player) {
 
         cout << endl;
 
-
+        //Finding the country that the player owns, which has the most number of armies.
         for(int i = 0; i< player->getNumOfCountries(); i++) {
             if(player->getCountriesObjects()->at(i)->getArmy() > maxArmy) {
                 maxArmy = player->getCountriesObjects()->at(i)->getArmy();
@@ -42,9 +49,8 @@ void AggressivePlayer::executeAttack(Player *player) {
             }
         }
 
-        //Always attacking with this country
-        vector<int> neighbours;
-        Country* maxArmyCountry = getCountryFromCountryKey(countryKeyMax);
+        vector<int> neighbours; //Neighbours of the country
+        Country* maxArmyCountry = getCountryFromCountryKey(countryKeyMax); //Always attacking with this country
         int countryKey = maxArmyCountry->getCountryKey();
 
         for(int i = 0; i< maxArmyCountry->getNeighbourNum(); i++) {
@@ -77,7 +83,6 @@ void AggressivePlayer::executeAttack(Player *player) {
         defendingCountry = attackableAdjacentCountries[distribution(generator)];
 
         //Attacking a country now:
-
         //Attacking conditions are met.
         cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
 
@@ -145,15 +150,14 @@ void AggressivePlayer::executeAttack(Player *player) {
         //more values are not pushed in.
         player->getDice()->getCurrentRoll()->clear();
         defendingPlayer->getDice()->getCurrentRoll()->clear();
-
+        attackableAdjacentCountries.clear();
+        neighbours.clear();
     }while(maxArmyCountry->getArmy() >= 2);
 
-
     player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
-
 }
  
-//------------------------------agressive fortify
+//------------------------------aggressive fortify
 void AggressivePlayer::executeFortify(Player *player) {
 
 	player->notify(player, "Fortifying");  //notify observer at start of reinforece
@@ -188,7 +192,6 @@ void AggressivePlayer::executeFortify(Player *player) {
 			countryTakingFrom = player->getCountriesObjects()->at(i)->getCountryKey();
 			break;
 		}
-
 	}
 
 	//can move armies
@@ -201,8 +204,8 @@ void AggressivePlayer::executeFortify(Player *player) {
 
 	}
 	player->notify(player, "Finished Fortifying");  //showing updated values.
-
 }
+
 
 void AggressivePlayer::executeReinforce(Player *player) {
 
@@ -243,6 +246,10 @@ void AggressivePlayer::executeReinforce(Player *player) {
 
 	player->notify(player, "Finished Reinforcing");
 }
+
+//=================
+//HUMAN PLAYER
+//=================
 
 void HumanPlayer::executeAttack(Player *player) {
     player->attack();
@@ -338,6 +345,9 @@ void HumanPlayer::executeReinforce(Player *player) {
 	player->notify(player, "Finished Reinforcing");
 }
 
+//=================
+//BENEVOLENT PLAYER
+//=================
 void BenevolentPlayer::executeAttack(Player *player) {
 
 	player->notify(player, "Attacking"); //notify observer to show initial state
@@ -366,7 +376,6 @@ void BenevolentPlayer::executeAttack(Player *player) {
 	cout << "No" << endl;
 
 	player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
-
 }
 
 void BenevolentPlayer::executeFortify(Player *player) {
@@ -395,7 +404,7 @@ void BenevolentPlayer::executeFortify(Player *player) {
 			countryKeyMax = player->getCountriesObjects()->at(i)->getCountryKey();
 		}
 	}
-	//getting country that has samllest army
+	//getting country that has smallest army
 	for (int i = 0; i < player->getNumOfCountries(); i++) {
 
 		if (player->getCountriesObjects()->at(i)->getArmy() < minArmy && player->getCountriesObjects()->at(i)->getCountryKey() != countryKeyMax) {

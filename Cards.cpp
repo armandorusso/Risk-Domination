@@ -24,6 +24,7 @@ Hand::Hand(const Hand &h2) {
 	*cards = *h2.cards;
 	*numArmies = *h2.numArmies;
 }
+
 //Assignment operator
 Hand& Hand::operator=(const Hand& h2) {
 	Hand::operator=(h2);
