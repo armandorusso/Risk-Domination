@@ -5,10 +5,12 @@
 
 using namespace std;
 
+
+//=================
+//AGGRESSIVE PLAYER
+//=================
 void AggressivePlayer::executeAttack(Player *player) {
     player->notify(player, "Attacking"); //notify observer to show initial state
-
-
 
     int attackingCountry = -1; // key for the attacking country
     int defendingCountry = -1; // key for the defending country
@@ -17,7 +19,6 @@ void AggressivePlayer::executeAttack(Player *player) {
     Country* maxArmyCountry = NULL;
 
     vector<int> attackableAdjacentCountries;
-
 
 
     do {
@@ -148,12 +149,10 @@ void AggressivePlayer::executeAttack(Player *player) {
 
     }while(maxArmyCountry->getArmy() >= 2);
 
-
     player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
-
 }
  
-//------------------------------agressive fortify
+//------------------------------aggressive fortify
 void AggressivePlayer::executeFortify(Player *player) {
 
 	player->notify(player, "Fortifying");  //notify observer at start of reinforece
@@ -243,6 +242,11 @@ void AggressivePlayer::executeReinforce(Player *player) {
 
 	player->notify(player, "Finished Reinforcing");
 }
+
+
+//=================
+//HUMAN PLAYER
+//=================
 
 void HumanPlayer::executeAttack(Player *player) {
     player->attack();
@@ -338,6 +342,9 @@ void HumanPlayer::executeReinforce(Player *player) {
 	player->notify(player, "Finished Reinforcing");
 }
 
+//=================
+//BENEVOLENT PLAYER
+//=================
 void BenevolentPlayer::executeAttack(Player *player) {
 
 	player->notify(player, "Attacking"); //notify observer to show initial state
@@ -366,7 +373,6 @@ void BenevolentPlayer::executeAttack(Player *player) {
 	cout << "No" << endl;
 
 	player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
-
 }
 
 void BenevolentPlayer::executeFortify(Player *player) {

@@ -1177,6 +1177,70 @@ void testStrategy() {
 	p2->fortifyUsingStrategy();//benevolant fortify
 }
 
+void testStrategyAttack() {
+    int numCountry = 5;
+    int numContinent = 2;
+
+    Continent* cont1 = new Continent();
+    Continent* cont2 = new Continent();
+    Continent* continentArray = new Continent[2];
+    continentArray[0] = *cont1;
+    continentArray[1] = *cont2;
+
+    int varr0[3] = { 1,3,4 };
+    int varr1[2] = { 2,3 };
+    int varr2[2] = { 4,1 };
+    int varr3[2] = { 0,2 };
+    int varr4[2] = { 1,3 };
+
+    Country* vc0 = new Country("c0", 0, varr0, 1, 3);       //name,key,array of neighbor key
+    Country* vc1 = new Country("c1", 1, varr1, 1, 2);
+    Country* vc2 = new Country("c2", 2, varr2, 1, 2);
+    Country* vc3 = new Country("c3", 3, varr3, 2, 2);
+    Country* vc4 = new Country("c4", 4, varr4, 2, 2);
+
+    Country* varrayCountry = new Country[5];
+    varrayCountry[0] = *vc0;
+    varrayCountry[1] = *vc1;
+    varrayCountry[2] = *vc2;
+    varrayCountry[3] = *vc3;
+    varrayCountry[4] = *vc4;
+
+    AggressivePlayer* aggressiveAttack = new AggressivePlayer();
+    BenevolentPlayer* benevolentAttack = new BenevolentPlayer();
+
+    Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
+
+    Player* player1 = new Player("Christopher", *map2, aggressiveAttack);
+    Player* player2 = new Player("Peter", *map2, benevolentAttack);
+
+    players.push_back(player1);
+    players.push_back(player2);
+
+    //testing observer
+    vector<gameView*>* vectPlayer = new vector<gameView*>;
+    vectPlayer->push_back(player1);
+    vectPlayer->push_back(player2);
+    gameObserver* obs = new gameObserver(*vectPlayer);
+
+    //Setting the adjacency matrix
+    map2->setMatrix();
+
+    player1->addCountry(vc0);
+    player1->addCountry(vc1);
+    player2->addCountry(vc2);
+    player2->addCountry(vc3);
+    player2->addCountry(vc4);
+
+    vc0->addArmy(5);
+    vc1->addArmy(5);
+    vc2->addArmy(5);
+    vc3->addArmy(5);
+    vc4->addArmy(5);
+
+    player1->attack();
+}
+
 int main(){
 //
 //   attackDriver();
@@ -1186,7 +1250,5 @@ int main(){
 
 cout << "Hello world!" << endl;
 
-
-
 //	return 0;
-//}
+}
