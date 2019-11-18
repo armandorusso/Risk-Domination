@@ -3,7 +3,6 @@
 #include <fstream>
 #include <cstdlib> //for exit function
 #include <vector>
-#include <regex>
 #include <sstream>
 #include "MapLoader.h"
 
@@ -11,7 +10,7 @@
 using namespace std;
 
 //constructors and destructors
-FetchMap::FetchMap() {
+MapLoader::MapLoader() {
 	continentName = new string();
 	armyValue = new int(0);
 	color = new string();
@@ -24,7 +23,7 @@ FetchMap::FetchMap() {
 	countryNeighbour = new int(0); //the neighbour country
 }
 
-FetchMap::~FetchMap() {
+MapLoader::~MapLoader() {
 
 	delete continentName, armyValue, color, countryNum, continentNum, x, y, countryKey, countryNeighbour;
 	continentName, armyValue, color, countryNum, continentNum, x, y, countryKey, countryNeighbour = NULL;
@@ -79,14 +78,14 @@ dummyCountry::dummyCountry() {
 	countryNam = new string();
 	countryNum = new int();
 	continentNum = new int();
-
+	
 }
 
 dummyCountry::dummyCountry(string name, int countryN, int continentN) {
 	countryNam = new string(name);
 	countryNum = new int(countryN);
 	continentNum = new int(continentN);
-
+	
 
 }
 
@@ -96,13 +95,13 @@ dummyCountry::dummyCountry(const dummyCountry& cont) {
 	countryNum = new int(cont.getCountryNum());
 	countryNam = new string(cont.getCountryName());
 	continentNum = new int(cont.getContinentNum());
-
+	
 }
 
 dummyCountry::~dummyCountry() {
 	delete countryNam, countryNum, continentNum;
 	countryNam, countryNum, continentNum = NULL;
-
+	
 }
 
 dummyContinent::dummyContinent() {
@@ -133,7 +132,7 @@ dummyContinent::~dummyContinent() {
 }
 
 
-Map* FetchMap::getFileData(string fileName) {
+Map* MapLoader::getFileData(string fileName) {
 	ifstream readMap;
 	readMap.open(fileName);
 	vector<Continent*> continentArr;
@@ -148,7 +147,7 @@ Map* FetchMap::getFileData(string fileName) {
 	}
 	string word;
 
-	FetchMap obj;
+	MapLoader obj;
 	vector<dummyCountry*> allCountries;
 
 	while (readMap >> word) {
@@ -173,14 +172,14 @@ Map* FetchMap::getFileData(string fileName) {
 				try {
 
 					Continent* continent = new Continent(i, *obj.continentName, *obj.armyValue);
-					continentArr.push_back(continent);
+					continentArr.push_back(continent); 
 
 				}
 
 				catch (exception e) {
 					cout << e.what();
 				}
-
+				
 			}
 
 		}
@@ -189,56 +188,56 @@ Map* FetchMap::getFileData(string fileName) {
 		//reading and initializing countries
 
 		if (word == "[countries]") {
-			FetchMap obj2;
+			MapLoader obj2;
 			int i = 0;
 			while (readMap >> word && word != "[borders]" && readMap >> *obj2.countryName >> *obj2.continentNum >> *obj2.x >> *obj2.y) {
 
 				*obj2.countryNum = stoi(word);
 				*obj2.countryNum -= 1;
-
+				
 
 				if (*obj2.countryNum < 0 || obj2.countryName == NULL || *obj2.continentNum < 0 || *obj2.x < 0 || *obj2.y < 0) {
 					cout << "This is not the correct file format. Stopped at \"countries\". Please try another file";
 					readMap.close();
 					return NULL;
 				}
-				//since we can only know the neighbours after reading the countries,
-				//we will not make a neighbour array. Once we get to "borders",
+				//since we can only know the neighbours after reading the countries, 
+				//we will not make a neighbour array. Once we get to "borders", 
 				//we will initiliaze this array using a method
 
 				dummyCountry* country = new dummyCountry(*obj2.countryName, *obj2.countryNum, *obj2.continentNum);
 				allCountries.push_back(country);
 
-
+				
 			}
 
 		}
 
 
 		//reading and initiliazing neighbours
-
+		
 		if (word == "[borders]") {
-			FetchMap obj3;
+			MapLoader obj3;
 			string line;
 			string dummyLine;
 			readMap.get();
-
+			
 
 			while (getline(readMap, line, '\n')) {
-
-
+				
+								
 				string theInts;
 				int countryValue = 1;
 				vector<int> neighbourArr;
 				stringstream stream(line);
-
+				
 				while (!(stream.eof()) && stream >> theInts) {
-
+					
 
 					if (position == 0) {
 						countryValue = stoi(theInts);
 						position++;
-
+					
 
 					}
 
@@ -247,19 +246,19 @@ Map* FetchMap::getFileData(string fileName) {
 						neighbourArr.push_back((oneNeigh - 1));
 
 					}
-
+				
 				}
 
 					Country* country = new Country(allCountries.at((countryValue - 1))->getCountryName(), allCountries.at((countryValue - 1))->getCountryNum(), neighbourArr, allCountries.at((countryValue - 1))->getContinentNum(), neighbourArr.size());
 					countryArr.push_back(country);
 					position = 0;
-
-
+				
+					
 			}
-
+			
 		}
 
-
+		
 	}
 
 	readMap.close();
@@ -273,8 +272,13 @@ Map* FetchMap::getFileData(string fileName) {
 	completeMap->printMatrix();
 	completeMap->checkMap();
 
-
+	
 	return completeMap;
 }
 
+Map* MapLoader::returnMap(const vector<Continent*>& continents, const vector<Country*>& countries) {
 
+	Map* theMap = new Map(countries, continents);
+	return theMap;
+
+}
