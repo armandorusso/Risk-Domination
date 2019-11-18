@@ -172,7 +172,8 @@ void AggressivePlayer::executeAttack(Player *player) {
     player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
 
 }
-
+ 
+//------------------------------agressive fortify
 void AggressivePlayer::executeFortify(Player *player) {
 
 	player->notify(player, "Fortifying");  //notify observer at start of reinforece
@@ -188,9 +189,10 @@ void AggressivePlayer::executeFortify(Player *player) {
 	}
 
 	int maxArmy = 0;
-	int countryKeyMax = -1;
-	int countryTakingFrom = -1;
+	int countryKeyMax = -1;              //holds key of country with max army
+	int countryTakingFrom = -1;          //holds key of country of any other country with less army
 
+	//getting max army
 	for (int i = 0; i < player->getNumOfCountries(); i++) {
 
 		if (player->getCountriesObjects()->at(i)->getArmy() > maxArmy) {
@@ -209,7 +211,7 @@ void AggressivePlayer::executeFortify(Player *player) {
 
 	}
 
-	//can move country
+	//can move armies
 	if (countryTakingFrom != -1 && countryKeyMax != -1) {
 
 		int army = arrayCountry[countryTakingFrom].getArmy();
@@ -218,7 +220,7 @@ void AggressivePlayer::executeFortify(Player *player) {
 		arrayCountry[countryKeyMax].addArmy(army - 1);
 
 	}
-	player->notify(player, "Finished Fortifying");
+	player->notify(player, "Finished Fortifying");  //showing updated values.
 
 }
 

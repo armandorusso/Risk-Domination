@@ -294,14 +294,17 @@ void Player::showDiceValuePercentage() {
 
 void Player::attackDemo() {
 	cout << "Player is attacking..." << endl;
+	
 }
 
 void Player::fortifyDemo() {
 	cout << "Player is fortifying..." << endl;
+	
 }
 
 void Player::reinforceDemo() {
 	cout << "Player is reinforcing..." << endl;
+	
 }
 
 //=================================================
@@ -1174,12 +1177,14 @@ void testStrategy() {
 	p2->fortifyUsingStrategy();//benevolant fortify
 }
 
-int main(){
+//int main(){
 
   // attackDriver();
 	//fortifyDriver();
 	//observerDriver();
-	testStrategy();
+	//testStrategy();
 
-	return 0;
-}
+
+
+//	return 0;
+//}

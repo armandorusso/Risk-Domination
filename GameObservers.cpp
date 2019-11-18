@@ -172,7 +172,7 @@ void statsObserver::Update(vector<Player*> *players, Map *map) {
 	display(players, map);
 }
 
-void statsObserver::Update(Player* player, string phase) {}
+void statsObserver::Update(Player& player, string phase) {}
 
 void statsObserver::display(vector<Player*> *players, Map *map) {
 	//Display player progression

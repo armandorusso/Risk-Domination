@@ -76,7 +76,7 @@ public:
 	//Assignment operator
 	statsObserver& operator=(const statsObserver &s2);
 	void Update(vector<Player*> *players, Map *map);    //overriden update method
-	void Update(Player* player, string phase);
+	void Update(Player& player, string phase);
 	void display(vector<Player*>* players, Map *map);
 
 

@@ -219,7 +219,7 @@ MainLoop::~MainLoop() {
 	startGame = NULL;
 }
 
-/*
+
 int main() {
 
 	//creating array of countries
@@ -276,4 +276,3 @@ int main() {
 	cout << "ends";
 
 }
-*/
