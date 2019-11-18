@@ -71,13 +71,9 @@ public:
 	dummyMaps(const dummyMaps& map);
 	~dummyMaps();
 
-
-
-	void printMap();
-
 };
 
-class FetchMap {
+class MapLoader {
 
 public:
 	string* continentName;
@@ -93,8 +89,8 @@ public:
 
 
 
-	FetchMap(); //for the constructor, let the parameter be a file name and open the stream in the constructor
-	~FetchMap();
+	MapLoader(); //for the constructor, let the parameter be a file name and open the stream in the constructor
+	~MapLoader();
 
 	//getters and setters
 	string getContinentName() { return *continentName; };
@@ -111,7 +107,8 @@ public:
 	void setContinentName(string name) { *continentName = name; };
 
 	//methods
-	Map* getFileData(string fileName); //reads the file and initializes the objects
+	virtual Map* getFileData(string fileName); //reads the file and initializes the objects
+	Map* returnMap(const vector<Continent*>& continents, const vector<Country*>& countries);
 };
 
 
