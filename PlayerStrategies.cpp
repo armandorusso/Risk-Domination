@@ -2,9 +2,24 @@
 #include "PlayerStrategies.h"
 #include "Player.h"
 #include <random>
+#include <vector>
 
 using namespace std;
 
+//Prints the contents of a vector of integers.
+void printVectorInt(vector<int> vector) {
+
+    if (vector.size() != 0) {
+
+        for (int i = 0; i < vector.size(); i++) {
+            cout << vector[i] << endl;
+        }
+
+    }
+    else {
+        cout << "Nothing to print..." << endl;
+    }
+}
 
 //====================================
 //AGGRESSIVE PLAYER:
@@ -14,6 +29,8 @@ using namespace std;
 
 void AggressivePlayer::executeAttack(Player *player) {
     player->notify(player, "Attacking"); //notify observer to show initial state
+
+    player->setIsTurn(true);
 
     int attackingCountry = -1; // key for the attacking country
     int defendingCountry = -1; // key for the defending country
@@ -35,22 +52,26 @@ void AggressivePlayer::executeAttack(Player *player) {
         cout << "Countries you own" << endl;
         cout << "=========================" << endl;
 
-        for(int i = 0; i< player->getCountryKeys().size(); i++) {
-            cout <<player->getCountryKeys().at(i) << endl;
-        }
+
+        printVectorInt(player->getCountryKeys());
 
         cout << endl;
 
         //Finding the country that the player owns, which has the most number of armies.
         for(int i = 0; i< player->getNumOfCountries(); i++) {
-            if(player->getCountriesObjects()->at(i)->getArmy() > maxArmy) {
+            if(player->getCountriesObjects()->at(i)->getArmy() >= maxArmy) {
                 maxArmy = player->getCountriesObjects()->at(i)->getArmy();
                 countryKeyMax = player->getCountriesObjects()->at(i)->getCountryKey();
             }
         }
 
+
+        cout << "Country key with max armies: " << countryKeyMax << endl;
+        cout << "Max Armies: " << maxArmy << endl;
+        cout << endl;
+
         vector<int> neighbours; //Neighbours of the country
-        Country* maxArmyCountry = getCountryFromCountryKey(countryKeyMax); //Always attacking with this country
+        maxArmyCountry = getCountryFromCountryKey(countryKeyMax); //Always attacking with this country
         int countryKey = maxArmyCountry->getCountryKey();
 
         for(int i = 0; i< maxArmyCountry->getNeighbourNum(); i++) {
@@ -61,39 +82,38 @@ void AggressivePlayer::executeAttack(Player *player) {
             vector<int>::iterator it = std::find(attackableCountries.begin(), attackableCountries.end(), neighbours[i]);
 
             if (it != attackableCountries.end()) {
-                attackableAdjacentCountries.push_back(maxArmyCountry->getNeighbours()[i]);
+                attackableAdjacentCountries.push_back(neighbours[i]);
             }
         }
 
-        if(attackableAdjacentCountries.size() == 0) {
-            cout << "You can't attack any countries" << endl;
-            break;
-        }
+        cout << "Country with the most amount of armies: " << maxArmyCountry->getName() << endl;
 
         cout << "=========================" << endl;
-        cout << "Countries you can attack with " << countryKeyMax << endl;
+        cout << "Countries you can attack with " << maxArmyCountry->getName() << endl;
         cout << "=========================" << endl;
 
+        printVectorInt(attackableAdjacentCountries);
 
         //Generating random number between 0 and the size of the attackable adjacent countries vector.
         std::random_device r;
         std::default_random_engine generator(r());
-        std::uniform_int_distribution<int> distribution(0, attackableAdjacentCountries.size());
+        std::uniform_int_distribution<int> distribution(0, attackableAdjacentCountries.size()-1);
 
         defendingCountry = attackableAdjacentCountries[distribution(generator)];
 
+
         //Attacking a country now:
         //Attacking conditions are met.
-        cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
+        cout << "Attacking " << defendingCountry << " with " << countryKeyMax << endl << endl;
 
         Player* defendingPlayer = getPlayerFromCountryKey(defendingCountry);
+        Player* attackingPlayer = getPlayerFromCountryKey(maxArmyCountry->getCountryKey());
 
-        //printArmiesFromCountries(attackingCountry, defendingCountry);
+        printArmiesFromCountries(maxArmyCountry->getCountryKey(), defendingCountry);
 
         //Time to roll the dice for the attacking and defending player.
-        player->RollDice(attackingCountry);
-
-        defendingPlayer->RollDice(defendingCountry);
+        player->RollDice(maxArmyCountry->getCountryKey(), 0);
+        defendingPlayer->RollDice(defendingCountry, 0);
 
         // Displays the rolls of each player.
         ::displayRoll(*player, *defendingPlayer);
@@ -101,17 +121,19 @@ void AggressivePlayer::executeAttack(Player *player) {
         //If attacking player rolls greater than defending player, defending player loses army. Otherwise, attacking country loses army.
         if (::compareRolls(player, defendingPlayer)) {
             loseArmy(defendingCountry);
+            defendingPlayer->subtractArmy(1);
         }
         else {
-            loseArmy(attackingCountry);
+            loseArmy(maxArmyCountry->getCountryKey());
+            attackingPlayer->subtractArmy(1);
         }
+
+        Country* dCountry = getCountryFromCountryKey(defendingCountry);
+        Country* aCountry = getCountryFromCountryKey(maxArmyCountry->getCountryKey());
 
         //If attacking results in 0 armies for the defending player, attacking player adds that country to their list of countries. Defending country is removed
         //from defending player.
-        if (getCountryFromCountryKey(defendingCountry)->getArmy() == 0) {
-
-            Country* dCountry = getCountryFromCountryKey(defendingCountry);
-            Country* aCountry = getCountryFromCountryKey(attackingCountry);
+        if (dCountry->getArmy() == 0) {
 
             player->addCountry(dCountry);
             ::removeCountry(dCountry, defendingPlayer);
@@ -140,11 +162,15 @@ void AggressivePlayer::executeAttack(Player *player) {
             else {
                 cout << "You don't have enough armies to transfer. " << endl;
             }
+
+
+
+
             //Updating the attackableCountries vector.
             attackableCountries = player->getAttackableCountries(player->getMap());
         }
 
-        printArmiesFromCountries(attackingCountry, defendingCountry);
+        printArmiesFromCountries(maxArmyCountry->getCountryKey(), defendingCountry);
 
         //Clearing the currentRoll values in the dice objects, so that
         //more values are not pushed in.
@@ -153,7 +179,7 @@ void AggressivePlayer::executeAttack(Player *player) {
         attackableAdjacentCountries.clear();
         neighbours.clear();
     }while(maxArmyCountry->getArmy() >= 2);
-
+    cout << "You don't have enough armies to attack with." << endl;
     player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
 }
  
@@ -351,6 +377,8 @@ void HumanPlayer::executeReinforce(Player *player) {
 void BenevolentPlayer::executeAttack(Player *player) {
 
 	player->notify(player, "Attacking"); //notify observer to show initial state
+
+	player->setIsTurn(true);
 
 	vector<int> attackableCountries = player->getAttackableCountries(player->getMap());
 
