@@ -294,17 +294,17 @@ void Player::showDiceValuePercentage() {
 
 void Player::attackDemo() {
 	cout << "Player is attacking..." << endl;
-	
+
 }
 
 void Player::fortifyDemo() {
 	cout << "Player is fortifying..." << endl;
-	
+
 }
 
 void Player::reinforceDemo() {
 	cout << "Player is reinforcing..." << endl;
-	
+
 }
 
 //=================================================
@@ -1164,7 +1164,7 @@ void testStrategy() {
 	p1->addCountry(vc2);
 	p2->addCountry(vc3);
 	p2->addCountry(vc4);
-    
+
 	vc0->addArmy(5);
 	vc1->addArmy(2);
 	vc2->addArmy(2);
@@ -1177,12 +1177,14 @@ void testStrategy() {
 	p2->fortifyUsingStrategy();//benevolant fortify
 }
 
-//int main(){
+int main(){
+//
+//   attackDriver();
+//	fortifyDriver();
+//	observerDriver();
+//	testStrategy();
 
-  // attackDriver();
-	//fortifyDriver();
-	//observerDriver();
-	//testStrategy();
+cout << "Hello world!" << endl;
 
 
 

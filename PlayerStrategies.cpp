@@ -5,26 +5,24 @@
 
 using namespace std;
 
-
-
 void AggressivePlayer::executeAttack(Player *player) {
-
-    cout << "What's happening" << endl;
     player->notify(player, "Attacking"); //notify observer to show initial state
+
+
 
     int attackingCountry = -1; // key for the attacking country
     int defendingCountry = -1; // key for the defending country
     int maxArmy = 0;
-    int countryKeyMax;
-    Country* maxArmyCountry =NULL;
+    int countryKeyMax = -1;
+    Country* maxArmyCountry = NULL;
 
     vector<int> attackableAdjacentCountries;
+
+
 
     do {
         Country* arrayCountry = player->getMap()->getCountryArray();
         vector<int> attackableCountries = player->getAttackableCountries(player->getMap());
-
-
 
         cout << "=========================" << endl;
         cout << "Countries you own" << endl;
@@ -49,8 +47,6 @@ void AggressivePlayer::executeAttack(Player *player) {
         Country* maxArmyCountry = getCountryFromCountryKey(countryKeyMax);
         int countryKey = maxArmyCountry->getCountryKey();
 
-
-        //Can only attack these countries IF attacking country has
         for(int i = 0; i< maxArmyCountry->getNeighbourNum(); i++) {
             neighbours.push_back(maxArmyCountry->getNeighbours()[i]);
         }
@@ -72,24 +68,20 @@ void AggressivePlayer::executeAttack(Player *player) {
         cout << "Countries you can attack with " << countryKeyMax << endl;
         cout << "=========================" << endl;
 
+
+        //Generating random number between 0 and the size of the attackable adjacent countries vector.
         std::random_device r;
         std::default_random_engine generator(r());
         std::uniform_int_distribution<int> distribution(0, attackableAdjacentCountries.size());
 
+        defendingCountry = attackableAdjacentCountries[distribution(generator)];
 
-        if(attackableAdjacentCountries.size() != 0) {
-            defendingCountry = attackableAdjacentCountries[distribution(generator)];
-        }else {
-            //attack phase() over...
-        }
-
-        //Now time to attack the defending country...
+        //Attacking a country now:
 
         //Attacking conditions are met.
         cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
 
         Player* defendingPlayer = getPlayerFromCountryKey(defendingCountry);
-        Player* attackingPlayer = getPlayerFromCountryKey(attackingCountry);
 
         //printArmiesFromCountries(attackingCountry, defendingCountry);
 
@@ -99,7 +91,7 @@ void AggressivePlayer::executeAttack(Player *player) {
         defendingPlayer->RollDice(defendingCountry);
 
         // Displays the rolls of each player.
-        ::displayRoll(*attackingPlayer, *defendingPlayer);
+        ::displayRoll(*player, *defendingPlayer);
 
         //If attacking player rolls greater than defending player, defending player loses army. Otherwise, attacking country loses army.
         if (::compareRolls(player, defendingPlayer)) {
@@ -143,7 +135,6 @@ void AggressivePlayer::executeAttack(Player *player) {
             else {
                 cout << "You don't have enough armies to transfer. " << endl;
             }
-
             //Updating the attackableCountries vector.
             attackableCountries = player->getAttackableCountries(player->getMap());
         }
@@ -156,17 +147,6 @@ void AggressivePlayer::executeAttack(Player *player) {
         defendingPlayer->getDice()->getCurrentRoll()->clear();
 
     }while(maxArmyCountry->getArmy() >= 2);
-
-
-
-    //Now that I have the attackable neighbours, now I can choose who to attack.
-
-    //Continue attacking while this country has >= 2 armies && has attackable neighbours
-
-    //update attackable() countries...
-
-
-    //If size of attackableAdjacentCountries is 0, turn is finished.
 
 
     player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
@@ -387,12 +367,9 @@ void BenevolentPlayer::executeAttack(Player *player) {
 
 	player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
 
-
-
 }
 
 void BenevolentPlayer::executeFortify(Player *player) {
-
 
 	player->notify(player, "Fortifying");  //notify observer at start of reinforece
 
@@ -438,9 +415,6 @@ void BenevolentPlayer::executeFortify(Player *player) {
 
 	}
 	player->notify(player, "Finished Fortifying");
-
-
-
 }
 
 void BenevolentPlayer::executeReinforce(Player *player) {
@@ -494,34 +468,6 @@ void BenevolentPlayer::executeReinforce(Player *player) {
 	player->notify(player, "Finished Reinforcing");
 }
 
-
 int stratDriver() {
     return 0;
 }
-
-//Driver should demonstrate:
-
-//Different players can be assigned different strategies.
-//Should be able to switch between these strategies at any time.
-
-//Notes:
-/*
- * Add Strategy Object to Player class
- * Private:
- *  Strategy *strategy;
- *
- *
- *
- * Public:
- *
- * void setStrategy() {
- *
- * }
- *
- * int executeStrategy() {
- * return this->strategy->execute();
- *
- * void setStrategy(Strategy *newStrategy) {
- * this->strategy = newStrategy
- * }
- */
