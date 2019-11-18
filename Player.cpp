@@ -1008,10 +1008,8 @@ void attackDriver() {
 
 	Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
 
-	Player* player1 = new Player("Christopher", *map2);
+	Player* player1 = new Player("Christopher", *map2, new HumanPlayer());
 	Player* player2 = new Player("Peter", *map2);
-
-
 
 	players.push_back(player1);
 	players.push_back(player2);
@@ -1242,7 +1240,7 @@ void testStrategyAttack() {
 }
 
 int main(){
-//
+
 //   attackDriver();
 //	fortifyDriver();
 //	observerDriver();
@@ -1251,4 +1249,6 @@ int main(){
 cout << "Hello world!" << endl;
 
 //	return 0;
+
+
 }
