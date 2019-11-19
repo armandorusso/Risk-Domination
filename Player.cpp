@@ -222,6 +222,37 @@ void Player::RollDice(int countryKey) {
 	this->getDice()->Roll();
 }
 
+//This method takes in a country key representing either an attacking or defending country.
+//If the country is an attacker, it can only roll 1-3 dice, the max being the amount of armies on the country - 1.
+//If the country is a defender, it can only roll 1-2 dice, the max being the amount of armies on the country.
+//This method calls the Roll() method of the Player's Dice Object.
+void Player::RollDice(int countryKey, int randomNum) {
+    int numDice = 0;
+    Country* country = getCountryFromCountryKey(countryKey);
+
+    int diceMax = country->getArmy() - 1;
+
+    if (this->getIsTurn()) {
+        if (diceMax >= 3) {
+            setNumDice(3);
+        }
+        else {
+            setNumDice(diceMax);
+        }
+    }
+    else {
+        diceMax += 1;
+        if (diceMax >= 2) {
+            setNumDice(2);
+        }
+        else {
+            setNumDice(1);
+        }
+    }
+
+    this->getDice()->Roll();
+}
+
 //This method prints the rolls of each player object side by side.
 //It also displays the highest roll of each player in the given turn.
 
@@ -517,6 +548,8 @@ void Player::reinforce() {
 
 void Player::attack() {
 	notify(this, "Attacking"); //notify observer to show initial state
+
+	this->setIsTurn(true);
 
 	formatActionOutput(this->getName() + ": ATTACK PHASE");
 
@@ -1035,7 +1068,11 @@ void attackDriver() {
 	vc3->addArmy(5);
 	vc4->addArmy(5);
 
-	player1->attack();
+    for(int i = 0; i< player1->getCountriesObjects()->size(); i++) {
+        player1->addArmy(player1->getCountriesObjects()->at(i)->getArmy());
+    }
+
+	player1->attackUsingStrategy();
 }
 
 
@@ -1122,7 +1159,7 @@ void testStrategy() {
 	int varr4[3] = { 1,3 };
 
 	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
-	Country* vc1 = new Country("c1", 1, varr1, 1, 3);
+	Country* vc1 = new Country("c1", 1, varr1, 2, 3);
 	Country* vc2 = new Country("c2", 2, varr2, 1, 3);
 	Country* vc3 = new Country("c3", 3, varr3, 2, 2);
 	Country* vc4 = new Country("c4", 4, varr4, 2, 3);
@@ -1236,7 +1273,11 @@ void testStrategyAttack() {
     vc3->addArmy(5);
     vc4->addArmy(5);
 
-    player1->attack();
+    for(int i = 0; i< player1->getCountriesObjects()->size(); i++) {
+            player1->addArmy(player1->getCountriesObjects()->at(i)->getArmy());
+    }
+
+    player1->attackUsingStrategy();
 }
 
 //int main(){
@@ -1246,9 +1287,11 @@ void testStrategyAttack() {
 	//observerDriver();
     //testStrategy();
 
-//cout << "Hello world!" << endl;
-	                                                      
-	//return 0;
+  // attackDriver();
+//	fortifyDriver();
+//	observerDriver();
+//	testStrategy();
 
+//testStrategyAttack();
 
 //}

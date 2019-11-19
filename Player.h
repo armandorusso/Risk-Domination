@@ -70,6 +70,7 @@ public:
 	void reinforce();
 	void attack();
 	void RollDice(int key);
+	void RollDice(int key, int randomNum);
 	void setNumDice(int numDice);
 	void setIsTurn(bool value);
 	int getHighestRoll() const;
