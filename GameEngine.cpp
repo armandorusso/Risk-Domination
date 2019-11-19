@@ -305,7 +305,7 @@ void statsDemo() {
 
 	loop1.notify(playerArray, map2);
 
-	std:cout << "Calling notify after a player has won" << std::endl;
+	std::cout << "Calling notify after a player has won" << std::endl;
 
 	p2->removeCountry(vc4->getCountryKey());
 	p1->addCountry(vc4);
