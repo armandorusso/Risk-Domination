@@ -1,7 +1,7 @@
 #include "ConquestLoader.h"
 #include "Adapter.h"
 
-int main() {
+/*int main() {
 	
 	cout << "Conquest File: " << endl;
 	ConquestToOg *adapter = new ConquestToOg();
@@ -26,3 +26,4 @@ int main() {
 	cout << "\n";
 	map2->checkMap();
 }
+*/

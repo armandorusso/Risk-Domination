@@ -2,6 +2,7 @@
 #include <iostream>
 #include <list>
 
+
 Country::Country() {
 
 	name = new string;
@@ -10,8 +11,9 @@ Country::Country() {
 	continentKey = new int;
     neighbourArray = new int;
     neighbourNum = new int;
-    army = new int;
+    army = new int(0);
 	continentName = new string;
+	ownerObj = new Player;
 }
 
 Country::Country(string name, int countryK, int* neighbourA, int continentK, int neighbourN) {
@@ -23,7 +25,7 @@ Country::Country(string name, int countryK, int* neighbourA, int continentK, int
     neighbourNum = new int(neighbourN);
     neighbourArray = new int[neighbourN];
     army = new int(0);
-
+	ownerObj = new Player();
     for (int i = 0; i < neighbourN; i++) {
         neighbourArray[i] = neighbourA[i];
     }

@@ -2,7 +2,8 @@
 #include"GameEngine2.h"
 #include"GameEngine.h"
 
-/*int main() {
+/*
+int main() {
 
 	Loader *load = new Loader();
 

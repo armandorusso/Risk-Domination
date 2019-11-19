@@ -82,6 +82,7 @@ void Game::startupPhase() {
 
 		(playerArray->at(i % (*numberOfPlayer)))->addCountry(CountryRandom.at(i));
 		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
+		(CountryRandom.at(i))->setOwnerObj(*(playerArray->at(i % (*numberOfPlayer))));
 	}
 	//showing country assignment
 	cout << endl;
@@ -162,7 +163,7 @@ void Game::shuffle(vector<Player*>* array) {
 //destructors
 Game::~Game() {
 
-
+  /*
 	delete numberOfPlayer;
 	delete[] playerArray;
 	delete armyNum;
@@ -170,7 +171,7 @@ Game::~Game() {
 	numberOfPlayer = NULL;
 	playerArray = NULL;
 	playerOrdered = NULL;
-	armyNum = NULL;
+	armyNum = NULL;*/
 }
 //default constructor
 MainLoop::MainLoop() {
@@ -218,7 +219,7 @@ void MainLoop::startLoop() {
 
 		for (int j = 0; j < numOfPlayers; j++) {
 
-			//(arr->at(j))->reinforce();
+			(arr->at(j))->reinforce();
 			//Display statistics after reinforce
 			notify(startGame->playerArray, startGame->gameMap);
 			(arr->at(j))->attack();
@@ -244,6 +245,7 @@ void MainLoop::startLoop() {
 MainLoop::~MainLoop() {
 	startGame = NULL;
 }
+
 
 
 int main() {

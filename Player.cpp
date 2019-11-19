@@ -553,6 +553,7 @@ void Player::attack() {
 
 	formatActionOutput(this->getName() + ": ATTACK PHASE");
 
+	Country* arrCountry = (*map).getCountryArray();
 	string answer;
 	int attackingCountry; // key for the attacking country
 	int defendingCountry; // key for the defending country
@@ -637,8 +638,10 @@ void Player::attack() {
 			cout << "They are not neighbours" << endl;
 			continue;
 		}
-
-		if (getCountryFromCountryKey(attackingCountry)->getArmy() < 2) {     //vector out of bounce here for country 1
+		
+		
+		
+		if (arrCountry[attackingCountry].getArmy() < 2) {     //vector out of bounce here for country 1
 			cout << "You can't attack " << defendingCountry << " with " << attackingCountry << endl;
 			cout << "You don't have enough armies on this country." << endl;
 			continue;
@@ -647,8 +650,8 @@ void Player::attack() {
 		//Attacking conditions are met.
 		cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
 
-		Player* defendingPlayer = getPlayerFromCountryKey(defendingCountry);
-		Player* attackingPlayer = getPlayerFromCountryKey(attackingCountry);
+		Player* defendingPlayer = arrCountry[defendingCountry].getOwnerObj();
+		Player* attackingPlayer = arrCountry[attackingCountry].getOwnerObj();
 
 		//printArmiesFromCountries(attackingCountry, defendingCountry);
 
@@ -671,10 +674,10 @@ void Player::attack() {
 
 		//If attacking results in 0 armies for the defending player, attacking player adds that country to their list of countries. Defending country is removed
 		//from defending player.
-		if (getCountryFromCountryKey(defendingCountry)->getArmy() == 0) {
+		if (arrCountry[defendingCountry].getArmy() == 0) {
 
-			Country* dCountry = getCountryFromCountryKey(defendingCountry);
-			Country* aCountry = getCountryFromCountryKey(attackingCountry);
+			Country* dCountry = &arrCountry[defendingCountry];
+			Country* aCountry = &arrCountry[attackingCountry];
 
 			this->addCountry(dCountry);
 			::removeCountry(dCountry, defendingPlayer);
@@ -870,6 +873,7 @@ vector<int> Player::getCountryKeys() const {
 
 //Returns the country with key k.
 Country* getCountryFromCountryKey(int k) {
+
 
 	for (int i = 0; i < players.size(); i++) {
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <Player.h>
 using namespace std;
 
 //class definition for Country
@@ -16,6 +17,7 @@ private:
     int* continentKey;
     int* army;
 	string* continentName;
+	Player* ownerObj;
 
 public:
     //definitions of constructors,destructor and functions
@@ -42,6 +44,8 @@ public:
 	void setNeighbour(int* arr) { neighbourArray = arr; };
 	void setContinentName(string name) { *continentName = name; };
 	string getContinentName() { return *continentName; };
+	Player* getOwnerObj() { return ownerObj; };
+	void setOwnerObj(Player pla) { ownerObj = &pla; };
 };
 
 //class definition of Continent object
