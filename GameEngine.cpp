@@ -48,6 +48,11 @@ Game::Game(Map& map, vector<Player*> playerArr) {
 
 void Game::startupPhase() {
 
+	//setting toatal army for each player
+	for (int i = 0; i < playerArray->size(); i++) {
+
+		playerArray->at(i)->addArmy(*armyNum);
+	}
 
 	//getting array of countries from map
 	int numOfCountry = gameMap->getCountryCount();
@@ -79,41 +84,56 @@ void Game::startupPhase() {
 		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
 	}
 	//showing country assignment
+	cout << endl;
+	cout << "============== Showing country assignment =========================" << endl;
+	
 	for (int i = 0; i < *numberOfPlayer; i++) {
+		cout << endl;
 		vector<int>vect = playerArray->at(i)->getCountriesInts();
 		int x = playerArray->at(i)->getNumOfCountries();
-		cout << "Player " << playerArray->at(i)->getName() << " has Countries: " << endl;
 
+		cout << endl;
+		cout << "Player " << playerArray->at(i)->getName() << " has Countries: " << endl;
+		cout << endl;
 		for (int i = 0; i < x; i++) {
 			int y = vect.at(i);
 			cout << y << "(" << (countryArray[y].getName()) << ")" << endl;
 		}
 
 	}
+	cout << endl;
+	cout << "============== Starting Army Placement ==========================" << endl;
 	//prompting user to assign army to countries
 	for (int i = 0; i < *numberOfPlayer; i++) {
-
+		bool valid = true;
 		int army = *armyNum;
 		vector<int> arr = playerArray->at(i)->getCountriesInts();
 		int x = arr.size();
-
+		cout << endl;
 		cout << "Player " << (playerArray->at(i))->getName() << ":" << endl;
-
+		cout << endl;
 		for (int j = 0; j < x; j++) {
 			int y;
-			cout << "How many armies you want to put in country " << arr.at(j) << "?" << "(" << army << ")" << endl;
-			cin >> y;
-			if (y > army || y < 0) {
-				cout << "invalid amount of army" << endl;
-				exit(0);
-			}
+			
+			do {
+				valid = true;
+				cout << "How many armies you want to put in country " << arr.at(j) << "?" << "(" << army << ")" << endl;
+				cin >> y;
+				if (y > army || y < 0) {
+					cout << "invalid amount of army" << endl;
+					valid = false;
+				} 
+			} while (!valid);
+
 			army = army - y;
 			countryArray[(arr.at(j))].addArmy(y);        //adding army to country
 
 		}
 	}
 	//printing army placement and owner
-	cout << "Game Board:" << endl;
+	cout << endl;
+	cout << "========================== Game Board ===============================" << endl;
+	cout << endl;
 	for (int i = 0; i < numOfCountry; i++) {
 
 		cout << "Country" << i << " has owner: " << (countryArray[i].getOwner()) << ", Army: " << countryArray[i].getArmy() << endl;
@@ -183,6 +203,9 @@ void MainLoop::checkIfEnd() {
 //main game loop
 void MainLoop::startLoop() {
 
+	cout << endl;
+	cout << "================ Starting Game phases ==================== " << endl;
+	cout << endl;
 	int numOfCountry = (startGame->gameMap)->getCountryCount();
 	int numOfPlayers = *(startGame->numberOfPlayer);
 	vector<Player*>* arr = startGame->playerArray;
@@ -192,13 +215,13 @@ void MainLoop::startLoop() {
 
 		for (int j = 0; j < numOfPlayers; j++) {
 
-			(arr->at(j))->reinforceDemo();
+			(arr->at(j))->reinforce();
 			//Display statistics after reinforce
 			notify(startGame->playerArray, startGame->gameMap);
-			(arr->at(j))->attackDemo();
+			(arr->at(j))->attack();
 			//Update player progress after attacking
 			notify(startGame->playerArray, startGame->gameMap);
-			(arr->at(j))->fortifyDemo();
+			(arr->at(j))->fortify();
 			//Display statistics after fortify
 			notify(startGame->playerArray, startGame->gameMap);
 
@@ -219,7 +242,7 @@ MainLoop::~MainLoop() {
 	startGame = NULL;
 }
 
-
+/*
 int main() {
 
 	//creating array of countries
@@ -276,3 +299,4 @@ int main() {
 	cout << "ends";
 
 }
+*/

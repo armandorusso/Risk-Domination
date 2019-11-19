@@ -1239,16 +1239,16 @@ void testStrategyAttack() {
     player1->attack();
 }
 
-int main(){
+//int main(){
+	
+	//attackDriver();
+    //fortifyDriver();
+	//observerDriver();
+    //testStrategy();
 
-//   attackDriver();
-//	fortifyDriver();
-//	observerDriver();
-//	testStrategy();
-
-cout << "Hello world!" << endl;
-
-//	return 0;
+//cout << "Hello world!" << endl;
+	                                                      
+	//return 0;
 
 
-}
+//}

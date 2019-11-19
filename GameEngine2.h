@@ -21,8 +21,10 @@ public:
 	~Loader();
 
 	//functions
-	vector<Player*> getPlayerArr() { return *players; };
 	void menu();
+	Map* getMap() { return map; };
+	vector<Player*>* getPlayers() { return players; };
+
 };
 
 void testFunction();

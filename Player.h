@@ -94,7 +94,7 @@ public:
 	std::string getName() const;
     const Player& operator=(const Player& r);
 	int getTotalArmy() { return *totalArmy; };
-	int addArmy(int num) { *totalArmy += num; };
+	void addArmy(int num) { *totalArmy += num; };
 	int subtractArmy(int num) { *totalArmy -= num; };
 	vector<Continent*> getContinents() { return *continentOwned; };
 	int getNumberContinent() { return continentOwned->size(); };

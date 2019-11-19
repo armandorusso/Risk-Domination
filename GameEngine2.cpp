@@ -28,7 +28,7 @@ Loader::~Loader() {
 void Loader::menu() {
 	int playerCount;
 	string choice;
-	FetchMap opener;
+	MapLoader opener;
 	
 
 	cout << "Welcome!\nPlease enter the map file name you wish to load: " << endl;
@@ -57,7 +57,7 @@ void Loader::menu() {
 	while (true) {
 		cout << "Enter a number of players (max is 6, minimum is 2) ";
 		cin >> playerCount;
-		if (playerCount < 1) {
+		if (playerCount <= 1) {
 			cout << "Enter a player count that's greater than 2 please. Enter another number " << endl;
 		}
 
