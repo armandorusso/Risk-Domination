@@ -15,6 +15,8 @@ private:
     int* neighbourArray;
     int* continentKey;
     int* army;
+	string* continentName;
+
 public:
     //definitions of constructors,destructor and functions
     Country();
@@ -37,6 +39,9 @@ public:
     int getArmy() const { return *army; };
     void addArmy(int x) { (*army) += x; };
     void subtractArmy(int x) { *army -= x; };
+	void setNeighbour(int* arr) { neighbourArray = arr; };
+	void setContinentName(string name) { *continentName = name; };
+	string getContinentName() { return *continentName; };
 };
 
 //class definition of Continent object
@@ -66,6 +71,7 @@ public:
     int getCountryNum() const { return *countryNum; };
     int getContinentKey() const { return *continentKey; };
     void setContinetKey(int key) { *continentKey = key; };
+	
 };
 
 
