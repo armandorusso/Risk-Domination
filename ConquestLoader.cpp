@@ -11,16 +11,20 @@ Conquest::Conquest() {
 	continentName = new string();
 	countryName = new string();
 	stringNeighbours = new vector<string>; //the neighbour country
+	
 }
 
 Conquest::Conquest(string countName, string contName, vector<string> neighbours) {
 	countryName = new string(countName);
 	continentName = new string(contName);
 	stringNeighbours = new vector<string>;
+	countries = new vector<Conquest*>;
+	continents = new vector<Continent*>;
 
 	for (int i = 0; i < neighbours.size(); i++) {
 		stringNeighbours->push_back(neighbours.at(i));
 	}
+
 }
 
 Conquest::Conquest(const Conquest& conq) {
@@ -72,12 +76,8 @@ ConquestMap::~ConquestMap() {
 }
 
 
+void ConquestMap::getConquestData(string fileName) {
 
-Map* Conquest::getConquestData(string fileName) {
-
-	Conquest tempData1;
-	vector<Conquest*> countries; //this is a dummy object. it will hold the data and the adapter will convert it to the approriate data we need for the Map
-	vector<Continent*> continents; 
 	string pointer; //points to the location in the file
 
 	ifstream mapStream(fileName);
@@ -85,7 +85,7 @@ Map* Conquest::getConquestData(string fileName) {
 	//if the file failed to open (i.e, couldnt find the file), return NULL indicating the map cannot be made
 	if (mapStream.fail()) {
 		cout << "Conquest Map failed to open. Please try something else";
-		return NULL;
+		return;
 	}
 
 	while (mapStream >> pointer) {
@@ -117,7 +117,7 @@ Map* Conquest::getConquestData(string fileName) {
 				}
 
 				Continent* continent = new Continent(continentNumber, continentName, armyValue);
-				continents.push_back(continent);
+				continents->push_back(continent);
 			}
 
 		}
@@ -152,14 +152,13 @@ Map* Conquest::getConquestData(string fileName) {
 					}
 				}
 				Conquest* country = new Conquest(continentName, continentItBelongs, neighbours);
+				countries->push_back(country);
 			}
 
 
 		}
 	}
 
-	ConquestMap dummyMap(countries, continents); //dummy map
-
 	cout << "The Conquest file has been read fully!" << endl;
-	//call the adapter method, which will convert all the data into data that is useable
+
 }
