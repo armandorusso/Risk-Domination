@@ -37,6 +37,7 @@ public:
 	MainLoop(Game &game);
 	~MainLoop();
 	void startLoop();
+	void statsDemo();
 
 
 };
