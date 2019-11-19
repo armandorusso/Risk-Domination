@@ -18,7 +18,6 @@ Game::Game() {
 
 //constructor
 Game::Game(Map& map, vector<Player*> playerArr) {
-
 	gameMap = &map;   //link to game map
 	countryArray = gameMap->getCountryArray();
 	numberOfPlayer = new int(playerArr.size());
@@ -286,7 +285,6 @@ void statsDemo() {
 	p1->addCountry(vc3);
 	p2->addCountry(vc4);
 
-
 	//vector of players
 	vector<Player*> playerArr;
 
@@ -314,12 +312,11 @@ void statsDemo() {
 	loop1.notify(playerArray, map2);
 
 
+
+
 }
 
 int main() {
-	//Run statsObserver demo
-	//statsDemo();
-
 	//creating array of countries
 	int varr0[3] = { 1,3,4 };
 	int varr1[3] = { 1,3,5 };
@@ -373,4 +370,8 @@ int main() {
 	loop1.startLoop();
 	cout << "ends";
 
+
+    //Run statsObserver demo
+	statsDemo();
+return 0;
 }
