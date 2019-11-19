@@ -96,7 +96,7 @@ public:
     const Player& operator=(const Player& r);
 	int getTotalArmy() { return *totalArmy; };
 	void addArmy(int num) { *totalArmy += num; };
-	int subtractArmy(int num) { *totalArmy -= num; };
+	void subtractArmy(int num) { *totalArmy -= num; };
 	vector<Continent*> getContinents() { return *continentOwned; };
 	int getNumberContinent() { return continentOwned->size(); };
 	Map* const getMap() { return map; };

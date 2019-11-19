@@ -80,7 +80,7 @@ void Game::startupPhase() {
 
 	for (int i = 0; i < numOfCountry; i++) {
 
-		(playerArray->at(i % (*numberOfPlayer)))->addCountry((CountryRandom.at(i))->getCountryKey());
+		(playerArray->at(i % (*numberOfPlayer)))->addCountry(CountryRandom.at(i));
 		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
 	}
 	//showing country assignment
@@ -139,6 +139,9 @@ void Game::startupPhase() {
 		cout << "Country" << i << " has owner: " << (countryArray[i].getOwner()) << ", Army: " << countryArray[i].getArmy() << endl;
 
 	}
+	int x;
+	cin >> x;
+
 }
 
 void Game::shuffle(vector<int>& array) {
@@ -215,7 +218,7 @@ void MainLoop::startLoop() {
 
 		for (int j = 0; j < numOfPlayers; j++) {
 
-			(arr->at(j))->reinforce();
+			//(arr->at(j))->reinforce();
 			//Display statistics after reinforce
 			notify(startGame->playerArray, startGame->gameMap);
 			(arr->at(j))->attack();
@@ -243,59 +246,59 @@ MainLoop::~MainLoop() {
 }
 
 
-//int main() {
-//
-//	//creating array of countries
-//	int varr0[3] = { 1,3,4 };
-//	int varr1[3] = { 1,3,5 };
-//	int varr2[3] = { 2,4,1 };
-//	int varr3[2] = { 0,2 };
-//	int varr4[3] = { 1,3,5 };
-//
-//	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
-//	Country* vc1 = new Country("c1", 1, varr1, 1, 3);
-//	Country* vc2 = new Country("c2", 2, varr2, 1, 3);
-//	Country* vc3 = new Country("c3", 3, varr3, 2, 2);
-//	Country* vc4 = new Country("c4", 4, varr4, 2, 3);
-//
-//	Country* varrayCountry = new Country[5];
-//	varrayCountry[0] = *vc0;
-//	varrayCountry[1] = *vc1;
-//	varrayCountry[2] = *vc2;
-//	varrayCountry[3] = *vc3;
-//	varrayCountry[4] = *vc4;
-//	Continent* cont1 = new Continent();
-//	Continent* cont2 = new Continent();
-//	Continent* continentArray = new Continent[2];
-//	continentArray[0] = *cont1;
-//	continentArray[1] = *cont2;
-//
-//	//creating map
-//	Map map2(continentArray, 2, varrayCountry, 5);
-//	map2.setMatrix();
-//
-//	Player* p1 = new Player("Jack", map2);
-//	Player* p2 = new Player("James", map2);
-//	Player* p3 = new Player("Eren", map2);
-//
-//
-//	//vector of players
-//	vector<Player*> playerArr;
-//
-//	playerArr.push_back(p1);
-//	playerArr.push_back(p2);
-//	playerArr.push_back(p3);
-//
-//	Game game1(map2, playerArr);
-//	MainLoop loop1(game1);
-//
-//	vector<gameView*>* vectPlayer = new vector<gameView*>;
-//	vectPlayer->push_back(&loop1);
-//	statsObserver* obs = new statsObserver(*vectPlayer);
-//
-//	game1.startupPhase();
-//
-//	loop1.startLoop();
-//	cout << "ends";
-//
-//}
+int main() {
+
+	//creating array of countries
+	int varr0[3] = { 1,3,4 };
+	int varr1[3] = { 1,3,5 };
+	int varr2[3] = { 2,4,1 };
+	int varr3[2] = { 0,2 };
+	int varr4[3] = { 1,3,5 };
+
+	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
+	Country* vc1 = new Country("c1", 1, varr1, 1, 3);
+	Country* vc2 = new Country("c2", 2, varr2, 1, 3);
+	Country* vc3 = new Country("c3", 3, varr3, 2, 2);
+	Country* vc4 = new Country("c4", 4, varr4, 2, 3);
+
+	Country* varrayCountry = new Country[5];
+	varrayCountry[0] = *vc0;
+	varrayCountry[1] = *vc1;
+	varrayCountry[2] = *vc2;
+	varrayCountry[3] = *vc3;
+	varrayCountry[4] = *vc4;
+	Continent* cont1 = new Continent();
+	Continent* cont2 = new Continent();
+	Continent* continentArray = new Continent[2];
+	continentArray[0] = *cont1;
+	continentArray[1] = *cont2;
+
+	//creating map
+	Map map2(continentArray, 2, varrayCountry, 5);
+	map2.setMatrix();
+
+	Player* p1 = new Player("Jack", map2);
+	Player* p2 = new Player("James", map2);
+	Player* p3 = new Player("Eren", map2);
+
+
+	//vector of players
+	vector<Player*> playerArr;
+
+	playerArr.push_back(p1);
+	playerArr.push_back(p2);
+	playerArr.push_back(p3);
+
+	Game game1(map2, playerArr);
+	MainLoop loop1(game1);
+
+	vector<gameView*>* vectPlayer = new vector<gameView*>;
+	vectPlayer->push_back(&loop1);
+	statsObserver* obs = new statsObserver(*vectPlayer);
+
+	game1.startupPhase();
+
+	loop1.startLoop();
+	cout << "ends";
+
+}
