@@ -1278,15 +1278,19 @@ void testStrategyAttack() {
     for(int i = 0; i< player1->getCountriesObjects()->size(); i++) {
             player1->addArmy(player1->getCountriesObjects()->at(i)->getArmy());
     }
-    player1->attackUsingStrategy();
+
+//    player1->attackUsingStrategy();
+
+    player2->attackUsingStrategy();
 }
 
-//int main(){
-////    attackDriver();
-////	fortifyDriver();
-////	observerDriver();
-////	testStrategy();
-//
-////testStrategyAttack();
-//
-//}
+int main(){
+//    attackDriver();
+//	fortifyDriver();
+//	observerDriver();
+//	testStrategy();
+
+//testStrategyAttack();
+reinforceDriver();
+
+}

@@ -257,7 +257,7 @@ void AggressivePlayer::executeReinforce(Player *player) {
 		armiesToExchange = armiesToExchange + *player->getHand()->getNumArmies();
 	}
 
-	//Aggressive Player
+
 
 	//Get index of country with most armies
 	int strongestCountryIndex = 0;

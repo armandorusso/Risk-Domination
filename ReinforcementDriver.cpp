@@ -39,7 +39,7 @@ int reinforceDriver() {
 
 	//Setting the adjacency matrix
 	map2->setMatrix();
-	Player *player1 = new Player("Bojan", *map2);
+	Player *player1 = new Player("Bojan", *map2, new AggressivePlayer());
 
 	player1->addCountry(vc0);
 	player1->addCountry(vc1);
@@ -71,7 +71,7 @@ int reinforceDriver() {
 
 	//Call reinforce with 10 cards
 	std::cout << ("Calling reinforce with 10 cards----------------------\n");
-	player1->reinforce();
+	player1->reinforceUsingStrategy();
 
 	return 0;
 }
