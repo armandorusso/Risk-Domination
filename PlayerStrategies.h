@@ -40,4 +40,20 @@ public:
 
 };
 
+class RandomPlayer : public Strategy {
+public:
+	void executeReinforce(Player* player);
+	void executeFortify(Player* player);
+	void executeAttack(Player* player);
+
+};
+
+class CheaterPlayer : public Strategy {
+public:
+	void executeReinforce(Player* player);
+	void executeFortify(Player* player);
+	void executeAttack(Player* player);
+
+};
+
 int stratDriver();

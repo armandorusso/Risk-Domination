@@ -505,6 +505,36 @@ void BenevolentPlayer::executeReinforce(Player *player) {
 	player->notify(player, "Finished Reinforcing");
 }
 
+//=================
+//RANDOM PLAYER
+//=================
+void RandomPlayer::executeAttack(Player *player) {
+
+}
+
+void RandomPlayer::executeFortify(Player *player) {
+
+}
+
+void RandomPlayer::executeReinforce(Player *player) {
+
+}
+
+//=================
+//CHEATER PLAYER
+//=================
+void CheaterPlayer::executeAttack(Player *player) {
+
+}
+
+void CheaterPlayer::executeFortify(Player *player) {
+
+}
+
+void CheaterPlayer::executeReinforce(Player *player) {
+
+}
+
 int stratDriver() {
     return 0;
 }
