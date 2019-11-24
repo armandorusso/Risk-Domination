@@ -8,6 +8,7 @@
 #include "Cards.h"
 #include "PlayerStrategies.h"
 #include "GameObservers.h"
+class Game;
 
 class Player : public gameView {
 
@@ -24,7 +25,7 @@ private:
 	vector<Continent*>* continentOwned;
 	int* numberOfContinent;
 	int* totalArmy;
-
+	Game* game;
 
 
 public:
@@ -37,6 +38,10 @@ public:
 	//Player(const Player&, Strategy *newStrat);
 	Player();
 	~Player();
+
+	void setGame(Game* gameP) {
+		game = gameP;
+	}
 
 	void setStrategy(Strategy *newStrat) {
 	    this->strategy = newStrat;
@@ -116,7 +121,7 @@ void removeCountry(Country* country, Player* player);
 
 void loseArmy(int k);
 
-void printArmiesFromCountries(int c1, int c2);
+void printArmiesFromCountries(Country* c1, Country* c2);
 
 int reinforceDriver();
 void attackDriver();

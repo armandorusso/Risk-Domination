@@ -1,3 +1,4 @@
+#include"Player.h"
 #include "Map.h"
 #include <iostream>
 #include <list>
@@ -12,6 +13,7 @@ Country::Country() {
     neighbourNum = new int;
     army = new int;
 	continentName = new string;
+	ownerObj = NULL;
 }
 
 Country::Country(string name, int countryK, int* neighbourA, int continentK, int neighbourN) {
@@ -27,6 +29,7 @@ Country::Country(string name, int countryK, int* neighbourA, int continentK, int
     for (int i = 0; i < neighbourN; i++) {
         neighbourArray[i] = neighbourA[i];
     }
+	ownerObj = NULL;
 }
 
 //vector as parameter
@@ -52,7 +55,7 @@ Country::Country(string name, int countryK, vector<int> neighbourA, int continen
         neighbourArray[i] = arr[i];
     }
 
-
+	ownerObj = NULL;
 
 }
 int Country::getNeighbourNum() const {

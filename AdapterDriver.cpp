@@ -1,7 +1,7 @@
 #include "ConquestLoader.h"
 #include "Adapter.h"
 
-int adapterDriver() {
+void adapterDriver() {
 	
 	cout << "Conquest File: " << endl;
 	ConquestToOg *adapter = new ConquestToOg();

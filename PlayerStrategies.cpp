@@ -44,6 +44,9 @@ void AggressivePlayer::executeAttack(Player *player) {
 
     //Continue the loop until the country with the most armies has less than 2 armies, or until it can't
     //attack any more of its neighbours.
+
+	Country* arrayCountry = player->getMap()->getCountryArray();
+
     do {
         Country* arrayCountry = player->getMap()->getCountryArray();
         vector<int> attackableCountries = player->getAttackableCountries(player->getMap());
@@ -71,7 +74,7 @@ void AggressivePlayer::executeAttack(Player *player) {
         cout << endl;
 
         vector<int> neighbours; //Neighbours of the country
-        maxArmyCountry = getCountryFromCountryKey(countryKeyMax); //Always attacking with this country
+        maxArmyCountry = &arrayCountry[countryKeyMax]; //Always attacking with this country
         int countryKey = maxArmyCountry->getCountryKey();
 
         for(int i = 0; i< maxArmyCountry->getNeighbourNum(); i++) {
@@ -106,10 +109,10 @@ void AggressivePlayer::executeAttack(Player *player) {
         //Attacking conditions are met.
         cout << "Attacking " << defendingCountry << " with " << countryKeyMax << endl << endl;
 
-        Player* defendingPlayer = getPlayerFromCountryKey(defendingCountry);
-        Player* attackingPlayer = getPlayerFromCountryKey(maxArmyCountry->getCountryKey());
+		Player* defendingPlayer = arrayCountry[defendingCountry].getOwnerObj();
+        Player* attackingPlayer = arrayCountry[maxArmyCountry->getCountryKey()].getOwnerObj();
 
-        printArmiesFromCountries(maxArmyCountry->getCountryKey(), defendingCountry);
+        printArmiesFromCountries(maxArmyCountry, &arrayCountry[defendingCountry]);
 
         //Time to roll the dice for the attacking and defending player.
         player->RollDice(maxArmyCountry->getCountryKey(), 0);
@@ -128,8 +131,8 @@ void AggressivePlayer::executeAttack(Player *player) {
             attackingPlayer->subtractArmy(1);
         }
 
-        Country* dCountry = getCountryFromCountryKey(defendingCountry);
-        Country* aCountry = getCountryFromCountryKey(maxArmyCountry->getCountryKey());
+        Country* dCountry = &arrayCountry[defendingCountry];
+        Country* aCountry =maxArmyCountry;
 
         //If attacking results in 0 armies for the defending player, attacking player adds that country to their list of countries. Defending country is removed
         //from defending player.
@@ -170,7 +173,7 @@ void AggressivePlayer::executeAttack(Player *player) {
             attackableCountries = player->getAttackableCountries(player->getMap());
         }
 
-        printArmiesFromCountries(maxArmyCountry->getCountryKey(), defendingCountry);
+        printArmiesFromCountries(maxArmyCountry, &arrayCountry[defendingCountry]);
 
         //Clearing the currentRoll values in the dice objects, so that
         //more values are not pushed in.

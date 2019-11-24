@@ -21,6 +21,7 @@ public:
 	Game();
 	Game(Map &map, vector<Player*> playerArr);
 	~Game();
+	vector<Player*>* getPlayers() { return playerArray; };
 	void startupPhase();
 	friend MainLoop;
 

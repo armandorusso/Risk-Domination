@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "Player.h"
 #include "Cards.h"
-
+#include "GameEngine.h"
 using namespace std;
 
 static vector<Player*> players; // Vector containing the players.
@@ -43,7 +43,7 @@ Player::Player() {
 	continentOwned = new vector<Continent*>;
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
-
+	game = NULL;
 }
 
 Player::Player(std::string name, Map& map) {
@@ -59,7 +59,7 @@ Player::Player(std::string name, Map& map) {
 	continentOwned = new vector<Continent*>;
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
-
+	game = NULL;
 }
 Player::Player(string name, Map& map, Strategy* strategy) {
 
@@ -75,7 +75,7 @@ Player::Player(string name, Map& map, Strategy* strategy) {
 	continentOwned = new vector<Continent*>;
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
-
+	game = NULL;
 	this->strategy = strategy;
 
 }
@@ -95,6 +95,7 @@ Player::Player(std::string name, Map* map) {
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
 	strategy = NULL;
+	game = NULL;
 }
 
 
@@ -111,6 +112,7 @@ Player::Player(std::string name) {
 	continentOwned = new vector<Continent*>;
 	numberOfContinent = new int(0);
 	totalArmy = new int(0);
+	game = NULL;
 }
 
 Player::Player(const Player &r) {
@@ -149,7 +151,7 @@ Player::Player(const Player &r) {
         }
     }
 
-
+	
 }
 
 
@@ -189,8 +191,11 @@ Player::~Player() {
 //If the country is a defender, it can only roll 1-2 dice, the max being the amount of armies on the country.
 //This method calls the Roll() method of the Player's Dice Object.
 void Player::RollDice(int countryKey) {
+	
+	Country* arr = map->getCountryArray();
+	
 	int numDice = 0;
-	Country* country = getCountryFromCountryKey(countryKey);
+	Country* country = &arr[countryKey];
 
 	int diceMax = country->getArmy() - 1;
 
@@ -227,7 +232,8 @@ void Player::RollDice(int countryKey) {
 //This method calls the Roll() method of the Player's Dice Object.
 void Player::RollDice(int countryKey, int randomNum) {
     int numDice = 0;
-    Country* country = getCountryFromCountryKey(countryKey);
+	Country* arr = map->getCountryArray();
+	Country* country = &arr[countryKey];
 
     int diceMax = country->getArmy() - 1;
 
@@ -558,6 +564,9 @@ void Player::attack() {
 
 	vector<int> attackableCountries = this->getAttackableCountries(this->map);
 
+	Country* arrayCountry = (*map).getCountryArray();
+	vector<Player*>* arrPlayer = game->getPlayers();
+
 	do {
 		answer = "";
 
@@ -637,11 +646,11 @@ void Player::attack() {
 			continue;
 		}
 
-		printArmiesFromCountries(attackingCountry, defendingCountry);
+		printArmiesFromCountries(&arrayCountry[attackingCountry],&arrayCountry[defendingCountry]);
 
 		cout << attackingCountry << endl;
 
-		if (getCountryFromCountryKey(attackingCountry)->getArmy() < 2) {     //vector out of bounce here for country 1
+		if (arrayCountry[attackingCountry].getArmy() < 2) {     //vector out of bounce here for country 1
 			cout << "You can't attack " << defendingCountry << " with " << attackingCountry << endl;
 			cout << "You don't have enough armies on this country." << endl;
 			continue;
@@ -654,8 +663,8 @@ void Player::attack() {
 		//Attacking conditions are met.
 		cout << "Attacking " << defendingCountry << " with " << attackingCountry << endl << endl;
 
-		Player* defendingPlayer = getPlayerFromCountryKey(defendingCountry);
-		Player* attackingPlayer = getPlayerFromCountryKey(attackingCountry);
+		Player* defendingPlayer = arrayCountry[defendingCountry].getOwnerObj();
+		Player* attackingPlayer = arrayCountry[attackingCountry].getOwnerObj();
 
 		//Time to roll the dice for the attacking and defending player.
 		this->RollDice(attackingCountry);
@@ -668,18 +677,18 @@ void Player::attack() {
 
 		//If attacking player rolls greater than defending player, defending player loses army. Otherwise, attacking country loses army.
 		if (::compareRolls(this, defendingPlayer)) {
-			loseArmy(defendingCountry);
+			arrayCountry[defendingCountry].subtractArmy(1);
 		}
 		else {
-			loseArmy(attackingCountry);
+			arrayCountry[attackingCountry].subtractArmy(1);
 		}
 
 		//If attacking results in 0 armies for the defending player, attacking player adds that country to their list of countries. Defending country is removed
 		//from defending player.
-		if (getCountryFromCountryKey(defendingCountry)->getArmy() == 0) {
+		if (arrayCountry[defendingCountry].getArmy() == 0) {
 
-			Country* dCountry = getCountryFromCountryKey(defendingCountry);
-			Country* aCountry = getCountryFromCountryKey(attackingCountry);
+			Country* dCountry = &arrayCountry[defendingCountry];
+			Country* aCountry = &arrayCountry[attackingCountry];
 
 			this->addCountry(dCountry);
 			::removeCountry(dCountry, defendingPlayer);
@@ -714,7 +723,7 @@ void Player::attack() {
 			attackableCountries = this->getAttackableCountries(map);
 		}
 
-		printArmiesFromCountries(attackingCountry, defendingCountry);
+		printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
 
 		//Clearing the currentRoll values in the dice objects, so that
 		//more values are not pushed in.
@@ -775,6 +784,7 @@ void Player::removeCountry(int key) {
 
 //Decrements army of Country with key k.
 void loseArmy(int k) {
+	
 	Country* country = getCountryFromCountryKey(k);
 	country->subtractArmy(1);
 }
@@ -874,6 +884,8 @@ vector<int> Player::getCountryKeys() const {
 //Returns the country with key k.
 Country* getCountryFromCountryKey(int k) {
 
+	
+	
 	for (int i = 0; i < players.size(); i++) {
 
 		for (int j = 0; j < players[i]->getNumCountries(); j++) {
@@ -965,18 +977,17 @@ void Player::displayCountries() {
 }
 
 
-void printArmiesFromCountries(int c1, int c2) {
+void printArmiesFromCountries(Country* c1, Country* c2) {
 
-	Country* attacking = getCountryFromCountryKey(c1);
-	Country* defending = getCountryFromCountryKey(c2);
+	
 
 	cout << "=========================" << endl;
 	cout << "\tArmy Count" << endl;
 	cout << "=========================" << endl;
 	cout << "Attacking armies: ";
-	cout << attacking->getArmy() << endl;
+	cout << c1->getArmy() << endl;
 	cout << "Defending armies: ";
-	cout << defending->getArmy() << endl;
+	cout << c2->getArmy() << endl;
 
 	cout << endl;
 }
@@ -1284,13 +1295,13 @@ void testStrategyAttack() {
     player2->attackUsingStrategy();
 }
 
-int main(){
+//int main(){
 //    attackDriver();
 //	fortifyDriver();
 //	observerDriver();
 //	testStrategy();
 
 //testStrategyAttack();
-reinforceDriver();
+//reinforceDriver();
 
-}
+//}
