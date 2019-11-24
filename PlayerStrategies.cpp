@@ -3,6 +3,7 @@
 #include "Player.h"
 #include <random>
 #include <vector>
+#include <time.h>
 
 using namespace std;
 
@@ -520,7 +521,45 @@ void RandomPlayer::executeFortify(Player *player) {
 }
 
 void RandomPlayer::executeReinforce(Player *player) {
+	player->notify(player, "Reinforcing");
 
+	//std::cout << this->getName() << " is reinforcing..." << std::endl;
+
+	int armiesToExchange = 0;
+
+	//GET ARMIES FOR COUNTRIES
+	armiesToExchange = player->getNumCountries() / 3;
+
+	//Must get minimum 3 armies
+	if (armiesToExchange < 3) {
+		armiesToExchange = 3;
+	}
+
+	//GET ARMIES FROM CONTINENT-CONTROL VALUE
+	armiesToExchange = armiesToExchange + player->checkIfOwnCont();
+
+	//EXCHANGE CARDS FOR ARMIES
+	while (player->getHand()->exchange()) {
+		armiesToExchange = armiesToExchange + *player->getHand()->getNumArmies();
+	}
+
+	//Random Player
+
+	//Distribute 1 army at a time to a random country
+	int index = 0;
+	int indexLimit = player->getNumOfCountries();
+	srand(time(0));
+
+	while (armiesToExchange != 0) {
+		//Generate a random index between 0 and the total number of countries a player owns - 1
+		index = rand() % indexLimit;
+		//Distribute 1 army to the chosen country
+		player->getCountriesObjects()->at(index)->addArmy(1);
+
+		armiesToExchange--;
+	}
+
+	player->notify(player, "Finished Reinforcing");
 }
 
 //=================
@@ -535,7 +574,37 @@ void CheaterPlayer::executeFortify(Player *player) {
 }
 
 void CheaterPlayer::executeReinforce(Player *player) {
+	player->notify(player, "Reinforcing");
 
+	//std::cout << this->getName() << " is reinforcing..." << std::endl;
+
+	int armiesToExchange = 0;
+
+	//GET ARMIES FOR COUNTRIES
+	armiesToExchange = player->getNumCountries() / 3;
+
+	//Must get minimum 3 armies
+	if (armiesToExchange < 3) {
+		armiesToExchange = 3;
+	}
+
+	//GET ARMIES FROM CONTINENT-CONTROL VALUE
+	armiesToExchange = armiesToExchange + player->checkIfOwnCont();
+
+	//EXCHANGE CARDS FOR ARMIES
+	while (player->getHand()->exchange()) {
+		armiesToExchange = armiesToExchange + *player->getHand()->getNumArmies();
+	}
+
+	//Cheater Player
+
+	//Double the number of armies in each country
+	for (int i = 0; i < player->getCountriesObjects()->size(); i++) {
+		int numCurrentCountries = player->getCountriesObjects()->at(i)->getArmy();
+		player->getCountriesObjects()->at(i)->addArmy(numCurrentCountries);
+	}
+
+	player->notify(player, "Finished Reinforcing");
 }
 
 int stratDriver() {
