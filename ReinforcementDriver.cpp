@@ -39,7 +39,7 @@ int reinforceDriver() {
 
 	//Setting the adjacency matrix
 	map2->setMatrix();
-	Player *player1 = new Player("Bojan", *map2, new AggressivePlayer());
+	Player *player1 = new Player("Bojan", *map2, new CheaterPlayer());
 
 	player1->addCountry(vc0);
 	player1->addCountry(vc1);
@@ -51,10 +51,6 @@ int reinforceDriver() {
 	vector<gameView*>* vectPlayer = new vector<gameView*>;
 	vectPlayer->push_back(player1);
 	gameObserver* obs = new gameObserver(*vectPlayer);
-
-	//Call reinforce with 5 countries
-	std::cout << ("Calling reinforce with 5 countries-----------------\n");
-	player1->reinforce();
 
 	//Fill player1 hand with 10 cards
 	for (int i = 0; i < 10; i++) {
@@ -71,6 +67,13 @@ int reinforceDriver() {
 
 	//Call reinforce with 10 cards
 	std::cout << ("Calling reinforce with 10 cards----------------------\n");
+
+	//Uncomment to test the CheaterPlayer reinforce. Should output 0, 2, 4, 6, 8
+	/*
+	for (int i = 0; i < player1->getCountriesObjects()->size(); i++) {
+		player1->getCountriesObjects()->at(i)->addArmy(i);
+	}
+	*/
 	player1->reinforceUsingStrategy();
 
 	return 0;
