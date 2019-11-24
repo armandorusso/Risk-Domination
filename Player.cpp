@@ -1165,17 +1165,17 @@ void observerDriver() {
 void testStrategy() {
 
 	//creating array of countries
-	int varr0[3] = { 1,2,3 };
+	int varr0[3] = { 1,2 };
 	int varr1[3] = { 0,2,3 };
 	int varr2[3] = { 2,4,1 };
 	int varr3[2] = { 0,2 };
 	int varr4[3] = { 1,3 };
 
-	Country* vc0 = new Country("c0", 0, varr0, 1, 3);
+	Country* vc0 = new Country("c0", 0, varr0, 1, 2);
 	Country* vc1 = new Country("c1", 1, varr1, 2, 3);
 	Country* vc2 = new Country("c2", 2, varr2, 1, 3);
 	Country* vc3 = new Country("c3", 3, varr3, 2, 2);
-	Country* vc4 = new Country("c4", 4, varr4, 2, 3);
+	Country* vc4 = new Country("c4", 4, varr4, 2, 2);
 
 	Country* varrayCountry = new Country[5];
 	varrayCountry[0] = *vc0;
@@ -1196,10 +1196,10 @@ void testStrategy() {
 	//AggressivePlayer* str = new AggressivePlayer();
 	//BenevolentPlayer* str2 = new BenevolentPlayer();
 	RandomPlayer* str = new RandomPlayer();
-	BenevolentPlayer* str2 = new BenevolentPlayer();
+	CheaterPlayer* str2 = new CheaterPlayer();
 
-	Player* p1 = new Player("Jack", *map2, str);
-	Player* p2 = new Player("James", *map2, str2);
+	Player* p1 = new Player("Jack", *map2, str2);
+	Player* p2 = new Player("James", *map2, str);
 	Player* p3 = new Player("Eren", *map2, str);
 
 	vector<gameView*>* vectPlayer = new vector<gameView*>;

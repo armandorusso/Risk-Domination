@@ -542,7 +542,7 @@ void RandomPlayer::executeFortify(Player *player) {
 		cout << player->getCountriesInts().at(i) << endl;
 	}
 
-	int maxArmy = 0;
+
 	int countryKeyFortify;             //holds key of country with max army
 	int countryTakingFrom;          //holds key of country of any other country with less army
 
@@ -560,13 +560,11 @@ void RandomPlayer::executeFortify(Player *player) {
 	countryTakingFrom = arr.back();
 	arr.pop_back();
 	
-
-	
 	
 	    //getting random number of armies to move
 		int army = arrayCountry[countryTakingFrom].getArmy();
         vector<int> arr2;
-		for (int i = 1; i <= army; i++) {
+		for (int i = 1; i < army; i++) {
 
 		  arr2.push_back(i);
 		}
@@ -636,9 +634,58 @@ void CheaterPlayer::executeAttack(Player *player) {
 
 void CheaterPlayer::executeFortify(Player *player) {
 
+
+	player->notify(player, "Fortifying");  //notify observer at start of reinforece
+
+	std::cout << std::endl;
+
+	Country* arrayCountry = player->getMap()->getCountryArray();
+
+	//showing countries owned
+	cout << "You have the following countries: " << endl;
+	for (int i = 0; i < player->getNumOfCountries(); i++) {
+		cout << player->getCountriesInts().at(i) << endl;
+	}
+
+	vector<Country*> *countries = player->getCountriesObjects();
+	vector<int> *toFortify = new vector<int>;
+	
+	//pushes countries that has a neigbor that is not owned by the owner in toFortify
+	for (int i = 0; i < countries->size(); i++) {
+
+		bool mustFortify = false;
+		int size = countries->at(i)->getNeighbourNum();
+		int* neighbor = countries->at(i)->getNeighbours();
+
+		for (int j = 0; j < size; j++) {
+
+			if (arrayCountry[neighbor[j]].getOwner() != player->getName()) {
+				mustFortify = true;
+			}
+		}
+		
+		if (mustFortify) {
+			toFortify->push_back(countries->at(i)->getCountryKey());
+		}
+
+	}
+
+	//doubling army for those that is in to fortify vector 
+	for (int i = 0; i < toFortify->size(); i++) {
+
+		arrayCountry[toFortify->at(i)].addArmy(arrayCountry[toFortify->at(i)].getArmy());
+		//arrayCountry[toFortify->at(i)].getOwnerObj()->addArmy(arrayCountry[toFortify->at(i)].getArmy());
+	
+	}
+
+	
+	player->notify(player, "Finished Fortifying");  //showing updated values.
+
+
 }
 
 void CheaterPlayer::executeReinforce(Player *player) {
+	
 	player->notify(player, "Reinforcing");
 
 	//std::cout << this->getName() << " is reinforcing..." << std::endl;
