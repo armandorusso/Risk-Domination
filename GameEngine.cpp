@@ -322,7 +322,7 @@ void statsDemo() {
 
 
 }
-
+/*
 int main() {
 	//creating array of countries
 	int varr0[3] = { 1,3,4 };
@@ -378,7 +378,7 @@ int main() {
 	cout << "ends";
 
 }
-
+*/
 //testStrategyAttack();
     //Run statsObserver demo
 //	statsDemo();

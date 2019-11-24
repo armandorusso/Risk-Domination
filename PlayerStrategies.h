@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include <algorithm>
+#include <random>
+#include <time.h>
 //#include"GameObservers.h"
 using namespace std;
 
@@ -42,10 +45,12 @@ public:
 
 class RandomPlayer : public Strategy {
 public:
+	
+	
 	void executeReinforce(Player* player);
 	void executeFortify(Player* player);
 	void executeAttack(Player* player);
-
+	
 };
 
 class CheaterPlayer : public Strategy {
@@ -56,4 +61,5 @@ public:
 
 };
 
-int stratDriver();
+int stratDriver(); 
+void shuffle(vector<int>& array);

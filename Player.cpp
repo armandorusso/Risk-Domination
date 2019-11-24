@@ -134,7 +134,6 @@ Player::Player(const Player &r) {
     this->totalArmy = new int(*r.totalArmy);
     this->numberOfContinent = new int(*r.numberOfContinent);
 
-
     this->countriesKey = new vector<int>();
 
     if(r.countriesKey->size() != 0) {
@@ -450,7 +449,8 @@ void Player::fortify() {
 				valid = true;
 				arrayCountry[ans3].subtractArmy(ans4);
 				arrayCountry[ans2].addArmy(ans4);
-
+				arrayCountry[ans3].getOwnerObj()->subtractArmy(ans4);
+				arrayCountry[ans2].getOwnerObj()->addArmy(ans4);
 			}
 			else {
 				cout << "Invalid input(You dont have enough army, try agian:)" << endl;
@@ -1193,7 +1193,9 @@ void testStrategy() {
 	Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
 	(*map2).setMatrix();
 
-	AggressivePlayer* str = new AggressivePlayer();
+	//AggressivePlayer* str = new AggressivePlayer();
+	//BenevolentPlayer* str2 = new BenevolentPlayer();
+	RandomPlayer* str = new RandomPlayer();
 	BenevolentPlayer* str2 = new BenevolentPlayer();
 
 	Player* p1 = new Player("Jack", *map2, str);
@@ -1295,13 +1297,13 @@ void testStrategyAttack() {
     player2->attackUsingStrategy();
 }
 
-//int main(){
+int main(){
 //    attackDriver();
 //	fortifyDriver();
 //	observerDriver();
-//	testStrategy();
+	testStrategy();
 
 //testStrategyAttack();
 //reinforceDriver();
 
-//}
+}

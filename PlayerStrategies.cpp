@@ -4,6 +4,7 @@
 #include <random>
 #include <vector>
 
+
 using namespace std;
 
 //Prints the contents of a vector of integers.
@@ -123,11 +124,11 @@ void AggressivePlayer::executeAttack(Player *player) {
 
         //If attacking player rolls greater than defending player, defending player loses army. Otherwise, attacking country loses army.
         if (::compareRolls(player, defendingPlayer)) {
-            loseArmy(defendingCountry);
+			arrayCountry[defendingCountry].subtractArmy(1);
             defendingPlayer->subtractArmy(1);
         }
         else {
-            loseArmy(maxArmyCountry->getCountryKey());
+			arrayCountry[maxArmyCountry->getCountryKey()].subtractArmy(1);
             attackingPlayer->subtractArmy(1);
         }
 
@@ -230,7 +231,8 @@ void AggressivePlayer::executeFortify(Player *player) {
 
 		arrayCountry[countryTakingFrom].subtractArmy(army - 1);//Giving attacking country max army it can
 		arrayCountry[countryKeyMax].addArmy(army - 1);
-
+		arrayCountry[countryTakingFrom].getOwnerObj()->subtractArmy(army-1);
+		arrayCountry[countryKeyMax].getOwnerObj()->addArmy(army-1);
 	}
 	player->notify(player, "Finished Fortifying");  //showing updated values.
 }
@@ -511,11 +513,74 @@ void BenevolentPlayer::executeReinforce(Player *player) {
 //=================
 //RANDOM PLAYER
 //=================
+
+void shuffle(vector<int>& array) {
+
+	std::default_random_engine engine;
+	engine.seed(time(0));
+	auto rng = engine;
+	std::shuffle(std::begin(array), std::end(array), rng);
+}
+
 void RandomPlayer::executeAttack(Player *player) {
 
 }
 
 void RandomPlayer::executeFortify(Player *player) {
+
+
+	player->notify(player, "Fortifying");  //notify observer at start of reinforece
+
+	std::cout << std::endl;
+
+	Country* arrayCountry = player->getMap()->getCountryArray();
+
+	//showing countries owned
+	cout << "You have the following countries: " << endl;
+	for (int i = 0; i < player->getNumOfCountries(); i++) {
+		cout << player->getCountriesInts().at(i) << endl;
+	}
+
+	int maxArmy = 0;
+	int countryKeyFortify;             //holds key of country with max army
+	int countryTakingFrom;          //holds key of country of any other country with less army
+
+	// getting key of random fortified and taking from country
+	vector<int> arr;
+	for (int j = 0; j < player->getNumOfCountries(); ++j)
+		arr.push_back(player->getCountriesInts().at(j));
+
+	
+	shuffle(arr);
+
+	countryKeyFortify = arr.back();
+	arr.pop_back();
+
+	countryTakingFrom = arr.back();
+	arr.pop_back();
+	
+
+	
+	
+	    //getting random number of armies to move
+		int army = arrayCountry[countryTakingFrom].getArmy();
+        vector<int> arr2;
+		for (int i = 1; i <= army; i++) {
+
+		  arr2.push_back(i);
+		}
+       
+		shuffle(arr2);
+		
+		int armyTaken = arr2.back();
+		
+		arrayCountry[countryTakingFrom].subtractArmy(armyTaken);//Giving attacking country max army it can
+		arrayCountry[countryKeyFortify].addArmy(armyTaken);
+	//	arrayCountry[countryTakingFrom].getOwnerObj()->subtractArmy(armyTaken);
+	//	arrayCountry[countryKeyFortify].getOwnerObj()->addArmy(armyTaken);        //this is good,dont delete(comment out for testing)
+	
+		player->notify(player, "Finished Fortifying");  //showing updated values.
+
 
 }
 
@@ -537,6 +602,12 @@ void CheaterPlayer::executeFortify(Player *player) {
 void CheaterPlayer::executeReinforce(Player *player) {
 
 }
+
+
+
+
+
+
 
 int stratDriver() {
     return 0;
