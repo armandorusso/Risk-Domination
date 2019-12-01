@@ -348,6 +348,7 @@ void Player::reinforceDemo() {
 
 void Player::attackUsingStrategy() {
 
+
 	strategy->executeAttack(this);
 
 

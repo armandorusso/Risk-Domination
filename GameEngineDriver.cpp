@@ -1,7 +1,7 @@
 #include "GameEngine.h"
 #include "GameEngine2.h"
 #include "Adapter.h"
-
+/*
 int main() {
 	Loader* load = new Loader();
 	
@@ -217,3 +217,4 @@ int main() {
 
 	return 0;
 }
+*/

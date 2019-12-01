@@ -570,6 +570,8 @@ void RandomPlayer::executeAttack(Player *player) {
 		for (int i = 0; i < player->getNumOfCountries(); i++) {
 			x.push_back(player->getCountryKeys().at(i));
 		}
+		//getting random attacking country
+		shuffle(x);
 
 		attackingCountry = x.back();
 		x.pop_back();
@@ -588,6 +590,9 @@ void RandomPlayer::executeAttack(Player *player) {
 			}
 		}
 
+		//getting random country key
+		shuffle(attackable);
+
 		defendingCountry = attackable.back();
 		attackable.pop_back();
 		
@@ -599,6 +604,7 @@ void RandomPlayer::executeAttack(Player *player) {
 		string dpla = arrayCountry[defendingCountry].getOwner();
         Player* defendingPlayer = arrayCountry[defendingCountry].getOwnerObj();
 		
+		//getting player object of defending country
 		for (int i = 0; i < players->size(); i++) {
 
 			if (players->at(i)->getName() == dpla) {
@@ -662,12 +668,6 @@ void RandomPlayer::executeAttack(Player *player) {
 			else {
 				cout << "You don't have enough armies to transfer. " << endl;
 			}
-
-
-
-
-			//Updating the attackableCountries vector.
-			//attackableCountries = player->getAttackableCountries(player->getMap());
 		}
 
 		printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
