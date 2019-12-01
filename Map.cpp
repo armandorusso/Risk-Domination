@@ -13,7 +13,7 @@ Country::Country() {
     neighbourNum = new int;
     army = new int;
 	continentName = new string;
-	ownerObj = NULL;
+	ownerObj = new Player();
 }
 
 Country::Country(string name, int countryK, int* neighbourA, int continentK, int neighbourN) {
@@ -29,7 +29,7 @@ Country::Country(string name, int countryK, int* neighbourA, int continentK, int
     for (int i = 0; i < neighbourN; i++) {
         neighbourArray[i] = neighbourA[i];
     }
-	ownerObj = NULL;
+	ownerObj = new Player();
 }
 
 //vector as parameter
@@ -55,7 +55,7 @@ Country::Country(string name, int countryK, vector<int> neighbourA, int continen
         neighbourArray[i] = arr[i];
     }
 
-	ownerObj = NULL;
+	ownerObj = new Player();
 
 }
 int Country::getNeighbourNum() const {
@@ -64,7 +64,7 @@ int Country::getNeighbourNum() const {
     return x;
 }
 Country::~Country() {
-    delete name, countryKey, continentKey, owner, neighbourNum, army;
+    delete name, countryKey, continentKey, owner, neighbourNum, army,ownerObj;
     delete[] neighbourArray;
 
 }

@@ -630,6 +630,54 @@ void RandomPlayer::executeReinforce(Player *player) {
 //=================
 void CheaterPlayer::executeAttack(Player *player) {
 
+	
+	player->notify(player, "Attacking"); //notify observer to show initial state
+
+	player->setIsTurn(true);
+
+
+
+	Country* arrayCountry = player->getMap()->getCountryArray();
+
+
+		cout << "=========================" << endl;
+		cout << "Countries you own" << endl;
+		cout << "=========================" << endl;
+
+
+		printVectorInt(player->getCountryKeys());
+
+		cout << endl;
+		
+		int len = player->getNumOfCountries();
+
+		for(int i = 0; i < len; i++) {
+
+			cout << "Attacking with country: "<<  player->getCountriesInts().at(i) << endl;
+			cout << endl;
+			int* neighbours = arrayCountry[player->getCountriesInts().at(i)].getNeighbours();
+
+			
+
+			//conquering all neighbours of countries owned
+			for (int j = 0; j < arrayCountry[player->getCountriesInts().at(i)].getNeighbourNum(); j++) {
+
+				if(arrayCountry[neighbours[j]].getOwner() != player->getName()){
+                    
+
+					arrayCountry[neighbours[j]].getOwnerObj()->removeCountry(neighbours[j]);
+					player->addCountry(&arrayCountry[neighbours[j]]);
+					arrayCountry[neighbours[j]].setOwner(player->getName());
+					arrayCountry[neighbours[j]].setOwnerObj(player);
+					cout << "Country " << arrayCountry[neighbours[j]].getName() << " have been conquered!" << endl;
+				}
+			}
+
+		}
+		
+		
+	player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
+	
 }
 
 void CheaterPlayer::executeFortify(Player *player) {

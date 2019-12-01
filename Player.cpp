@@ -765,8 +765,8 @@ void Player::addCountry(int key) {
 void Player::addCountry(Country* country) {
     country->setOwner(this->getName());
     countriesKey->push_back(country->getCountryKey());
-    (*numberOfCountries)++;
     countries->push_back(country);
+	(*numberOfCountries)++;
 }
 
 void Player::removeCountry(int key) {
@@ -777,6 +777,7 @@ void Player::removeCountry(int key) {
 			countriesKey->erase(countriesKey->begin() + i);
 			*numberOfCountries -= 1;
 		}
+		
 
 	}
 }
@@ -858,7 +859,7 @@ bool Player::getIsTurn() const {
 }
 
 int Player::getNumCountries() const {
-	return  countries->size();
+	return  *numberOfCountries;
 }
 
 //Returns a vector containing pointers to Country objects the player owns.
@@ -1059,7 +1060,13 @@ void attackDriver() {
 
 	players.push_back(player1);
 	players.push_back(player2);
-
+    
+	vc0->addArmy(5);
+	vc1->addArmy(5);
+	vc2->addArmy(5);
+	vc3->addArmy(5);
+	vc4->addArmy(5);
+	
 	//testing observer
 	vector<gameView*>* vectPlayer = new vector<gameView*>;
 	vectPlayer->push_back(player1);
@@ -1075,11 +1082,7 @@ void attackDriver() {
 	player2->addCountry(vc3);
 	player2->addCountry(vc4);
 
-	vc0->addArmy(5);
-	vc1->addArmy(5);
-	vc2->addArmy(5);
-	vc3->addArmy(5);
-	vc4->addArmy(5);
+	
 
     for(int i = 0; i< player1->getCountriesObjects()->size(); i++) {
         player1->addArmy(player1->getCountriesObjects()->at(i)->getArmy());
@@ -1256,13 +1259,15 @@ void testStrategyAttack() {
     varrayCountry[3] = *vc3;
     varrayCountry[4] = *vc4;
 
-    AggressivePlayer* aggressiveAttack = new AggressivePlayer();
+    
+	CheaterPlayer* cheater = new CheaterPlayer();
+	//AggressivePlayer* aggressiveAttack = new AggressivePlayer();
     BenevolentPlayer* benevolentAttack = new BenevolentPlayer();
 
     Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
 
-    Player* player1 = new Player("Christopher", *map2, aggressiveAttack);
-    Player* player2 = new Player("Peter", *map2, benevolentAttack);
+    Player* player1 = new Player("Christopher", *map2, cheater);
+	Player* player2 = new Player("Peter", *map2, benevolentAttack);
 
     players.push_back(player1);
     players.push_back(player2);
@@ -1282,28 +1287,36 @@ void testStrategyAttack() {
     player2->addCountry(vc3);
     player2->addCountry(vc4);
 
+	vc0->setOwnerObj(player1);
+	vc1->setOwnerObj(player1);
+	vc2->setOwnerObj(player2);
+	vc3->setOwnerObj(player2);
+	vc4->setOwnerObj(player2);
+
     vc0->addArmy(5);
     vc1->addArmy(5);
     vc2->addArmy(5);
     vc3->addArmy(5);
     vc4->addArmy(5);
+    
+
 
     for(int i = 0; i< player1->getCountriesObjects()->size(); i++) {
             player1->addArmy(player1->getCountriesObjects()->at(i)->getArmy());
     }
 
-//    player1->attackUsingStrategy();
+    player1->attackUsingStrategy();
 
-    player2->attackUsingStrategy();
+ //   player2->attackUsingStrategy();
 }
 
 int main(){
 //    attackDriver();
 //	fortifyDriver();
 //	observerDriver();
-	testStrategy();
+//	testStrategy();
 
-//testStrategyAttack();
+   testStrategyAttack();
 //reinforceDriver();
 
 }
