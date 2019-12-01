@@ -1241,6 +1241,10 @@ void testStrategy() {
 	p1->attackUsingStrategy();
 	cin >> x;
 	p2->attackUsingStrategy();
+	cin >> x;
+	p1->reinforceUsingStrategy();
+	cin >> x;
+	p2->reinforceUsingStrategy();
 
 	cout << " ";
 }
