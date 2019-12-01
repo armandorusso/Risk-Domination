@@ -21,9 +21,12 @@ public:
 	~Loader();
 
 	//functions
-	void menu();
+	void tournyMenu();
+	int menu();
+	void selectMap();
 	Map* getMap() { return map; };
 	vector<Player*>* getPlayers() { return players; };
+	void setPlayers(Player* player) { players->push_back(player); };
 
 };
 

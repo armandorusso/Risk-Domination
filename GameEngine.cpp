@@ -46,6 +46,109 @@ Game::Game(Map& map, vector<Player*> playerArr) {
 
 }
 
+void Game::startupTournament() {
+
+	//setting toatal army for each player
+	for (int i = 0; i < playerArray->size(); i++) {
+
+		playerArray->at(i)->addArmy(*armyNum);
+	}
+
+	//getting array of countries from map
+	int numOfCountry = gameMap->getCountryCount();
+
+	//an array of shuffled countries to assign randomly to players
+	vector<Country*> CountryRandom;
+
+	vector<int> arr;
+	for (int j = 0; j < numOfCountry; ++j)
+		arr.push_back(j);
+
+	shuffle(arr);
+
+	for (int i = 0; i < numOfCountry; i++) {
+		int x = arr.back();
+		arr.pop_back();
+
+		CountryRandom.push_back(&(countryArray[x]));
+
+	}
+
+
+	//assigning countries to players
+
+
+	for (int i = 0; i < numOfCountry; i++) {
+
+		(playerArray->at(i % (*numberOfPlayer)))->addCountry(CountryRandom.at(i));
+		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
+		(CountryRandom.at(i))->setOwnerObj(playerArray->at(i % (*numberOfPlayer)));
+	}
+	//showing country assignment
+	cout << endl;
+	cout << "============== Showing country assignment =========================" << endl;
+
+	for (int i = 0; i < *numberOfPlayer; i++) {
+		cout << endl;
+		vector<int>vect = playerArray->at(i)->getCountriesInts();
+		int x = playerArray->at(i)->getNumOfCountries();
+
+		cout << endl;
+		cout << "Player " << playerArray->at(i)->getName() << " has Countries: " << endl;
+		cout << endl;
+		for (int i = 0; i < x; i++) {
+			int y = vect.at(i);
+			cout << y << "(" << (countryArray[y].getName()) << ")" << endl;
+		}
+
+	}
+
+	for (int i = 0; i < playerArray->size(); i++) {
+
+		playerArray->at(i)->setGame(this);
+	}
+
+	cout << endl;
+	cout << "============== Starting Army Placement ==========================" << endl;
+	//prompting user to assign army to countries
+	for (int i = 0; i < *numberOfPlayer; i++) {
+		bool valid = true;
+		int army = *armyNum;
+		vector<int> arr = playerArray->at(i)->getCountriesInts();
+		int x = arr.size();
+		cout << endl;
+		cout << "Player " << (playerArray->at(i))->getName() << ":" << endl;
+		cout << endl;
+		int y;
+		cout << "Placing armies" << endl;
+		y = army / numOfCountry;
+
+		for (int j = 0; j < x; j++) {
+			
+			army = army - y;
+
+			countryArray[(arr.at(j))].addArmy(y);        //adding army to country
+
+		}
+
+	}
+	//printing army placement and owner
+	cout << endl;
+	cout << "========================== Game Board ===============================" << endl;
+	cout << endl;
+	for (int i = 0; i < numOfCountry; i++) {
+
+		cout << "Country" << i << " has owner: " << (countryArray[i].getOwner()) << ", Army: " << countryArray[i].getArmy() << endl;
+
+	}
+	cout << "Press any digit key to continue..." << endl;
+	int x;
+	cin >> x;
+
+}
+
+
+
 void Game::startupPhase() {
 
 	//setting toatal army for each player
@@ -82,7 +185,7 @@ void Game::startupPhase() {
 
 		(playerArray->at(i % (*numberOfPlayer)))->addCountry(CountryRandom.at(i));
 		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
-		(CountryRandom.at(i))->setOwnerObj(*playerArray->at(i % (*numberOfPlayer)));
+		(CountryRandom.at(i))->setOwnerObj(playerArray->at(i % (*numberOfPlayer)));
 	}
 	//showing country assignment
 	cout << endl;
@@ -183,16 +286,23 @@ Game::~Game() {
 MainLoop::MainLoop() {
 
 	startGame = NULL;
+	maxTurns = NULL;
+	tourney = new bool(false);
+	winners = new vector<string>;
 }
 //constructor
 MainLoop::MainLoop(Game& game1) {
 
 	startGame = &game1;  //has a link to game map
+	maxTurns = new int();
+	tourney = new bool(false);
+	winners = new vector<string>;
 
 }
 
+
 //method to check if we have a game winner
-void MainLoop::checkIfEnd() {
+int MainLoop::checkIfEnd() {
 
 	int numOfCountry = (startGame->gameMap)->getCountryCount();
 	int numOfPlayers = *(startGame->numberOfPlayer);
@@ -201,17 +311,42 @@ void MainLoop::checkIfEnd() {
 
 	for (int i = 0; i < numOfPlayers; i++) {
 		if (((arr->at(i))->getNumOfCountries()) == numOfCountry) {         //wins if the number of country owned==country in continent
-
 			//Notify observer that there is a winner
 			notify(startGame->playerArray, startGame->gameMap);
-			exit(0);
+			cout << arr->at(i)->getName() << " wins the game!" << endl;
+			winners->push_back(arr->at(i)->getName()); //push the name of the winner
+
+			if (!getTourney()) {
+				exit(0);
+			}
+
+			else {
+				cout << "We will move onto the next game!" << endl;
+
+				for (int j = 0; j < 10; j++) {
+					cout << endl;
+				}
+
+			}
+			return 1; //1 means someone won
 		}
 
 	}
 }
 
+
+void MainLoop::endDraw() { //method is called if the number of turns in tourney mode exceeds the max amount of turns set
+	cout << "It's a draw! There is no winner!\n\n\n\n" << endl;
+	winners->push_back("Draw-No Winner");
+	int numOfPlayers = *(startGame->numberOfPlayer);
+	vector<Player*>* arr = startGame->playerArray;
+	for (int i = 0; i < numOfPlayers; i++) {
+		notify(startGame->playerArray, startGame->gameMap);
+	}
+}
+
 //main game loop
-void MainLoop::startLoop() {
+void MainLoop::startLoop(int turns) {
 
 	cout << endl;
 	cout << "================ Starting Game phases ==================== " << endl;
@@ -220,17 +355,20 @@ void MainLoop::startLoop() {
 	int numOfPlayers = *(startGame->numberOfPlayer);
 	vector<Player*>* arr = startGame->playerArray;
 
+	int counter = 0;
 	int i = 0;
-	while (true) {  //infinite loop
+	int winner = 0;
+	setTurns(turns);
+	while (counter != turns) {  //infinite loop if its normal mode
 
 		for (int j = 0; j < numOfPlayers; j++) {
 
 			(arr->at(j))->executeReinforce();
 			//Display statistics after reinforce
 			notify(startGame->playerArray, startGame->gameMap);
-			(arr->at(j))->executeAttack();
+//			(arr->at(j))->executeAttack();
 			//Update player progress after attacking
-			notify(startGame->playerArray, startGame->gameMap);
+//			notify(startGame->playerArray, startGame->gameMap);
 			(arr->at(j))->executeFortify();
 			//Display statistics after fortify
 			notify(startGame->playerArray, startGame->gameMap);
@@ -242,12 +380,21 @@ void MainLoop::startLoop() {
 
 			}
 
-			checkIfEnd();
+			winner = checkIfEnd();
+			if (winner == 1) {
+				return;
+			}
 
 		}
 		i = i + 1;
+		counter++;
 	}
+	if(counter == turns)
+	endDraw();
 }
+
+
+
 MainLoop::~MainLoop() {
 	startGame = NULL;
 }
