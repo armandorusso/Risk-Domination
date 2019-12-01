@@ -1333,13 +1333,13 @@ void testStrategyAttack() {
 	  cout << " ";
 }
 
-int main(){
+//int main(){
 //    attackDriver();
 //	fortifyDriver();
 //	observerDriver();
-	testStrategy();
+//	testStrategy();
 
   // testStrategyAttack();
 //reinforceDriver();
 
-}
+//}

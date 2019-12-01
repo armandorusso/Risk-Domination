@@ -82,7 +82,7 @@ void Game::startupTournament() {
 
 		(playerArray->at(i % (*numberOfPlayer)))->addCountry(CountryRandom.at(i));
 		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
-		(CountryRandom.at(i))->setOwnerObj(playerArray->at(i % (*numberOfPlayer)));
+		(CountryRandom.at(i))->setOwnerObj(*playerArray->at(i % (*numberOfPlayer)));
 	}
 	//showing country assignment
 	cout << endl;
@@ -185,7 +185,7 @@ void Game::startupPhase() {
 
 		(playerArray->at(i % (*numberOfPlayer)))->addCountry(CountryRandom.at(i));
 		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
-		(CountryRandom.at(i))->setOwnerObj(playerArray->at(i % (*numberOfPlayer)));
+		(CountryRandom.at(i))->setOwnerObj(*playerArray->at(i % (*numberOfPlayer)));
 	}
 	//showing country assignment
 	cout << endl;
