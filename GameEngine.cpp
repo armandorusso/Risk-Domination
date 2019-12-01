@@ -82,7 +82,7 @@ void Game::startupPhase() {
 
 		(playerArray->at(i % (*numberOfPlayer)))->addCountry(CountryRandom.at(i));
 		(CountryRandom.at(i))->setOwner(((playerArray->at(i % (*numberOfPlayer)))->getName()));
-		(CountryRandom.at(i))->setOwnerObj(playerArray->at(i % (*numberOfPlayer)));
+		(CountryRandom.at(i))->setOwnerObj(*playerArray->at(i % (*numberOfPlayer)));
 	}
 	//showing country assignment
 	cout << endl;
@@ -225,13 +225,13 @@ void MainLoop::startLoop() {
 
 		for (int j = 0; j < numOfPlayers; j++) {
 
-			(arr->at(j))->reinforce();
+			(arr->at(j))->executeReinforce();
 			//Display statistics after reinforce
 			notify(startGame->playerArray, startGame->gameMap);
-			(arr->at(j))->attack();
+			(arr->at(j))->executeAttack();
 			//Update player progress after attacking
 			notify(startGame->playerArray, startGame->gameMap);
-			(arr->at(j))->fortify();
+			(arr->at(j))->executeFortify();
 			//Display statistics after fortify
 			notify(startGame->playerArray, startGame->gameMap);
 

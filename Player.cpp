@@ -115,7 +115,7 @@ Player::Player(std::string name) {
 	game = NULL;
 }
 
-Player::Player(const Player &r) {
+/*Player::Player(const Player &r) {
     this->dice = new Dice(*r.getDice());
     this->isTurn = new bool(r.getIsTurn());
 
@@ -152,7 +152,7 @@ Player::Player(const Player &r) {
 
 	
 }
-
+*/
 
 
 //Destructor for Player Class.
@@ -349,6 +349,7 @@ void Player::reinforceDemo() {
 void Player::attackUsingStrategy() {
 
 	strategy->executeAttack(this);
+
 
 }
 
@@ -764,6 +765,7 @@ void Player::addCountry(int key) {
 //Assigns a country pointer to a player object and sets its owner to the name of that player object.
 void Player::addCountry(Country* country) {
     country->setOwner(this->getName());
+	country->setOwnerObj(*this);
     countriesKey->push_back(country->getCountryKey());
     countries->push_back(country);
 	(*numberOfCountries)++;
@@ -909,7 +911,7 @@ vector<int> Player::getAttackableCountries(Map* map) {
 	vector<int> neighbours;
 
 	for (int i = 0; i < numCountries; i++) {
-		for (int j = 0; j < this->getCountriesObjects()->at(i)->getNeighbourNum(); j++) {
+		for (int j = 0; j < this->getCountriesObjects()->at(i)->getNeighbourNum(); j++){
 			if (this->getCountriesObjects()->at(i)->getArmy() >= 2) {
 				neighbours.push_back(this->getCountriesObjects()->at(i)->getNeighbours()[j]);
 			}
@@ -994,7 +996,7 @@ void printArmiesFromCountries(Country* c1, Country* c2) {
 }
 
 //Assignment Operator
-const Player& Player::operator=(const Player& r) {
+/*const Player& Player::operator=(const Player& r) {
     if(&r != this) {
         delete dice;
         delete name;
@@ -1022,7 +1024,7 @@ const Player& Player::operator=(const Player& r) {
 
     return *this;
 }
-
+*/
 //DRIVERS
 void attackDriver() {
 	int numCountry = 5;
@@ -1196,8 +1198,11 @@ void testStrategy() {
 	Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
 	(*map2).setMatrix();
 
+	
+
 	//AggressivePlayer* str = new AggressivePlayer();
 	//BenevolentPlayer* str2 = new BenevolentPlayer();
+	
 	RandomPlayer* str = new RandomPlayer();
 	CheaterPlayer* str2 = new CheaterPlayer();
 
@@ -1206,14 +1211,19 @@ void testStrategy() {
 	Player* p3 = new Player("Eren", *map2, str);
 
 	vector<gameView*>* vectPlayer = new vector<gameView*>;
+	vector<Player*>* vectplayer2 = new vector<Player*>;
 	vectPlayer->push_back(p1);
+	vectplayer2->push_back(p1);
 	vectPlayer->push_back(p2);
+	vectplayer2->push_back(p2);
 	vectPlayer->push_back(p3);
+	vectplayer2->push_back(p3);
 	gameObserver* obs = new gameObserver(*vectPlayer);
+
+	map2->setPlayer(vectplayer2);
 
 	p1->addCountry(vc0);
 	p1->addCountry(vc1);
-
 	p1->addCountry(vc2);
 	p2->addCountry(vc3);
 	p2->addCountry(vc4);
@@ -1223,11 +1233,16 @@ void testStrategy() {
 	vc2->addArmy(2);
 	vc3->addArmy(3);
 	vc4->addArmy(5);
-
-	p1->fortifyUsingStrategy();//agressive fortify
-	int x;
+    int x;
+	p1->fortifyUsingStrategy();
 	cin >>x;
-	p2->fortifyUsingStrategy();//benevolant fortify
+	p2->fortifyUsingStrategy();
+	cin >> x;
+	p1->attackUsingStrategy();
+	cin >> x;
+	p2->attackUsingStrategy();
+
+	cout << " ";
 }
 
 void testStrategyAttack() {
@@ -1261,13 +1276,14 @@ void testStrategyAttack() {
 
     
 	CheaterPlayer* cheater = new CheaterPlayer();
-	//AggressivePlayer* aggressiveAttack = new AggressivePlayer();
-    BenevolentPlayer* benevolentAttack = new BenevolentPlayer();
+	AggressivePlayer* aggressiveAttack = new AggressivePlayer();
+	RandomPlayer* random = new RandomPlayer();
+	BenevolentPlayer* benevolentAttack = new BenevolentPlayer();
 
     Map* map2 = new Map(continentArray, 2, varrayCountry, 5);
 
     Player* player1 = new Player("Christopher", *map2, cheater);
-	Player* player2 = new Player("Peter", *map2, benevolentAttack);
+	Player* player2 = new Player("Peter", *map2, aggressiveAttack);
 
     players.push_back(player1);
     players.push_back(player2);
@@ -1287,11 +1303,11 @@ void testStrategyAttack() {
     player2->addCountry(vc3);
     player2->addCountry(vc4);
 
-	vc0->setOwnerObj(player1);
-	vc1->setOwnerObj(player1);
-	vc2->setOwnerObj(player2);
-	vc3->setOwnerObj(player2);
-	vc4->setOwnerObj(player2);
+	vc0->setOwnerObj(*player1);
+	vc1->setOwnerObj(*player1);
+	vc2->setOwnerObj(*player2);
+	vc3->setOwnerObj(*player2);
+	vc4->setOwnerObj(*player2);
 
     vc0->addArmy(5);
     vc1->addArmy(5);
@@ -1305,18 +1321,20 @@ void testStrategyAttack() {
             player1->addArmy(player1->getCountriesObjects()->at(i)->getArmy());
     }
 
-    player1->attackUsingStrategy();
+  //  player1->attackUsingStrategy();
 
- //   player2->attackUsingStrategy();
+      player2->attackUsingStrategy();
+
+	  cout << " ";
 }
 
 int main(){
 //    attackDriver();
 //	fortifyDriver();
 //	observerDriver();
-//	testStrategy();
+	testStrategy();
 
-   testStrategyAttack();
+  // testStrategyAttack();
 //reinforceDriver();
 
 }

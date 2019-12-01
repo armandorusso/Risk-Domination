@@ -64,7 +64,7 @@ int Country::getNeighbourNum() const {
     return x;
 }
 Country::~Country() {
-    delete name, countryKey, continentKey, owner, neighbourNum, army,ownerObj;
+    delete name, countryKey, continentKey, owner, neighbourNum, army;
     delete[] neighbourArray;
 
 }

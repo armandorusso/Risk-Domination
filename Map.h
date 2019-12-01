@@ -44,7 +44,7 @@ public:
 	void setNeighbour(int* arr) { neighbourArray = arr; };
 	void setContinentName(string name) { *continentName = name; };
 	string getContinentName() { return *continentName; };
-	void setOwnerObj(Player* pla) { ownerObj = pla; };
+	void setOwnerObj(Player& pla) { ownerObj = &pla; };
 	Player* getOwnerObj() { return ownerObj; };
 };
 
@@ -91,6 +91,7 @@ private:
     Country* array2;   //array of all countries in map(key of country==index)
     //private method
     void check(int i, int* arr);
+	vector<Player*> *players;
 
 public:
 
@@ -102,6 +103,8 @@ public:
     Map(Continent* array1, int size1, Country* array2, int size2);
     ~Map();
 
+	vector<Player*>* getPlayer() { return players; }
+	void setPlayer(vector<Player*>* play) { players = play; };
     bool checkMap();
 
     void setMatrix();
@@ -128,6 +131,7 @@ public:
     Continent* getContinentArray() const { return array1; };
 
 	int** getMatrix() const { return matrix; };
+
 };
 
 

@@ -34,7 +34,7 @@ public:
 	Player(string name, Map& map, Strategy* strategy);
 	Player(std::string name);
 	//Player(Strategy *strategy);
-	Player(const Player&);
+	//Player(const Player&);
 	//Player(const Player&, Strategy *newStrat);
 	Player();
 	~Player();
@@ -98,7 +98,7 @@ public:
 
 	Dice* getDice() const;
 	std::string getName() const;
-    const Player& operator=(const Player& r);
+   // const Player& operator=(const Player& r);
 	int getTotalArmy() { return *totalArmy; };
 	void addArmy(int num) { *totalArmy += num; };
 	void subtractArmy(int num) { *totalArmy -= num; };

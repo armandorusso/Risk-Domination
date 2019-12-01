@@ -52,6 +52,7 @@ void AggressivePlayer::executeAttack(Player *player) {
     do {
         Country* arrayCountry = player->getMap()->getCountryArray();
         vector<int> attackableCountries = player->getAttackableCountries(player->getMap());
+		vector<Player*>* players = player->getMap()->getPlayer();
 
         cout << "=========================" << endl;
         cout << "Countries you own" << endl;
@@ -112,9 +113,20 @@ void AggressivePlayer::executeAttack(Player *player) {
         cout << "Attacking " << defendingCountry << " with " << countryKeyMax << endl << endl;
 
 		Player* defendingPlayer = arrayCountry[defendingCountry].getOwnerObj();
-        Player* attackingPlayer = arrayCountry[maxArmyCountry->getCountryKey()].getOwnerObj();
+		Player* attackingPlayer = player;
 
-        printArmiesFromCountries(maxArmyCountry, &arrayCountry[defendingCountry]);
+		string dpla = arrayCountry[defendingCountry].getOwner();
+
+		for (int i = 0; i < players->size(); i++) {
+
+			if (players->at(i)->getName() == dpla) {
+				defendingPlayer = players->at(i);
+			}
+		}
+		
+		
+		
+		printArmiesFromCountries(maxArmyCountry, &arrayCountry[defendingCountry]);
 
         //Time to roll the dice for the attacking and defending player.
         player->RollDice(maxArmyCountry->getCountryKey(), 0);
@@ -525,6 +537,151 @@ void shuffle(vector<int>& array) {
 
 void RandomPlayer::executeAttack(Player *player) {
 
+	
+	player->notify(player, "Attacking"); //notify observer to show initial state
+
+	player->setIsTurn(true);
+
+	int attackingCountry = -1; // key for the attacking country
+	int defendingCountry = -1; // key for the defending country
+	int maxArmy = 0;
+	int countryKeyMax = -1;
+	
+
+	//Vector of countries that the player does not own which are
+	//neighbours of the attacking country.
+	vector<int> attackable;
+
+	Country* arrayCountry = player->getMap()->getCountryArray();
+	vector<Player*>* players = player->getMap()->getPlayer();
+
+
+		cout << "=========================" << endl;
+		cout << "Countries you own" << endl;
+		cout << "=========================" << endl;
+
+
+		printVectorInt(player->getCountryKeys());
+
+		cout << endl;
+
+		vector<int> x;
+
+		for (int i = 0; i < player->getNumOfCountries(); i++) {
+			x.push_back(player->getCountryKeys().at(i));
+		}
+
+		attackingCountry = x.back();
+		x.pop_back();
+
+	  //Neighbours of the country
+		Country* attack = &arrayCountry[attackingCountry]; //Always attacking with this country
+		
+
+		int* neighbours;
+		neighbours = attack->getNeighbours();
+
+		for (int i = 0; i < attack->getNeighbourNum(); i++) {
+			
+			if (arrayCountry[neighbours[i]].getOwner() != player->getName()) {
+				attackable.push_back(neighbours[i]);
+			}
+		}
+
+		defendingCountry = attackable.back();
+		attackable.pop_back();
+		
+		cout << "Country attacking with: " << attackingCountry << endl;
+		cout << "=========================" << endl;
+		cout << "Defending country: " << defendingCountry << endl;
+		cout << "=========================" << endl;
+		
+		string dpla = arrayCountry[defendingCountry].getOwner();
+        Player* defendingPlayer = arrayCountry[defendingCountry].getOwnerObj();
+		
+		for (int i = 0; i < players->size(); i++) {
+
+			if (players->at(i)->getName() == dpla) {
+				defendingPlayer = players->at(i);
+			}
+		}
+
+		
+		Player* attackingPlayer = player;
+		
+		printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
+
+		//Time to roll the dice for the attacking and defending player.
+		player->RollDice(attackingCountry, 0);
+		defendingPlayer->RollDice(defendingCountry, 0);
+
+		// Displays the rolls of each player.
+		::displayRoll(*player, *defendingPlayer);
+
+		//If attacking player rolls greater than defending player, defending player loses army. Otherwise, attacking country loses army.
+		if (::compareRolls(player, defendingPlayer)) {
+			arrayCountry[defendingCountry].subtractArmy(1);
+			defendingPlayer->subtractArmy(1);
+		}
+		else {
+			arrayCountry[attackingCountry].subtractArmy(1);
+			attackingPlayer->subtractArmy(1);
+		}
+
+		Country* dCountry = &arrayCountry[defendingCountry];
+		Country* aCountry = &arrayCountry[attackingCountry];
+
+		//If attacking results in 0 armies for the defending player, attacking player adds that country to their list of countries. Defending country is removed
+		//from defending player.
+		if (dCountry->getArmy() == 0) {
+
+			player->addCountry(dCountry);
+			::removeCountry(dCountry, defendingPlayer);
+
+			cout << "Country transferred to " << player->getName() << endl;
+
+			//Attacker can transfer 0 to n-1 armies from their country to the country they just won.
+			//If user inputs too many armies, appropriate message is displayed and loop is entered.
+			if (aCountry->getArmy() > 1) {
+
+				int inputArmies;
+				int maxArmiesToTransfer = aCountry->getArmy() - 1;
+
+				cout << "Choose between 0 and " << (aCountry->getArmy() - 1) << " armies to transfer to " << defendingCountry << ": ";
+				cout << "1" << "." << endl;
+				inputArmies = 1;
+				if (inputArmies > maxArmiesToTransfer || inputArmies < 0) {
+					cout << "Invalid number of armies." << endl;
+				}
+
+				//Transfer successful.
+				cout << "Transfering " << inputArmies << " armies from " << attackingCountry << " to " << defendingCountry << ".\n" << endl;
+				dCountry->addArmy(inputArmies);
+				aCountry->subtractArmy(inputArmies);
+			}
+			else {
+				cout << "You don't have enough armies to transfer. " << endl;
+			}
+
+
+
+
+			//Updating the attackableCountries vector.
+			//attackableCountries = player->getAttackableCountries(player->getMap());
+		}
+
+		printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
+
+		//Clearing the currentRoll values in the dice objects, so that
+		//more values are not pushed in.
+		player->getDice()->getCurrentRoll()->clear();
+		defendingPlayer->getDice()->getCurrentRoll()->clear();
+		int j;
+		cin >> j;
+	cout << "You don't have enough armies to attack with." << endl;
+	player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
+
+
 }
 
 void RandomPlayer::executeFortify(Player *player) {
@@ -573,7 +730,7 @@ void RandomPlayer::executeFortify(Player *player) {
 		
 		int armyTaken = arr2.back();
 		
-		arrayCountry[countryTakingFrom].subtractArmy(armyTaken);//Giving attacking country max army it can
+		arrayCountry[countryTakingFrom].subtractArmy(armyTaken);
 		arrayCountry[countryKeyFortify].addArmy(armyTaken);
 	//	arrayCountry[countryTakingFrom].getOwnerObj()->subtractArmy(armyTaken);
 	//	arrayCountry[countryKeyFortify].getOwnerObj()->addArmy(armyTaken);        //this is good,dont delete(comment out for testing)
@@ -630,15 +787,14 @@ void RandomPlayer::executeReinforce(Player *player) {
 //=================
 void CheaterPlayer::executeAttack(Player *player) {
 
-	
-	player->notify(player, "Attacking"); //notify observer to show initial state
+
+	player->notify(player, "playing"); //notify observer to show initial state
 
 	player->setIsTurn(true);
 
 
-
 	Country* arrayCountry = player->getMap()->getCountryArray();
-
+	
 
 		cout << "=========================" << endl;
 		cout << "Countries you own" << endl;
@@ -652,7 +808,7 @@ void CheaterPlayer::executeAttack(Player *player) {
 		int len = player->getNumOfCountries();
 
 		for(int i = 0; i < len; i++) {
-
+			cout << endl;
 			cout << "Attacking with country: "<<  player->getCountriesInts().at(i) << endl;
 			cout << endl;
 			int* neighbours = arrayCountry[player->getCountriesInts().at(i)].getNeighbours();
@@ -668,7 +824,7 @@ void CheaterPlayer::executeAttack(Player *player) {
 					arrayCountry[neighbours[j]].getOwnerObj()->removeCountry(neighbours[j]);
 					player->addCountry(&arrayCountry[neighbours[j]]);
 					arrayCountry[neighbours[j]].setOwner(player->getName());
-					arrayCountry[neighbours[j]].setOwnerObj(player);
+					arrayCountry[neighbours[j]].setOwnerObj(*player);
 					cout << "Country " << arrayCountry[neighbours[j]].getName() << " have been conquered!" << endl;
 				}
 			}
@@ -766,10 +922,6 @@ void CheaterPlayer::executeReinforce(Player *player) {
 
 	player->notify(player, "Finished Reinforcing");
 }
-
-
-
-
 
 
 
