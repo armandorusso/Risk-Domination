@@ -1,14 +1,15 @@
 #include "GameEngine.h"
 #include "GameEngine2.h"
 #include "Adapter.h"
-
+/*
 int main() {
 	Loader* load = new Loader();
 	
 		int choice = load->menu();
 
 		if (choice == 2) {
-			vector<Loader*> games;
+			vector<Loader*>* games = new vector<Loader*>;
+			vector<Loader*>* mapsPlay = new vector<Loader*>;
 			int numGames;
 			int numMaps;
 			int numPlayers;
@@ -33,11 +34,8 @@ int main() {
 
 			}
 
-			for (int i = 0; i < numMaps; i++) {
-				Loader *load = new Loader();
-				games.push_back(load);
-				games.at(i)->selectMap();
-			}
+			
+			
 
 
 
@@ -56,6 +54,27 @@ int main() {
 				}
 
 			}
+
+
+			vector<vector<Loader*>*>* allMaps = new vector<vector<Loader*>*>;
+			
+			for (int i = 0; i < numMaps; i++) {
+				
+				cout << "Please enter the map file name you wish to load : " << endl;
+
+				string file;
+				cin >> file;
+
+				vector<Loader*>* gamesM = new vector<Loader*>;
+		        
+				for (int j = 0; j < numGames; j++) {
+					Loader* load = new Loader();
+					gamesM->push_back(load);
+					gamesM->at(j)->selectMap2(file);
+				}
+				allMaps->push_back(gamesM);
+			}
+
 
 			while (true) {
 				cout << "\nNow how many turns would you like to play?" << endl;
@@ -90,7 +109,7 @@ int main() {
 			}
 
 			vector<string> names;
-			vector<Strategy*> strats; //vector of strategies
+			vector<Strategy*>* strats = new vector<Strategy*>; //vector of strategies
 			Strategy* strate;
 
 			for (int i = 0; i < numPlayers; i++) { //get the number of players, then loop through numMaps times, then loop thru all players, insert that map
@@ -100,23 +119,28 @@ int main() {
 				cout << "1. Benevolent Player\n2. Cheater Player\n3. Aggressive Player\n4. Random Player" << endl;
 				cin >> choice;
 				strat = stoi(choice);
+				string name;
 				switch(strat) {
 					
 				case (1): strate = new BenevolentPlayer(); 
-					strats.push_back(strate);
-					names.push_back("Benevolent CPU Player");
+					strats->push_back(strate);
+					name = "BenevolentCPUPlayer" + i;
+					names.push_back(name);
 					break;
 				case (2): strate = new CheaterPlayer();
-					strats.push_back(strate);
-					names.push_back("Cheater CPU Player");
+					strats->push_back(strate);
+					name = "CheaterCPUPlayer" + i;
+					names.push_back(name);
 					break;
 				case (3): strate = new AggressivePlayer();
-					strats.push_back(strate);
-					names.push_back("Aggresive CPU Player");
+					strats->push_back(strate);
+					name = "AggresiveCPUPlayer" + i;
+					names.push_back(name);
 					break;
 				case (4): strate = new RandomPlayer(); 
-					strats.push_back(strate);
-					names.push_back("Random CPU Player");
+					strats->push_back(strate);
+					name = "RandomCPUPlayer" + i;
+					names.push_back(name);
 					break;
 				}
 				
@@ -125,65 +149,97 @@ int main() {
 
 
 			for (int i = 0; i < numMaps; i++) {
-				for (int j = 0; j < numPlayers; j++) {
-					Player* p1 = new Player(names.at(j), *(games.at(i)->getMap()), strats.at(i));
-					games.at(i)->setPlayers(p1);
+				
+				for (int j = 0; j < numGames; j++) {
+
+                  for (int k = 0; k < numPlayers; k++) {
+					Player* p1 = new Player(names.at(k), *(allMaps->at(i)->at(j)->getMap()), strats->at(k));
+					allMaps->at(i)->at(j)->setPlayers(p1);
+				  }
+
 				}
+				
+				
 			}
 
 
 			cout << "Now hand of cards are being made: " << endl;
 
-			Deck* deck = new Deck(games.at(0)->getMap()->getCountryCount());
+			Deck* deck = new Deck(allMaps->at(0)->at(0)->getMap()->getCountryCount());
 
 			cout << "Everything is made! You're all good to go on playing! Enjoy playing! :)" << endl;
 
 
-			for (int i = 0; i < numGames; i++) {
-				cout << "========================== GAME " << (i + 1) << " ==========================" << endl;
+			
+			vector<vector<Player*>*> winners;
 
-					Map map = *games.at(i)->getMap();
-					vector<Player*> players = *games.at(i)->getPlayers();
+			for (int h = 0; h < numMaps; h++) {
+				winners.push_back(new vector<Player*>);
+			}
 
 
-					//creating observer for the players
-					vector<gameView*>* vectPlayer = new vector<gameView*>;
+			for (int i = 0; i < numMaps; i++) {
+				   
+				
+				
+					cout << "========================== Map " << (i + 1) << " ==========================" << endl;
 
-					for (int i = 0; i < players.size(); i++) {
-						vectPlayer->push_back(players.at(i));
-					}
-
-					gameObserver* obs = new gameObserver(*vectPlayer);
-
-					//creating game
-					Game* game1 = new Game(map, players);
-
-					//startup phase
-					game1->startupTournament();
-					MainLoop* loop = new MainLoop(*game1);
-					loop->setTourney(true); //letting the program know this is tourney mode
-					loop->startLoop(numTurns);
-					//delete deck;
-					if ((i + 1) >= numMaps) { //this is needed since i need to do i+1 when initiliazing a new deck because i already loaded 1 map
-						break;
-					}
-					deck = new Deck(games.at(i + 1)->getMap()->getCountryCount());
-
-				if ((i + 2) == numGames) {
-
-					//printing the winners
-					cout << "Here are the winners!" << endl;
-
-					for (int i = 0; i < numGames; i++) {
-						cout << "Game " << (i + 1) << endl;
-						cout << endl;
-
-						for (int j = 0; j < numMaps; j++) {
-							cout << "Map " << (j + 1) << "\t" << loop->getWinners()->at(i) << "\t" << endl;
-						}
-					}
 					
+					for (int j = 0; j < numGames; j++) {
+						
+						
+						cout << "========================== Game " << (j + 1) << " ==========================" << endl;
+						
+						
+						Map* map = allMaps->at(i)->at(j)->getMap();
+						vector<Player*>* players = allMaps->at(i)->at(j)->getPlayers();
 
+						map->setPlayer(players);
+
+						//creating observer for the players
+						vector<gameView*>* vectPlayer = new vector<gameView*>;
+
+						for (int i = 0; i < players->size(); i++) {
+							vectPlayer->push_back(players->at(i));
+						}
+
+						gameObserver* obs = new gameObserver(*vectPlayer);
+
+						//creating game
+						
+                        Game* game1 = new Game(*map, *players);
+						
+
+							//startup phase
+							game1->startupTournament();
+							MainLoop* loop = new MainLoop(*game1);
+							loop->setTourney(true); //letting the program know this is tourney mode
+							Player* winner = loop->startLoop(numTurns);
+							//delete deck;
+							
+							winners.at(i)->push_back(winner);
+
+							
+							deck = new Deck(allMaps->at(i)->at(j)->getMap()->getCountryCount());
+						
+						
+					}
+		    }
+
+			int size1 = winners.size();
+			for (int f = 0; f < size1; f++) {
+				cout << endl;
+				cout << "Winner of Map " << f<<endl;
+				cout << endl;
+				int size2 = winners.at(f)->size();
+				for (int s = 0; s < size2; s++) {
+					cout << endl;
+					cout << "winner of game " << s << endl;
+					if (winners.at(f)->at(s) == NULL) {
+						cout << "Draw" << endl;
+					}
+					else
+						cout << winners.at(f)->at(s)->getName();
 				}
 			}
 
@@ -217,3 +273,4 @@ int main() {
 
 	return 0;
 }
+*/

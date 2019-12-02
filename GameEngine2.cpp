@@ -27,14 +27,17 @@ Loader::~Loader() {
 void Loader::selectMap() {
 	string choice;
 	MapLoader opener;
-	cout << "Please enter the map file name you wish to load : " << endl;
+	Map* map1;
+	
+		cout << "Please enter the map file name you wish to load : " << endl;
 
-	cin >> choice; //check if its a maploader or a conquest maploader
-	Map* map1 = opener.getFileData(choice);
-	while (map1 == NULL) {
-		cin >> choice;
-		map1 = opener.getFileData(choice);
-	}
+		cin >> choice; //check if its a maploader or a conquest maploader
+	    map1 = opener.getFileData(choice);
+		while (map1 == NULL) {
+			cin >> choice;
+			map1 = opener.getFileData(choice);
+		}
+	
 
 	cout << "Creating the Map..." << endl;
 
@@ -48,6 +51,34 @@ void Loader::selectMap() {
 	map = map1;
 	map1 = NULL;
 }
+
+void Loader::selectMap2(string choice) {
+
+	MapLoader opener;
+	Map* map1;
+
+	map1 = opener.getFileData(choice);
+	while (map1 == NULL) {
+		cin >> choice;
+		map1 = opener.getFileData(choice);
+	}
+
+
+	cout << "Creating the Map..." << endl;
+
+	map1->setMatrix();
+
+	if (map1->checkMap() == false) {
+		cout << "Invalid Map. Try again. Exiting program.";
+		exit(0);
+	}
+
+	map = map1;
+	map1 = NULL;
+}
+
+
+
 
 
 int Loader::menu() {

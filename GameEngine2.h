@@ -24,6 +24,7 @@ public:
 	void tournyMenu();
 	int menu();
 	void selectMap();
+	void selectMap2(string file);
 	Map* getMap() { return map; };
 	vector<Player*>* getPlayers() { return players; };
 	void setPlayers(Player* player) { players->push_back(player); };

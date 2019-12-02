@@ -45,7 +45,7 @@ public:
 	MainLoop();
 	MainLoop(Game &game);
 	~MainLoop();
-	void startLoop(int turns);
+	Player* startLoop(int turns);
 	void statsDemo();
 
 	//getters and setters

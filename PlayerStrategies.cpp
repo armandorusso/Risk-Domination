@@ -538,7 +538,7 @@ void shuffle(vector<int>& array) {
 void RandomPlayer::executeAttack(Player *player) {
 
 	
-	player->notify(player, "Attacking"); //notify observer to show initial state
+   player->notify(player, "Attacking"); //notify observer to show initial state
 
 	player->setIsTurn(true);
 
@@ -553,7 +553,7 @@ void RandomPlayer::executeAttack(Player *player) {
 	vector<int> attackable;
 
 	Country* arrayCountry = player->getMap()->getCountryArray();
-	vector<Player*>* players = player->getMap()->getPlayer();
+	
 
 
 		cout << "=========================" << endl;
@@ -567,120 +567,126 @@ void RandomPlayer::executeAttack(Player *player) {
 
 		vector<int> x;
 
+		
 		for (int i = 0; i < player->getNumOfCountries(); i++) {
 			x.push_back(player->getCountryKeys().at(i));
 		}
 		//getting random attacking country
 		shuffle(x);
+		if (x.size() != 0) {
+			attackingCountry = x.back();
+			x.pop_back();
 
-		attackingCountry = x.back();
-		x.pop_back();
+			//Neighbours of the country
+			Country* attack = &arrayCountry[attackingCountry]; //Always attacking with this country
 
-	  //Neighbours of the country
-		Country* attack = &arrayCountry[attackingCountry]; //Always attacking with this country
-		
 
-		int* neighbours;
-		neighbours = attack->getNeighbours();
+			int* neighbours;
+			neighbours = attack->getNeighbours();
 
-		for (int i = 0; i < attack->getNeighbourNum(); i++) {
-			
-			if (arrayCountry[neighbours[i]].getOwner() != player->getName()) {
-				attackable.push_back(neighbours[i]);
+			for (int i = 0; i < attack->getNeighbourNum(); i++) {
+
+				if (arrayCountry[neighbours[i]].getOwner() != player->getName()) {
+					attackable.push_back(neighbours[i]);
+				}
 			}
-		}
 
-		//getting random country key
-		shuffle(attackable);
+			//getting random country key
+			if (attackable.size() != 0) {
+				shuffle(attackable);
 
-		defendingCountry = attackable.back();
-		attackable.pop_back();
-		
-		cout << "Country attacking with: " << attackingCountry << endl;
-		cout << "=========================" << endl;
-		cout << "Defending country: " << defendingCountry << endl;
-		cout << "=========================" << endl;
-		
-		string dpla = arrayCountry[defendingCountry].getOwner();
-        Player* defendingPlayer = arrayCountry[defendingCountry].getOwnerObj();
-		
-		//getting player object of defending country
-		for (int i = 0; i < players->size(); i++) {
+				defendingCountry = attackable.back();
+				attackable.pop_back();
 
-			if (players->at(i)->getName() == dpla) {
-				defendingPlayer = players->at(i);
-			}
-		}
+				cout << "Country attacking with: " << attackingCountry << endl;
+				cout << "=========================" << endl;
+				cout << "Defending country: " << defendingCountry << endl;
+				cout << "=========================" << endl;
 
-		
-		Player* attackingPlayer = player;
-		
-		printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
+				string dpla = arrayCountry[defendingCountry].getOwner();
+				Player* defendingPlayer = arrayCountry[defendingCountry].getOwnerObj();
+				Map* map3 = player->getMap();
 
-		//Time to roll the dice for the attacking and defending player.
-		player->RollDice(attackingCountry, 0);
-		defendingPlayer->RollDice(defendingCountry, 0);
+				vector<Player*>* players = map3->getPlayer();
 
-		// Displays the rolls of each player.
-		::displayRoll(*player, *defendingPlayer);
+				//getting player object of defending country
+				for (int i = 0; i < players->size(); i++) {
 
-		//If attacking player rolls greater than defending player, defending player loses army. Otherwise, attacking country loses army.
-		if (::compareRolls(player, defendingPlayer)) {
-			arrayCountry[defendingCountry].subtractArmy(1);
-			defendingPlayer->subtractArmy(1);
-		}
-		else {
-			arrayCountry[attackingCountry].subtractArmy(1);
-			attackingPlayer->subtractArmy(1);
-		}
-
-		Country* dCountry = &arrayCountry[defendingCountry];
-		Country* aCountry = &arrayCountry[attackingCountry];
-
-		//If attacking results in 0 armies for the defending player, attacking player adds that country to their list of countries. Defending country is removed
-		//from defending player.
-		if (dCountry->getArmy() == 0) {
-
-			player->addCountry(dCountry);
-			::removeCountry(dCountry, defendingPlayer);
-
-			cout << "Country transferred to " << player->getName() << endl;
-
-			//Attacker can transfer 0 to n-1 armies from their country to the country they just won.
-			//If user inputs too many armies, appropriate message is displayed and loop is entered.
-			if (aCountry->getArmy() > 1) {
-
-				int inputArmies;
-				int maxArmiesToTransfer = aCountry->getArmy() - 1;
-
-				cout << "Choose between 0 and " << (aCountry->getArmy() - 1) << " armies to transfer to " << defendingCountry << ": ";
-				cout << "1" << "." << endl;
-				inputArmies = 1;
-				if (inputArmies > maxArmiesToTransfer || inputArmies < 0) {
-					cout << "Invalid number of armies." << endl;
+					if (players->at(i)->getName() == dpla) {
+						defendingPlayer = players->at(i);
+					}
 				}
 
-				//Transfer successful.
-				cout << "Transfering " << inputArmies << " armies from " << attackingCountry << " to " << defendingCountry << ".\n" << endl;
-				dCountry->addArmy(inputArmies);
-				aCountry->subtractArmy(inputArmies);
-			}
-			else {
-				cout << "You don't have enough armies to transfer. " << endl;
+
+				Player* attackingPlayer = player;
+
+				printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
+
+				//Time to roll the dice for the attacking and defending player.
+				player->RollDice(attackingCountry, 0);
+				defendingPlayer->RollDice(defendingCountry, 0);
+
+				// Displays the rolls of each player.
+				::displayRoll(*player, *defendingPlayer);
+
+				//If attacking player rolls greater than defending player, defending player loses army. Otherwise, attacking country loses army.
+				if (::compareRolls(player, defendingPlayer)) {
+					arrayCountry[defendingCountry].subtractArmy(1);
+					defendingPlayer->subtractArmy(1);
+				}
+				else {
+					arrayCountry[attackingCountry].subtractArmy(1);
+					attackingPlayer->subtractArmy(1);
+				}
+
+				Country* dCountry = &arrayCountry[defendingCountry];
+				Country* aCountry = &arrayCountry[attackingCountry];
+
+				//If attacking results in 0 armies for the defending player, attacking player adds that country to their list of countries. Defending country is removed
+				//from defending player.
+				if (dCountry->getArmy() == 0) {
+
+					player->addCountry(dCountry);
+					::removeCountry(dCountry, defendingPlayer);
+
+					cout << "Country transferred to " << player->getName() << endl;
+
+					//Attacker can transfer 0 to n-1 armies from their country to the country they just won.
+					//If user inputs too many armies, appropriate message is displayed and loop is entered.
+					if (aCountry->getArmy() > 1) {
+
+						int inputArmies;
+						int maxArmiesToTransfer = aCountry->getArmy() - 1;
+
+						cout << "Choose between 0 and " << (aCountry->getArmy() - 1) << " armies to transfer to " << defendingCountry << ": ";
+						cout << "1" << "." << endl;
+						inputArmies = 1;
+						if (inputArmies > maxArmiesToTransfer || inputArmies < 0) {
+							cout << "Invalid number of armies." << endl;
+						}
+
+						//Transfer successful.
+						cout << "Transfering " << inputArmies << " armies from " << attackingCountry << " to " << defendingCountry << ".\n" << endl;
+						dCountry->addArmy(inputArmies);
+						aCountry->subtractArmy(inputArmies);
+					}
+					else {
+						cout << "You don't have enough armies to transfer. " << endl;
+					}
+				}
+
+				printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
+
+				//Clearing the currentRoll values in the dice objects, so that
+				//more values are not pushed in.
+				player->getDice()->getCurrentRoll()->clear();
+				defendingPlayer->getDice()->getCurrentRoll()->clear();
+
+				cout << "You don't have enough armies to attack with." << endl;
+
 			}
 		}
-
-		printArmiesFromCountries(&arrayCountry[attackingCountry], &arrayCountry[defendingCountry]);
-
-		//Clearing the currentRoll values in the dice objects, so that
-		//more values are not pushed in.
-		player->getDice()->getCurrentRoll()->clear();
-		defendingPlayer->getDice()->getCurrentRoll()->clear();
-		int j;
-		cin >> j;
-	cout << "You don't have enough armies to attack with." << endl;
 	player->notify(player, "Finished Attacking"); //notify observer to show change after attack.
-
 
 }
 
@@ -728,13 +734,15 @@ void RandomPlayer::executeFortify(Player *player) {
        
 		shuffle(arr2);
 		
-		int armyTaken = arr2.back();
-		
-		arrayCountry[countryTakingFrom].subtractArmy(armyTaken);
-		arrayCountry[countryKeyFortify].addArmy(armyTaken);
-	//	arrayCountry[countryTakingFrom].getOwnerObj()->subtractArmy(armyTaken);
-	//	arrayCountry[countryKeyFortify].getOwnerObj()->addArmy(armyTaken);        //this is good,dont delete(comment out for testing)
-	
+
+		if (army >= 2) {
+			int armyTaken = arr2.back();
+
+			arrayCountry[countryTakingFrom].subtractArmy(armyTaken);
+			arrayCountry[countryKeyFortify].addArmy(armyTaken);
+			//	arrayCountry[countryTakingFrom].getOwnerObj()->subtractArmy(armyTaken);
+			//	arrayCountry[countryKeyFortify].getOwnerObj()->addArmy(armyTaken);        //this is good,dont delete(comment out for testing)
+		}
 		player->notify(player, "Finished Fortifying");  //showing updated values.
 
 
@@ -821,7 +829,7 @@ void CheaterPlayer::executeAttack(Player *player) {
 				if(arrayCountry[neighbours[j]].getOwner() != player->getName()){
                     
 
-					arrayCountry[neighbours[j]].getOwnerObj()->removeCountry(neighbours[j]);
+					//arrayCountry[neighbours[j]].getOwnerObj()->removeCountry(neighbours[j]);
 					player->addCountry(&arrayCountry[neighbours[j]]);
 					arrayCountry[neighbours[j]].setOwner(player->getName());
 					arrayCountry[neighbours[j]].setOwnerObj(*player);
@@ -875,6 +883,7 @@ void CheaterPlayer::executeFortify(Player *player) {
 	}
 
 	//doubling army for those that is in to fortify vector 
+
 	for (int i = 0; i < toFortify->size(); i++) {
 
 		arrayCountry[toFortify->at(i)].addArmy(arrayCountry[toFortify->at(i)].getArmy());
