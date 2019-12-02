@@ -1,7 +1,7 @@
 #include "GameEngine.h"
 #include "GameEngine2.h"
 #include "Adapter.h"
-/*
+
 int main() {
 	Loader* load = new Loader();
 	
@@ -170,7 +170,7 @@ int main() {
 			cout << "Everything is made! You're all good to go on playing! Enjoy playing! :)" << endl;
 
 
-			
+			//vector that store winners
 			vector<vector<Player*>*> winners;
 
 			for (int h = 0; h < numMaps; h++) {
@@ -225,7 +225,7 @@ int main() {
 						
 					}
 		    }
-
+			//showing winners
 			int size1 = winners.size();
 			for (int f = 0; f < size1; f++) {
 				cout << endl;
@@ -273,4 +273,3 @@ int main() {
 
 	return 0;
 }
-*/

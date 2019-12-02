@@ -34,10 +34,10 @@ void AggressivePlayer::executeAttack(Player *player) {
 
     player->setIsTurn(true);
 
-    int attackingCountry = -1; // key for the attacking country
-    int defendingCountry = -1; // key for the defending country
+    int attackingCountry = 0; // key for the attacking country
+    int defendingCountry = 0; // key for the defending country
     int maxArmy = 0;
-    int countryKeyMax = -1;
+    int countryKeyMax = 0;
     Country* maxArmyCountry = NULL;
 
     //Vector of countries that the player does not own which are
