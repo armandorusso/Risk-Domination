@@ -931,6 +931,9 @@ vector<int> Player::getAttackableCountries(Map* map) {
 	//Removing neighbours in which the player does not own.
 	for (int j = 0; j < neighbours.size(); j++) {
 		for (int i = 0; i < numCountries; i++) {
+			if (j == neighbours.size()) {
+				break;
+			}
 			if (neighbours[j] != this->getCountryKeys()[i]) {
 				continue;
 			}

@@ -116,7 +116,7 @@ void Dice::displayPercentage() {
 void Dice::Roll() {
 	std::random_device r;
 	std::default_random_engine generator(r());
-	std::uniform_int_distribution<int> distribution(1, 6);
+	std::uniform_int_distribution<int> distribution(1, 6); //here
 
 	int numDice = *this->getNumDice();
 	vector<int> currentRoll;

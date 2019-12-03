@@ -34,16 +34,16 @@ void AggressivePlayer::executeAttack(Player *player) {
 
     player->setIsTurn(true);
 
-    int attackingCountry = 0; // key for the attacking country
-    int defendingCountry = 0; // key for the defending country
+    int attackingCountry = -1; // key for the attacking country
+    int defendingCountry = -1; // key for the defending country
     int maxArmy = 0;
-    int countryKeyMax = 0;
+    int countryKeyMax = -1;
     Country* maxArmyCountry = NULL;
 
     //Vector of countries that the player does not own which are
     //neighbours of the attacking country.
     vector<int> attackableAdjacentCountries;
-
+	vector<int> attackableCountries;
     //Continue the loop until the country with the most armies has less than 2 armies, or until it can't
     //attack any more of its neighbours.
 
@@ -51,7 +51,7 @@ void AggressivePlayer::executeAttack(Player *player) {
 
     do {
         Country* arrayCountry = player->getMap()->getCountryArray();
-        vector<int> attackableCountries = player->getAttackableCountries(player->getMap());
+        attackableAdjacentCountries = (player->getAttackableCountries(player->getMap()));
 		vector<Player*>* players = player->getMap()->getPlayer();
 
         cout << "=========================" << endl;
@@ -100,12 +100,18 @@ void AggressivePlayer::executeAttack(Player *player) {
 
         printVectorInt(attackableAdjacentCountries);
 
-        //Generating random number between 0 and the size of the attackable adjacent countries vector.
-        std::random_device r;
-        std::default_random_engine generator(r());
-        std::uniform_int_distribution<int> distribution(0, attackableAdjacentCountries.size()-1);
+		if (attackableAdjacentCountries.size() == 0) {
+			cout << "There aren't any countries you can attack." << endl;
+			break;
+		}
 
-        defendingCountry = attackableAdjacentCountries[distribution(generator)];
+        //Generating random number between 0 and the size of the attackable adjacent countries vector.
+
+		int a = rand() % attackableAdjacentCountries.size();
+		if (attackableAdjacentCountries.size() == 1) {
+			a = 0;
+		}
+        defendingCountry = attackableAdjacentCountries[a];
 
 
         //Attacking a country now:

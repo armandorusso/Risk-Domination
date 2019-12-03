@@ -34,11 +34,6 @@ int main() {
 
 			}
 
-			
-			
-
-
-
 			while (true) {
 				cout << "\nNow how many games would you like to play?" << endl;
 
@@ -124,26 +119,27 @@ int main() {
 					
 				case (1): strate = new BenevolentPlayer(); 
 					strats->push_back(strate);
-					name = "BenevolentCPUPlayer" + i;
-					names.push_back(name);
+					name = "BenevolentCPUPlayer ";
 					break;
 				case (2): strate = new CheaterPlayer();
 					strats->push_back(strate);
-					name = "CheaterCPUPlayer" + i;
-					names.push_back(name);
+					name = "CheaterCPUPlayer ";
 					break;
 				case (3): strate = new AggressivePlayer();
 					strats->push_back(strate);
-					name = "AggresiveCPUPlayer" + i;
-					names.push_back(name);
+					name = "AggresiveCPUPlayer ";
 					break;
 				case (4): strate = new RandomPlayer(); 
 					strats->push_back(strate);
-					name = "RandomCPUPlayer" + i;
-					names.push_back(name);
+					name = "RandomCPUPlayer ";
 					break;
 				}
-				
+
+				string n;
+				cout << "What would you like to name this CPU Player?" << endl;
+				cin >> n;
+				name += n;
+				names.push_back(name);
 				
 			}
 
@@ -170,7 +166,7 @@ int main() {
 			cout << "Everything is made! You're all good to go on playing! Enjoy playing! :)" << endl;
 
 
-			//vector that store winners
+			
 			vector<vector<Player*>*> winners;
 
 			for (int h = 0; h < numMaps; h++) {
@@ -225,7 +221,7 @@ int main() {
 						
 					}
 		    }
-			//showing winners
+
 			int size1 = winners.size();
 			for (int f = 0; f < size1; f++) {
 				cout << endl;
